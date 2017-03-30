@@ -4,6 +4,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/spryker/rabbit-mq/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/spryker/rabbit-mq/?branch=master)
 
 ## Installation
+- Add new documentation
+- Something has changed
 
 ```
 composer require spryker/rabbit-mq
