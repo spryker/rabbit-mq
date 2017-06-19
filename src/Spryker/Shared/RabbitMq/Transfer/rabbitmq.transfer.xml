@@ -23,7 +23,7 @@
         <property name="type" type="string"/>
         <property name="routingKey" type="string"/>
         <property name="declarationType" type="string"/>
-        <property name="bindingQueue" type="RabbitMqOption"/>
+        <property name="bindingQueueCollection" singular="bindingQueueItem" type="RabbitMqOption[]"/>
     </transfer>
 
     <transfer name="RabbitMqConsumerOption">

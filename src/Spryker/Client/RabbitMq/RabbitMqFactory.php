@@ -16,6 +16,9 @@ use Spryker\Client\RabbitMq\Model\Manager\Manager;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 
+/**
+ * @method RabbitMqConfig getConfig()
+ */
 class RabbitMqFactory extends AbstractFactory
 {
 
@@ -104,7 +107,7 @@ class RabbitMqFactory extends AbstractFactory
      */
     protected function getQueueConnectionConfig()
     {
-        return $this->getProvidedDependency(RabbitMqDependencyProvider::QUEUE_CONNECTION);
+        return $this->getConfig()->getQueueConnection();
     }
 
     /**

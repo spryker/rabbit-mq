@@ -78,6 +78,7 @@ class Connection implements ConnectionInterface
      */
     protected function setupQueueAndExchange()
     {
+        //TODO Check performance, it will create queues again and again!
         foreach ($this->queueOptionCollection as $queueOption) {
             if ($queueOption->getDeclarationType() !== self::RABBIT_MQ_EXCHANGE) {
                 $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
@@ -86,8 +87,8 @@ class Connection implements ConnectionInterface
             }
 
             $this->queueEstablishmentHelper->createExchange($this->channel, $queueOption);
-            if ($queueOption->getBindingQueue() !== null) {
-                $this->createQueueAndBind($queueOption->getBindingQueue(), $queueOption->getQueueName());
+            foreach ($queueOption->getBindingQueueCollection() as $bindingQueueItem) {
+                $this->createQueueAndBind($bindingQueueItem, $queueOption->getQueueName());
             }
         }
     }
