@@ -114,8 +114,13 @@ class Consumer implements ConsumerInterface
 
         $queueReceiveMessageTransfer = new QueueReceiveMessageTransfer();
         $queueReceiveMessageTransfer->setQueueMessage($queueSendMessageTransfer);
-        // @TODO check this of queue not exchange!!!
-        $queueReceiveMessageTransfer->setQueueName($message->delivery_info['exchange']);
+
+        $queueName = $message->delivery_info['exchange'];
+        if (empty($queueName)) {
+            $queueName = $message->delivery_info['routing_key'];
+        }
+
+        $queueReceiveMessageTransfer->setQueueName($queueName);
         $queueReceiveMessageTransfer->setDeliveryTag($message->delivery_info['delivery_tag']);
 
         $this->collectedMessages[] = $queueReceiveMessageTransfer;
