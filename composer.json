@@ -20,12 +20,12 @@
   },
   "autoload": {
     "psr-4": {
-      "RabbitMq\\": "src"
+      "Spryker\\": "src/Spryker/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "RabbitMq\\Test\\": "tests"
+      "Spryker\\Test\\": "tests"
     }
   },
   "include-path":  ["src/"]
