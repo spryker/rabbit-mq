@@ -120,7 +120,7 @@ class RabbitMqAdapter implements AdapterInterface
      */
     public function reject(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
-        return $this->consumer->acknowledge($queueReceiveMessageTransfer);
+        return $this->consumer->reject($queueReceiveMessageTransfer);
     }
 
     /**

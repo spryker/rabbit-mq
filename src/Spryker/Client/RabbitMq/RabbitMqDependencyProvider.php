@@ -7,7 +7,13 @@
 
 namespace Spryker\Client\RabbitMq;
 
+use ArrayObject;
+use Generated\Shared\Transfer\QueueConnectionTransfer;
+use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use Spryker\Client\Kernel\AbstractDependencyProvider;
+use Spryker\Client\Kernel\Container;
+use Spryker\Shared\Config\Config;
+use Spryker\Shared\RabbitMq\RabbitMqConstants;
 
 class RabbitMqDependencyProvider extends AbstractDependencyProvider
 {

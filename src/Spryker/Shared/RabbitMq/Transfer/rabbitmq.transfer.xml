@@ -34,6 +34,7 @@
         <property name="consumerExclusive" type="bool"/>
         <property name="noWait" type="bool"/>
         <property name="timeout" type="int"/>
+        <property name="requeueOnReject" type="bool" />
     </transfer>
 
     <transfer name="QueueSendMessage">
@@ -43,5 +44,6 @@
     <transfer name="QueueReceiveMessage">
         <property name="deliveryTag" type="string" />
         <property name="routingKey" type="string" />
+        <property name="requeue" type="bool" />
     </transfer>
 </transfers>

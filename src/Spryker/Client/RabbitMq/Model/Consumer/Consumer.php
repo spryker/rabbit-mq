@@ -88,16 +88,18 @@ class Consumer implements ConsumerInterface
     {
         /** @var \Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitmq'];
-
+        $queueReceiveMessageTransfer = new QueueReceiveMessageTransfer();
         $message = $this->channel->basic_get($queueName, $rabbitMqOption->getNoAck());
+        if ($message === null) {
+            return $queueReceiveMessageTransfer;
+        }
 
         $queueSendMessageTransfer = new QueueSendMessageTransfer();
         $queueSendMessageTransfer->setBody($message->getBody());
-
-        $queueReceiveMessageTransfer = new QueueReceiveMessageTransfer();
         $queueReceiveMessageTransfer->setQueueMessage($queueSendMessageTransfer);
         $queueReceiveMessageTransfer->setQueueName($queueName);
         $queueReceiveMessageTransfer->setDeliveryTag($message->delivery_info['delivery_tag']);
+        $queueReceiveMessageTransfer->setRequeue($rabbitMqOption->getRequeueOnReject());
 
         return $queueReceiveMessageTransfer;
     }
@@ -143,7 +145,7 @@ class Consumer implements ConsumerInterface
      */
     public function reject(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
-        $this->channel->basic_reject($queueReceiveMessageTransfer->getDeliveryTag(), false);
+        $this->channel->basic_reject($queueReceiveMessageTransfer->getDeliveryTag(), $queueReceiveMessageTransfer->getRequeue());
     }
 
     /**
