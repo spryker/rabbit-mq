@@ -1,0 +1,20 @@
+namespace: SprykerTest\Zed\RabbitMq
+
+paths:
+    tests: .
+    data: ../../../_data
+    support: _support
+    log: ../../../_output
+
+coverage:
+    enabled: true
+    remote: false
+    whitelist: { include: ['../../../../src/*'] }
+
+suites:
+    Business:
+        path: Business
+        class_name: RabbitMqBusinessTester
+        modules:
+            enabled:
+                - Asserts

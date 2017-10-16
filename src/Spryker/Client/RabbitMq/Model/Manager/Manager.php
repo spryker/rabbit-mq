@@ -43,7 +43,7 @@ class Manager implements ManagerInterface
         /** @var \Generated\Shared\Transfer\RabbitMqOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitMqConsumerOption'];
 
-        $this->queueEstablishmentHelper->createQueue($this->channel, $rabbitMqOption);
+        return $this->queueEstablishmentHelper->createQueue($this->channel, $rabbitMqOption);
     }
 
     /**
@@ -54,7 +54,7 @@ class Manager implements ManagerInterface
      */
     public function deleteQueue($queueName, array $options = [])
     {
-        $this->channel->queue_delete($queueName);
+        return $this->channel->queue_delete($queueName);
     }
 
     /**
@@ -65,6 +65,16 @@ class Manager implements ManagerInterface
      */
     public function purgeQueue($queueName, array $options = [])
     {
-        $this->channel->queue_purge($queueName);
+        return $this->channel->queue_purge($queueName);
+    }
+
+    /**
+     * @param string $exchangeName
+     *
+     * @return bool
+     */
+    public function deleteExchange($exchangeName)
+    {
+        return $this->channel->exchange_delete($exchangeName);
     }
 }

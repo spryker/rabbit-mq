@@ -80,6 +80,16 @@ class RabbitMqAdapter implements AdapterInterface
     }
 
     /**
+     * @param string $exchangeName
+     *
+     * @return bool
+     */
+    public function deleteExchange($exchangeName)
+    {
+        return $this->manager->deleteExchange($exchangeName);
+    }
+
+    /**
      * @param string $queueName
      * @param int $chunkSize
      * @param array $options
