@@ -34,7 +34,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getApiUsername()
     {
-        return $this->get(RabbitMqConstants::RABBIT_MQ_API_USERNAME);
+        return $this->get(RabbitMqConstants::RABBITMQ_API_USERNAME);
     }
 
     /**
@@ -42,7 +42,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getApiPassword()
     {
-        return $this->get(RabbitMqConstants::RABBIT_MQ_API_PASSWORD);
+        return $this->get(RabbitMqConstants::RABBITMQ_API_PASSWORD);
     }
 
     /**

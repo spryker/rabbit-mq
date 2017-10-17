@@ -11,4 +11,10 @@ use Spryker\Client\Queue\Model\Internal\ManagerInterface as SprykerManagerInterf
 
 interface ManagerInterface extends SprykerManagerInterface
 {
+    /**
+     * @param string $exchangeName
+     *
+     * @return bool
+     */
+    public function deleteExchange($exchangeName);
 }

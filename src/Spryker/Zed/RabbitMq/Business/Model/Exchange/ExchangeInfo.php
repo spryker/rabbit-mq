@@ -9,11 +9,16 @@ namespace Spryker\Zed\RabbitMq\Business\Model\Exchange;
 
 use Generated\Shared\Transfer\RabbitMqExchangeCollectionTransfer;
 use Generated\Shared\Transfer\RabbitMqExchangeTransfer;
-use GuzzleHttp\Client;
+use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 
 class ExchangeInfo implements ExchangeInfoInterface
 {
     const AMQP_DEFAULT_EXCHANGE_NAME = 'AMQP-default';
+
+    /**
+     * @var \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface
+     */
+    protected $client;
 
     /**
      * @var string
@@ -31,12 +36,14 @@ class ExchangeInfo implements ExchangeInfoInterface
     protected $password;
 
     /**
+     * @param \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface $client
      * @param string $apiExchangeUrl
      * @param string $username
      * @param string $password
      */
-    public function __construct($apiExchangeUrl, $username, $password)
+    public function __construct(RabbitMqToGuzzleInterface $client, $apiExchangeUrl, $username, $password)
     {
+        $this->client = $client;
         $this->apiExchangeUrl = $apiExchangeUrl;
         $this->username = $username;
         $this->password = $password;
@@ -47,8 +54,7 @@ class ExchangeInfo implements ExchangeInfoInterface
      */
     public function getExchanges()
     {
-        $client = new Client();
-        $response = $client->get($this->apiExchangeUrl, ['auth' => [$this->username, $this->password]]);
+        $response = $this->client->get($this->apiExchangeUrl, ['auth' => [$this->username, $this->password]]);
 
         $rabbitMqExchangeCollectionTransfer = new RabbitMqExchangeCollectionTransfer();
         if ($response->getStatusCode() === 200) {

@@ -1,6 +1,8 @@
 <?php
 namespace SprykerTest\Zed\RabbitMq;
 
+use Codeception\Actor;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -15,8 +17,8 @@ namespace SprykerTest\Zed\RabbitMq;
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
  *
  * @SuppressWarnings(PHPMD)
-*/
-class RabbitMqBusinessTester extends \Codeception\Actor
+ */
+class RabbitMqBusinessTester extends Actor
 {
     use _generated\RabbitMqBusinessTesterActions;
 

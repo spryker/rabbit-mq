@@ -8,7 +8,7 @@
 namespace Spryker\Zed\RabbitMq\Business\Model\Exchange;
 
 use Psr\Log\LoggerInterface;
-use Spryker\Client\Queue\Model\Adapter\AdapterInterface;
+use Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface;
 
 class Exchange implements ExchangeInterface
@@ -19,7 +19,7 @@ class Exchange implements ExchangeInterface
     protected $exchangeInfo;
 
     /**
-     * @var \Spryker\Client\Queue\Model\Adapter\AdapterInterface
+     * @var \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface
      */
     protected $queueAdapter;
 
@@ -30,10 +30,10 @@ class Exchange implements ExchangeInterface
 
     /**
      * @param \Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfoInterface $exchangeInfo
-     * @param \Spryker\Client\Queue\Model\Adapter\AdapterInterface $queueAdapter
+     * @param \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface $queueAdapter
      * @param \Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface $exchangeFilter
      */
-    public function __construct(ExchangeInfoInterface $exchangeInfo, AdapterInterface $queueAdapter, ExchangeFilterInterface $exchangeFilter)
+    public function __construct(ExchangeInfoInterface $exchangeInfo, RabbitMqAdapterInterface $queueAdapter, ExchangeFilterInterface $exchangeFilter)
     {
         $this->exchangeInfo = $exchangeInfo;
         $this->queueAdapter = $queueAdapter;

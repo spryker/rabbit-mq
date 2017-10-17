@@ -9,10 +9,15 @@ namespace Spryker\Zed\RabbitMq\Business\Model\Queue;
 
 use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
 use Generated\Shared\Transfer\RabbitMqQueueTransfer;
-use GuzzleHttp\Client;
+use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 
 class QueueInfo implements QueueInfoInterface
 {
+    /**
+     * @var \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface
+     */
+    protected $client;
+
     /**
      * @var string
      */
@@ -29,12 +34,14 @@ class QueueInfo implements QueueInfoInterface
     protected $password;
 
     /**
+     * @param \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface $client
      * @param string $apiQueuesUrl
      * @param string $username
      * @param string $password
      */
-    public function __construct($apiQueuesUrl, $username, $password)
+    public function __construct(RabbitMqToGuzzleInterface $client, $apiQueuesUrl, $username, $password)
     {
+        $this->client = $client;
         $this->apiQueuesUrl = $apiQueuesUrl;
         $this->username = $username;
         $this->password = $password;
@@ -45,8 +52,7 @@ class QueueInfo implements QueueInfoInterface
      */
     public function getQueues()
     {
-        $client = new Client();
-        $response = $client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
+        $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
 
         $rabbitMqQueueCollectionTransfer = new RabbitMqQueueCollectionTransfer();
         if ($response->getStatusCode() === 200) {

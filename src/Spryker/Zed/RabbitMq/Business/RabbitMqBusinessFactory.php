@@ -8,12 +8,12 @@
 namespace Spryker\Zed\RabbitMq\Business;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
+use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
 use Spryker\Zed\RabbitMq\RabbitMqDependencyProvider;
-use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
-use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 
 /**
  * @method \Spryker\Zed\RabbitMq\RabbitMqConfig getConfig()
@@ -37,6 +37,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     protected function createQueueInfo()
     {
         return new QueueInfo(
+            $this->getGuzzleClient(),
             $this->getConfig()->getApiQueuesUrl(),
             $this->getConfig()->getApiUsername(),
             $this->getConfig()->getApiPassword()
@@ -61,10 +62,19 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     protected function createExchangeInfo()
     {
         return new ExchangeInfo(
+            $this->getGuzzleClient(),
             $this->getConfig()->getApiExchangesUrl(),
             $this->getConfig()->getApiUsername(),
             $this->getConfig()->getApiPassword()
         );
+    }
+
+    /**
+     * @return \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface
+     */
+    protected function getGuzzleClient()
+    {
+        return $this->getProvidedDependency(RabbitMqDependencyProvider::GUZZLE_CLIENT);
     }
 
     /**

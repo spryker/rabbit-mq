@@ -24,7 +24,7 @@ interface RabbitMqConstants extends QueueConstants
      *
      * @api
      */
-    const RABBIT_MQ_API_HOST = 'RABBITMQ:RABBIT_MQ_API_HOST';
+    const RABBITMQ_API_HOST = 'RABBITMQ:RABBITMQ_API_HOST';
 
     /**
      * Specification:
@@ -32,7 +32,7 @@ interface RabbitMqConstants extends QueueConstants
      *
      * @api
      */
-    const RABBIT_MQ_API_PORT = 'RABBITMQ:RABBIT_MQ_API_PORT';
+    const RABBITMQ_API_PORT = 'RABBITMQ:RABBITMQ_API_PORT';
 
     /**
      * Specification:
@@ -40,7 +40,7 @@ interface RabbitMqConstants extends QueueConstants
      *
      * @api
      */
-    const RABBIT_MQ_API_USERNAME = 'RABBITMQ:RABBIT_MQ_API_USERNAME';
+    const RABBITMQ_API_USERNAME = 'RABBITMQ:RABBITMQ_API_USERNAME';
 
     /**
      * Specification:
@@ -48,7 +48,7 @@ interface RabbitMqConstants extends QueueConstants
      *
      * @api
      */
-    const RABBIT_MQ_API_PASSWORD = 'RABBITMQ:RABBIT_MQ_API_PASSWORD';
+    const RABBITMQ_API_PASSWORD = 'RABBITMQ:RABBITMQ_API_PASSWORD';
 
     /**
      * Specification:
@@ -57,5 +57,5 @@ interface RabbitMqConstants extends QueueConstants
      *
      * @api
      */
-    const RABBIT_MQ_EXCHANGE_BLACKLIST = 'RABBITMQ:RABBIT_MQ_EXCHANGE_BLACKLIST';
+    const RABBITMQ_EXCHANGE_BLACKLIST = 'RABBITMQ:RABBITMQ_EXCHANGE_BLACKLIST';
 }
