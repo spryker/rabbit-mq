@@ -18,6 +18,9 @@
     "php": ">=5.4.16",
     "php-amqplib/php-amqplib": "^2.6"
   },
+  "require-dev": {
+    "spryker/code-sniffer": "*"
+  },
   "autoload": {
     "psr-4": {
       "RabbitMq\\": "src"
@@ -27,6 +30,10 @@
     "psr-4": {
       "RabbitMq\\Test\\": "tests"
     }
+  },
+  "scripts": {
+    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/vendor/,/templates/ ./",
+    "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/vendor/,/templates/ ./"
   },
   "include-path":  ["src/"]
 }
