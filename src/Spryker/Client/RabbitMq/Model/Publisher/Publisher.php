@@ -13,7 +13,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class Publisher implements PublisherInterface
 {
-
     /**
      * @var \PhpAmqpLib\Channel\AMQPChannel
      */
@@ -87,5 +86,4 @@ class Publisher implements PublisherInterface
     {
         return [];
     }
-
 }

@@ -14,7 +14,6 @@ use Spryker\Client\Kernel\AbstractClient;
  */
 class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
 {
-
     /**
      * @api
      *
@@ -24,5 +23,4 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
     {
         return $this->getFactory()->createQueueAdapter();
     }
-
 }
