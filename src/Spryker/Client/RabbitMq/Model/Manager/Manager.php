@@ -12,7 +12,6 @@ use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 
 class Manager implements ManagerInterface
 {
-
     /**
      * @var \PhpAmqpLib\Channel\AMQPChannel
      */
@@ -68,5 +67,4 @@ class Manager implements ManagerInterface
     {
         $this->channel->queue_purge($queueName);
     }
-
 }

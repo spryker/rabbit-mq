@@ -12,7 +12,6 @@ use PhpAmqpLib\Channel\AMQPChannel;
 
 class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
 {
-
     /**
      * @param \PhpAmqpLib\Channel\AMQPChannel $channel
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
@@ -62,5 +61,4 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
     {
         return $queueOptionTransfer->toArray();
     }
-
 }
