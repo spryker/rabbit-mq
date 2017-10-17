@@ -39,14 +39,12 @@ class Queue implements QueueInterface
      */
     public function deleteAllQueues(LoggerInterface $logger)
     {
-        $isSuccess = true;
-        foreach ($this->queueInfo->getAllQueueNames() as $queueName) {
-            if (!$this->queueAdapter->deleteQueue($queueName)) {
-                $isSuccess = false;
-            }
+        foreach ($this->queueInfo->getQueues()->getRabbitMqQueues() as $rabbitMqQueueTransfer) {
+            $this->queueAdapter->deleteQueue($rabbitMqQueueTransfer->getName());
+            $logger->info(sprintf('Delete queue "%s" request send.', $rabbitMqQueueTransfer->getName()));
         }
 
-        return $isSuccess;
+        return true;
     }
 
     /**
@@ -56,13 +54,11 @@ class Queue implements QueueInterface
      */
     public function purgeAllQueues(LoggerInterface $logger)
     {
-        $isSuccess = true;
-        foreach ($this->queueInfo->getAllQueueNames() as $queueName) {
-            if (!$this->queueAdapter->purgeQueue($queueName)) {
-                $isSuccess = false;
-            }
+        foreach ($this->queueInfo->getQueues()->getRabbitMqQueues() as $rabbitMqQueueTransfer) {
+            $this->queueAdapter->purgeQueue($rabbitMqQueueTransfer->getName());
+            $logger->info(sprintf('Purge queue "%s" request send.', $rabbitMqQueueTransfer->getName()));
         }
 
-        return $isSuccess;
+        return true;
     }
 }

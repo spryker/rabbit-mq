@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\RabbitMq\Business\Model\Queue;
 
+use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
+use Generated\Shared\Transfer\RabbitMqQueueTransfer;
 use GuzzleHttp\Client;
 
 class QueueInfo implements QueueInfoInterface
@@ -14,12 +16,7 @@ class QueueInfo implements QueueInfoInterface
     /**
      * @var string
      */
-    protected $host;
-
-    /**
-     * @var string
-     */
-    protected $webPort;
+    protected $apiQueuesUrl;
 
     /**
      * @var string
@@ -32,49 +29,50 @@ class QueueInfo implements QueueInfoInterface
     protected $password;
 
     /**
-     * @param string $host
-     * @param string $webPort
+     * @param string $apiQueuesUrl
      * @param string $username
      * @param string $password
      */
-    public function __construct($host, $webPort, $username, $password)
+    public function __construct($apiQueuesUrl, $username, $password)
     {
-        $this->host = $host;
-        $this->webPort = $webPort;
+        $this->apiQueuesUrl = $apiQueuesUrl;
         $this->username = $username;
         $this->password = $password;
     }
 
     /**
-     * @return array
+     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
      */
-    public function getAllQueueNames()
+    public function getQueues()
     {
         $client = new Client();
-        $url = sprintf('http://%s:%s/api/queues', $this->host, $this->webPort);
-        $response = $client->get($url, ['auth' => [$this->username, $this->password]]);
+        $response = $client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
 
+        $rabbitMqQueueCollectionTransfer = new RabbitMqQueueCollectionTransfer();
         if ($response->getStatusCode() === 200) {
             $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
-            return $this->extractQueueNames($decodedResponse);
+            return $this->addRabbitMqQueues($rabbitMqQueueCollectionTransfer, $decodedResponse);
         }
 
-        return [];
+        return $rabbitMqQueueCollectionTransfer;
     }
 
     /**
+     * @param \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer $rabbitMqQueueCollectionTransfer
      * @param array $response
      *
-     * @return array
+     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
      */
-    protected function extractQueueNames(array $response)
+    protected function addRabbitMqQueues(RabbitMqQueueCollectionTransfer $rabbitMqQueueCollectionTransfer, array $response)
     {
-        $queueNames = [];
         foreach ($response as $queueInfo) {
-            $queueNames[] = $queueInfo['name'];
+            $rabbitMqQueueTransfer = new RabbitMqQueueTransfer();
+            $rabbitMqQueueTransfer->setName($queueInfo['name']);
+
+            $rabbitMqQueueCollectionTransfer->addRabbitMqQueue($rabbitMqQueueTransfer);
         }
 
-        return $queueNames;
+        return $rabbitMqQueueCollectionTransfer;
     }
 }

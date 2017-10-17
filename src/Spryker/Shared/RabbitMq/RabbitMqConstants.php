@@ -20,11 +20,19 @@ interface RabbitMqConstants extends QueueConstants
 
     /**
      * Specification:
+     * - Api host.
+     *
+     * @api
+     */
+    const RABBIT_MQ_API_HOST = 'RABBITMQ:RABBIT_MQ_API_HOST';
+
+    /**
+     * Specification:
      * - Api port.
      *
      * @api
      */
-    const RABBIT_MQ_API_PORT = 'RABBIT_MQ_API_PORT';
+    const RABBIT_MQ_API_PORT = 'RABBITMQ:RABBIT_MQ_API_PORT';
 
     /**
      * Specification:
@@ -32,13 +40,22 @@ interface RabbitMqConstants extends QueueConstants
      *
      * @api
      */
-    const RABBIT_MQ_API_USERNAME = 'RABBIT_MQ_API_USERNAME';
+    const RABBIT_MQ_API_USERNAME = 'RABBITMQ:RABBIT_MQ_API_USERNAME';
+
+    /**
+     * Specification:
+     * - Api password.
+     *
+     * @api
+     */
+    const RABBIT_MQ_API_PASSWORD = 'RABBITMQ:RABBIT_MQ_API_PASSWORD';
 
     /**
      * Specification:
      * - List of exchanges which shouldn't be deleted.
+     * - PCRE compatible pattern or full names of exchanges can be used.
      *
      * @api
      */
-    const RABBIT_MQ_EXCHANGE_BLACKLIST = 'RABBIT_MQ_EXCHANGE_BLACKLIST';
+    const RABBIT_MQ_EXCHANGE_BLACKLIST = 'RABBITMQ:RABBIT_MQ_EXCHANGE_BLACKLIST';
 }

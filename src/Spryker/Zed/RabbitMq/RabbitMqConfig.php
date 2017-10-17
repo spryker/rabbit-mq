@@ -9,48 +9,47 @@ namespace Spryker\Zed\RabbitMq;
 
 use Spryker\Shared\RabbitMq\RabbitMqConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
+use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 
 class RabbitMqConfig extends AbstractBundleConfig
 {
     /**
      * @return string
      */
-    public function getHost()
+    public function getApiExchangesUrl()
     {
-        return $this->get(RabbitMqConstants::RABBITMQ_HOST);
+        return sprintf('http://%s:%s/api/exchanges', 'localhost', 15672);
     }
 
     /**
      * @return string
      */
-    public function getWebPort()
+    public function getApiQueuesUrl()
     {
-        return 15672;
-        return $this->get(RabbitMqConstants::RABBITMQ_PORT);
+        return sprintf('http://%s:%s/api/queues', 'localhost', 15672);
     }
 
     /**
      * @return string
      */
-    public function getUsername()
+    public function getApiUsername()
     {
-        return 'admin';
-        return $this->get(RabbitMqConstants::RABBITMQ_USERNAME);
+        return $this->get(RabbitMqConstants::RABBIT_MQ_API_USERNAME);
     }
 
     /**
      * @return string
      */
-    public function getPassword()
+    public function getApiPassword()
     {
-        return $this->get(RabbitMqConstants::RABBITMQ_PASSWORD);
+        return $this->get(RabbitMqConstants::RABBIT_MQ_API_PASSWORD);
     }
 
     /**
      * @return array
      */
-    public function getExchangeBlacklist()
+    public function getExchangeNameBlacklist()
     {
-        return ['/^amq./'];
+        return ['/^amq./', ExchangeInfo::AMQP_DEFAULT_EXCHANGE_NAME];
     }
 }

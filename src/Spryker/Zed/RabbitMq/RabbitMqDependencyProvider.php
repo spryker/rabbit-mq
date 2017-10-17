@@ -7,7 +7,6 @@
 
 namespace Spryker\Zed\RabbitMq;
 
-use Spryker\Client\RabbitMq\RabbitMqClient;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 
@@ -35,8 +34,9 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
     protected function addQueueAdapter(Container $container)
     {
         $container[static::QUEUE_ADAPTER] = function () use ($container) {
-            return (new RabbitMqClient())->createQueueAdapter();
+            return $container->getLocator()->rabbitMq()->client()->createQueueAdapter();
         };
+
         return $container;
     }
 }

@@ -7,19 +7,18 @@
 
 namespace Spryker\Zed\RabbitMq\Business\Model\Exchange;
 
+use Generated\Shared\Transfer\RabbitMqExchangeCollectionTransfer;
+use Generated\Shared\Transfer\RabbitMqExchangeTransfer;
 use GuzzleHttp\Client;
 
 class ExchangeInfo implements ExchangeInfoInterface
 {
-    /**
-     * @var string
-     */
-    protected $host;
+    const AMQP_DEFAULT_EXCHANGE_NAME = 'AMQP-default';
 
     /**
      * @var string
      */
-    protected $webPort;
+    protected $apiExchangeUrl;
 
     /**
      * @var string
@@ -32,51 +31,52 @@ class ExchangeInfo implements ExchangeInfoInterface
     protected $password;
 
     /**
-     * @param string $host
-     * @param string $webPort
+     * @param string $apiExchangeUrl
      * @param string $username
      * @param string $password
      */
-    public function __construct($host, $webPort, $username, $password)
+    public function __construct($apiExchangeUrl, $username, $password)
     {
-        $this->host = $host;
-        $this->webPort = $webPort;
+        $this->apiExchangeUrl = $apiExchangeUrl;
         $this->username = $username;
         $this->password = $password;
     }
 
     /**
-     * @return array
+     * @return \Generated\Shared\Transfer\RabbitMqExchangeCollectionTransfer
      */
-    public function getAllExchangeNames()
+    public function getExchanges()
     {
         $client = new Client();
-        $url = sprintf('http://%s:%s/api/exchanges', $this->host, $this->webPort);
-        $response = $client->get($url, ['auth' => [$this->username, $this->password]]);
+        $response = $client->get($this->apiExchangeUrl, ['auth' => [$this->username, $this->password]]);
 
+        $rabbitMqExchangeCollectionTransfer = new RabbitMqExchangeCollectionTransfer();
         if ($response->getStatusCode() === 200) {
             $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
-            return $this->extractExchangeNames($decodedResponse);
+            return $this->addRabbitMqExchanges($rabbitMqExchangeCollectionTransfer, $decodedResponse);
         }
 
-        return [];
+        return $rabbitMqExchangeCollectionTransfer;
     }
 
     /**
+     * @param \Generated\Shared\Transfer\RabbitMqExchangeCollectionTransfer $rabbitMqExchangeCollectionTransfer
      * @param array $response
      *
-     * @return array
+     * @return \Generated\Shared\Transfer\RabbitMqExchangeCollectionTransfer
      */
-    protected function extractExchangeNames(array $response)
+    protected function addRabbitMqExchanges(RabbitMqExchangeCollectionTransfer $rabbitMqExchangeCollectionTransfer, array $response)
     {
-        $exchangeNames = [];
         foreach ($response as $exchangeInfo) {
-            if (!empty($exchangeInfo['name'])) {
-                $exchangeNames[] = $exchangeInfo['name'];
-            }
+            $rabbitMqExchangeTransfer = new RabbitMqExchangeTransfer();
+            $rabbitMqExchangeTransfer
+                ->setName(!empty($exchangeInfo['name']) ? $exchangeInfo['name'] : static::AMQP_DEFAULT_EXCHANGE_NAME)
+                ->setVirtualHost($exchangeInfo['vhost']);
+
+            $rabbitMqExchangeCollectionTransfer->addRabbitMqExchange($rabbitMqExchangeTransfer);
         }
 
-        return $exchangeNames;
+        return $rabbitMqExchangeCollectionTransfer;
     }
 }

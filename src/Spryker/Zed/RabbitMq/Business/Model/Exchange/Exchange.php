@@ -7,7 +7,9 @@
 
 namespace Spryker\Zed\RabbitMq\Business\Model\Exchange;
 
+use Psr\Log\LoggerInterface;
 use Spryker\Client\Queue\Model\Adapter\AdapterInterface;
+use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface;
 
 class Exchange implements ExchangeInterface
 {
@@ -22,70 +24,36 @@ class Exchange implements ExchangeInterface
     protected $queueAdapter;
 
     /**
-     * @var array
+     * @var \Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface
      */
-    protected $exchangeBlackList;
+    protected $exchangeFilter;
 
     /**
      * @param \Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfoInterface $exchangeInfo
      * @param \Spryker\Client\Queue\Model\Adapter\AdapterInterface $queueAdapter
-     * @param array $exchangeBlackList
+     * @param \Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface $exchangeFilter
      */
-    public function __construct(ExchangeInfoInterface $exchangeInfo, AdapterInterface $queueAdapter, array $exchangeBlackList)
+    public function __construct(ExchangeInfoInterface $exchangeInfo, AdapterInterface $queueAdapter, ExchangeFilterInterface $exchangeFilter)
     {
         $this->exchangeInfo = $exchangeInfo;
         $this->queueAdapter = $queueAdapter;
-        $this->exchangeBlackList = $exchangeBlackList;
+        $this->exchangeFilter = $exchangeFilter;
     }
 
     /**
-     * @return bool
-     */
-    public function deleteAllExchanges()
-    {
-        $isSuccess = true;
-        foreach ($this->exchangeInfo->getAllExchangeNames() as $exchangeName) {
-            if ($this->isBlackListed($exchangeName)) {
-                continue;
-            }
-
-            if (!$this->queueAdapter->deleteExchange($exchangeName)) {
-                $isSuccess = false;
-            }
-        }
-
-        return $isSuccess;
-    }
-
-    /**
-     * @param string $exchangeName
+     * @param \Psr\Log\LoggerInterface $logger
      *
      * @return bool
      */
-    protected function isBlacklisted($exchangeName)
+    public function deleteAllExchanges(LoggerInterface $logger)
     {
-        if (in_array($exchangeName, $this->exchangeBlackList)) {
-            return true;
-        }
+        $rabbitMyExchangeCollectionTransfer = $this->exchangeFilter->filter(
+            $this->exchangeInfo->getExchanges()
+        );
 
-        foreach ($this->exchangeBlackList as $blacklistedExchangePattern) {
-            if ($this->isPattern($blacklistedExchangePattern) && preg_match($blacklistedExchangePattern, $exchangeName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param string $pattern
-     *
-     * @return bool
-     */
-    protected function isPattern($pattern)
-    {
-        if (@preg_match($pattern, null) === false) {
-            return false;
+        foreach ($rabbitMyExchangeCollectionTransfer->getRabbitMqExchanges() as $rabbitMqExchangeTransfer) {
+            $this->queueAdapter->deleteExchange($rabbitMqExchangeTransfer->getName());
+            $logger->info(sprintf('Delete exchange "%s" request send.', $rabbitMqExchangeTransfer->getName()));
         }
 
         return true;

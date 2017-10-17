@@ -37,6 +37,24 @@
         <property name="requeueOnReject" type="bool" />
     </transfer>
 
+    <transfer name="RabbitMqQueue">
+        <property name="name" type="string"/>
+        <property name="virtualHost" type="string"/>
+    </transfer>
+
+    <transfer name="RabbitMqQueueCollection">
+        <property name="rabbitMqQueues" type="RabbitMqQueue[]" singular="rabbitMqQueue"/>
+    </transfer>
+
+    <transfer name="RabbitMqExchange">
+        <property name="name" type="string"/>
+        <property name="virtualHost" type="string"/>
+    </transfer>
+
+    <transfer name="RabbitMqExchangeCollection">
+        <property name="rabbitMqExchanges" type="RabbitMqExchange[]" singular="rabbitMqExchange"/>
+    </transfer>
+
     <transfer name="QueueSendMessage">
         <property name="routingKey" type="string"/>
     </transfer>

@@ -8,6 +8,7 @@
 namespace Spryker\Zed\RabbitMq\Business;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
 use Spryker\Zed\RabbitMq\RabbitMqDependencyProvider;
@@ -36,10 +37,9 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     protected function createQueueInfo()
     {
         return new QueueInfo(
-            $this->getConfig()->getHost(),
-            $this->getConfig()->getWebPort(),
-            $this->getConfig()->getUsername(),
-            $this->getConfig()->getPassword()
+            $this->getConfig()->getApiQueuesUrl(),
+            $this->getConfig()->getApiUsername(),
+            $this->getConfig()->getApiPassword()
         );
     }
 
@@ -51,7 +51,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
         return new Exchange(
             $this->createExchangeInfo(),
             $this->getQueueAdapter(),
-            $this->getConfig()->getExchangeBlacklist()
+            $this->createExchangeFilter()
         );
     }
 
@@ -61,11 +61,18 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     protected function createExchangeInfo()
     {
         return new ExchangeInfo(
-            $this->getConfig()->getHost(),
-            $this->getConfig()->getWebPort(),
-            $this->getConfig()->getUsername(),
-            $this->getConfig()->getPassword()
+            $this->getConfig()->getApiExchangesUrl(),
+            $this->getConfig()->getApiUsername(),
+            $this->getConfig()->getApiPassword()
         );
+    }
+
+    /**
+     * @return \Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface
+     */
+    protected function createExchangeFilter()
+    {
+        return new ExchangeFilterByName($this->getConfig()->getExchangeNameBlacklist());
     }
 
     /**
