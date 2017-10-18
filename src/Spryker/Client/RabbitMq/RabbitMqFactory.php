@@ -17,7 +17,7 @@ use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 
 /**
- * @method RabbitMqConfig getConfig()
+ * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
  */
 class RabbitMqFactory extends AbstractFactory
 {

@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\RabbitMq;
 
+use ArrayObject;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use Spryker\Client\Kernel\AbstractBundleConfig;
@@ -38,7 +39,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     protected function getQueueOptions()
     {
-        $queueOptionCollection = new \ArrayObject();
+        $queueOptionCollection = new ArrayObject();
         $queueOptionCollection->append(new RabbitMqOptionTransfer());
 
         return $queueOptionCollection;
