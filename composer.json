@@ -2,7 +2,7 @@
   "name": "spryker/rabbit-mq",
   "description": "Spryker RabbitMq adapter",
   "type": "library",
-  "license": "proprietary",
+  "license": "MIT",
   "keywords": ["framework", "rabbit-mq", "queue", "standards"],
   "homepage": "http://spryker.com",
   "authors": [

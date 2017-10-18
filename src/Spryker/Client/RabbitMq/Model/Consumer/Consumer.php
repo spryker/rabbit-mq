@@ -118,7 +118,7 @@ class Consumer implements ConsumerInterface
         $queueReceiveMessageTransfer->setQueueMessage($queueSendMessageTransfer);
 
         $queueName = $message->delivery_info['exchange'];
-        if (empty($queueName)) {
+        if (!$queueName) {
             $queueName = $message->delivery_info['routing_key'];
         }
 
