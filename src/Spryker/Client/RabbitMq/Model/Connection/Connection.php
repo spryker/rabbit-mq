@@ -78,7 +78,6 @@ class Connection implements ConnectionInterface
      */
     protected function setupQueueAndExchange()
     {
-        //TODO Check performance, it will create queues again and again!
         foreach ($this->queueOptionCollection as $queueOption) {
             if ($queueOption->getDeclarationType() !== self::RABBIT_MQ_EXCHANGE) {
                 $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
@@ -103,7 +102,14 @@ class Connection implements ConnectionInterface
     {
         $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 
-        $this->bindQueues($queueOption->getQueueName(), $exchangeQueueName, $queueOption->getRoutingKey());
+        // @deprecated Removed with new Transfer module version which has string[] fix.
+        if ($queueOption->getRoutingKeys() === null) {
+            return;
+        }
+
+        foreach ($queueOption->getRoutingKeys() as $routingKey) {
+            $this->bindQueues($queueOption->getQueueName(), $exchangeQueueName, $routingKey);
+        }
     }
 
     /**
