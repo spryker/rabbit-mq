@@ -14,7 +14,6 @@ use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 
 class Connection implements ConnectionInterface
 {
-
     const RABBIT_MQ_EXCHANGE = 'exchange';
 
     /**
@@ -93,8 +92,8 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @param string $exchangeQueueName
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOption
+     * @param string $exchangeQueueName
      *
      * @return void
      */
@@ -141,5 +140,4 @@ class Connection implements ConnectionInterface
     {
         $this->close();
     }
-
 }

@@ -16,7 +16,6 @@ use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
 
 class RabbitMqAdapter implements AdapterInterface
 {
-
     /**
      * @var \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface
      */
@@ -154,5 +153,4 @@ class RabbitMqAdapter implements AdapterInterface
     {
         $this->publisher->sendMessages($queueName, $queueSendMessageTransfers);
     }
-
 }

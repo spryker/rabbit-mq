@@ -21,7 +21,6 @@ use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
  */
 class RabbitMqFactory extends AbstractFactory
 {
-
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
@@ -125,5 +124,4 @@ class RabbitMqFactory extends AbstractFactory
             $queueConnectionConfig->getVirtualHost()
         );
     }
-
 }

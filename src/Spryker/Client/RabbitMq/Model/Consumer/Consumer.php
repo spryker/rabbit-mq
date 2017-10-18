@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\RabbitMq\Model\Consumer;
 
+use Exception;
 use Generated\Shared\Transfer\QueueReceiveMessageTransfer;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -14,7 +15,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class Consumer implements ConsumerInterface
 {
-
     const CONSUMER_TAG = 'consumerTag';
     const NO_LOCAL = 'noLocal';
     const NO_ACK = 'noAck';
@@ -71,7 +71,7 @@ class Consumer implements ConsumerInterface
             while (count($this->channel->callbacks) && !$finished) {
                 $this->channel->wait(null, false, self::DEFAULT_CONSUMER_TIMEOUT_SECONDS);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $finished = true;
         }
 
@@ -160,5 +160,4 @@ class Consumer implements ConsumerInterface
 
         return true;
     }
-
 }

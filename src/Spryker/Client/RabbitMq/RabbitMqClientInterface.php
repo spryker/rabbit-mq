@@ -9,12 +9,10 @@ namespace Spryker\Client\RabbitMq;
 
 interface RabbitMqClientInterface
 {
-
     /**
      * @api
      *
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
      */
     public function createQueueAdapter();
-
 }
