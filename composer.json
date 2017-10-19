@@ -16,7 +16,10 @@
   },
   "require": {
     "php": ">=5.4.16",
-    "php-amqplib/php-amqplib": "^2.6"
+    "php-amqplib/php-amqplib": "^2.6",
+    "spryker/kernel": "^3.0.0",
+    "spryker/queue": "^1.0.0",
+    "spryker/transfer": "^3.3.4"
   },
   "require-dev": {
     "spryker/code-sniffer": "*"
