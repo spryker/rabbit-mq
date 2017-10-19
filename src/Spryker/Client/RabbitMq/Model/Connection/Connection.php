@@ -85,8 +85,8 @@ class Connection implements ConnectionInterface
             }
 
             $this->queueEstablishmentHelper->createExchange($this->channel, $queueOption);
-            if ($queueOption->getBindingQueue() !== null) {
-                $this->createQueueAndBind($queueOption->getBindingQueue(), $queueOption->getQueueName());
+            foreach ($queueOption->getBindingQueueCollection() as $bindingQueueItem) {
+                $this->createQueueAndBind($bindingQueueItem, $queueOption->getQueueName());
             }
         }
     }
@@ -101,7 +101,14 @@ class Connection implements ConnectionInterface
     {
         $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 
-        $this->bindQueues($queueOption->getQueueName(), $exchangeQueueName, $queueOption->getRoutingKey());
+        // @deprecated Removed with new Transfer module version which has string[] fix.
+        if ($queueOption->getRoutingKeys() === null) {
+            return;
+        }
+
+        foreach ($queueOption->getRoutingKeys() as $routingKey) {
+            $this->bindQueues($queueOption->getQueueName(), $exchangeQueueName, $routingKey);
+        }
     }
 
     /**

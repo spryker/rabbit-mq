@@ -2,7 +2,7 @@
   "name": "spryker/rabbit-mq",
   "description": "Spryker RabbitMq adapter",
   "type": "library",
-  "license": "proprietary",
+  "license": "MIT",
   "keywords": ["framework", "rabbit-mq", "queue", "standards"],
   "homepage": "http://spryker.com",
   "authors": [
@@ -16,7 +16,10 @@
   },
   "require": {
     "php": ">=5.4.16",
-    "php-amqplib/php-amqplib": "^2.6"
+    "php-amqplib/php-amqplib": "^2.6",
+    "spryker/kernel": "^3.0.0",
+    "spryker/queue": "^1.0.0",
+    "spryker/transfer": "^3.3.4"
   },
   "require-dev": {
     "spryker/code-sniffer": "*"
@@ -31,9 +34,25 @@
       "Spryker\\Test\\": "tests"
     }
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
   "scripts": {
     "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/vendor/,/templates/ ./",
     "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/vendor/,/templates/ ./"
   },
-  "include-path":  ["src/"]
+  "include-path":  ["src/"],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://code.spryker.com/repo/private"
+    }
+  ]
 }
