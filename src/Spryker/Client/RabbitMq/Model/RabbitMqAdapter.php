@@ -9,12 +9,11 @@ namespace Spryker\Client\RabbitMq\Model;
 
 use Generated\Shared\Transfer\QueueReceiveMessageTransfer;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
-use Spryker\Client\Queue\Model\Adapter\AdapterInterface;
 use Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface;
 use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
 use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
 
-class RabbitMqAdapter implements AdapterInterface
+class RabbitMqAdapter implements RabbitMqAdapterInterface
 {
     /**
      * @var \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface
@@ -77,6 +76,16 @@ class RabbitMqAdapter implements AdapterInterface
     public function deleteQueue($queueName, array $options = [])
     {
         return $this->manager->deleteQueue($queueName, $options);
+    }
+
+    /**
+     * @param string $exchangeName
+     *
+     * @return bool
+     */
+    public function deleteExchange($exchangeName)
+    {
+        return $this->manager->deleteExchange($exchangeName);
     }
 
     /**
