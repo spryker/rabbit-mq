@@ -49,4 +49,15 @@ interface RabbitMqFacadeInterface
      * @return bool
      */
     public function deleteAllExchanges(LoggerInterface $logger);
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return bool
+     */
+    public function setAdminPermissions(LoggerInterface $logger);
 }

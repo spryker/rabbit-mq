@@ -8,6 +8,7 @@
 namespace Spryker\Zed\RabbitMq\Business;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\RabbitMq\Business\Model\Admin\AdminPermissionHandler;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
@@ -53,6 +54,19 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->createExchangeInfo(),
             $this->getQueueAdapter(),
             $this->createExchangeFilter()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\RabbitMq\Business\Model\Admin\AdminPermissionHandlerInterface
+     */
+    public function createAdminPermissionHandler()
+    {
+        return new AdminPermissionHandler(
+            $this->getGuzzleClient(),
+            $this->getConfig()->getApiPermissionsAdminUrl(),
+            $this->getConfig()->getApiUsername(),
+            $this->getConfig()->getApiPassword()
         );
     }
 

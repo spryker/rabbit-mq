@@ -32,4 +32,15 @@ class RabbitMqToGuzzleBridge implements RabbitMqToGuzzleInterface
     {
         return $this->client->get($uri, $options);
     }
+
+    /**
+     * @param string $uri
+     * @param array $options
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function put($uri, array $options = [])
+    {
+        return $this->client->put($uri, $options);
+    }
 }

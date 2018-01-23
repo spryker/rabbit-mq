@@ -56,4 +56,18 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
     {
         return $this->getFactory()->createExchange()->deleteAllExchanges($logger);
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return bool
+     */
+    public function setAdminPermissions(LoggerInterface $logger)
+    {
+        return $this->getFactory()->createAdminPermissionHandler()->setPermissions($logger);
+    }
 }
