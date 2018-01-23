@@ -42,6 +42,20 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @return string
      */
+    public function getApiUserPermissionsUrl()
+    {
+        return sprintf(
+            'http://%s:%s/api/permissions/%s/%s',
+            $this->getApiHost(),
+            $this->getApiPort(),
+            urlencode($this->getVirtualHost()),
+            $this->getApiUsername()
+        );
+    }
+
+    /**
+     * @return string
+     */
     public function getApiUsername()
     {
         return $this->get(RabbitMqConstants::RABBITMQ_API_USERNAME);
@@ -85,18 +99,5 @@ class RabbitMqConfig extends AbstractBundleConfig
     protected function getApiPort()
     {
         return $this->get(RabbitMqConstants::RABBITMQ_API_PORT);
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiUserPermissionsUrl()
-    {
-        return sprintf(
-            'http://%s:%s/api/permissions/%s/admin',
-            $this->getApiHost(),
-            $this->getApiPort(),
-            urlencode($this->getVirtualHost())
-        );
     }
 }
