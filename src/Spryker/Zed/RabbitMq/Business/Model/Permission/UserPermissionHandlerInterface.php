@@ -5,11 +5,11 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\RabbitMq\Business\Model\Admin;
+namespace Spryker\Zed\RabbitMq\Business\Model\Permission;
 
 use Psr\Log\LoggerInterface;
 
-interface AdminPermissionHandlerInterface
+interface UserPermissionHandlerInterface
 {
     /**
      * @return bool

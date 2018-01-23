@@ -66,8 +66,8 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
      *
      * @return bool
      */
-    public function setAdminPermissions(LoggerInterface $logger)
+    public function setUserPermissions(LoggerInterface $logger)
     {
-        return $this->getFactory()->createAdminPermissionHandler()->setPermissions($logger);
+        return $this->getFactory()->createUserPermissionHandler()->setPermissions($logger);
     }
 }

@@ -90,7 +90,7 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getApiPermissionsAdminUrl()
+    public function getApiUserPermissionsUrl()
     {
         return sprintf(
             'http://%s:%s/api/permissions/%s/admin',

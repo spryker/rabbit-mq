@@ -5,12 +5,12 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\RabbitMq\Business\Model\Admin;
+namespace Spryker\Zed\RabbitMq\Business\Model\Permission;
 
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 
-class AdminPermissionHandler implements AdminPermissionHandlerInterface
+class UserPermissionHandler implements UserPermissionHandlerInterface
 {
     /**
      * @var \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface
@@ -20,7 +20,7 @@ class AdminPermissionHandler implements AdminPermissionHandlerInterface
     /**
      * @var string
      */
-    protected $apiAdminUrl;
+    protected $apiUserPermissionUrl;
 
     /**
      * @var string
@@ -34,14 +34,14 @@ class AdminPermissionHandler implements AdminPermissionHandlerInterface
 
     /**
      * @param \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface $client
-     * @param string $apiAdminUrl
+     * @param string $apiUserPermissionUrl
      * @param string $username
      * @param string $password
      */
-    public function __construct(RabbitMqToGuzzleInterface $client, $apiAdminUrl, $username, $password)
+    public function __construct(RabbitMqToGuzzleInterface $client, $apiUserPermissionUrl, $username, $password)
     {
         $this->client = $client;
-        $this->apiAdminUrl = $apiAdminUrl;
+        $this->apiUserPermissionUrl = $apiUserPermissionUrl;
         $this->username = $username;
         $this->password = $password;
     }
@@ -53,7 +53,7 @@ class AdminPermissionHandler implements AdminPermissionHandlerInterface
      */
     public function setPermissions(LoggerInterface $logger)
     {
-        $response = $this->client->put($this->apiAdminUrl, [
+        $response = $this->client->put($this->apiUserPermissionUrl, [
             'auth' => [$this->username, $this->password],
             'json' => [
                 'configure' => '.*',
@@ -63,12 +63,12 @@ class AdminPermissionHandler implements AdminPermissionHandlerInterface
         ]);
 
         if ($response->getStatusCode() > 200 && $response->getStatusCode() < 300) {
-            $logger->info('Permissions set for admin.');
+            $logger->info(sprintf('Permissions successfully set for %s.', $this->username));
 
             return true;
         }
 
-        $logger->error(sprintf('Permission set failed: %s', print_r($response, 1)));
+        $logger->error(sprintf('Permission set failed: %s', print_r($response, true)));
 
         return false;
     }

@@ -14,10 +14,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
  */
-class SetVirtualHostPermissionsConsole extends Console
+class SetUserPermissionsConsole extends Console
 {
-    const COMMAND_NAME = 'queue:vhost:set-permissions';
-    const DESCRIPTION = 'This command adds read and write permission for all.';
+    const COMMAND_NAME = 'queue:permission:set';
+    const DESCRIPTION = 'This command adds configure, read and write permission for the user.';
 
     /**
      * @return void
@@ -40,7 +40,7 @@ class SetVirtualHostPermissionsConsole extends Console
     {
         $this->info('Purge all queues');
 
-        if ($this->getFacade()->setAdminPermissions($this->getMessenger())) {
+        if ($this->getFacade()->setUserPermissions($this->getMessenger())) {
             return static::CODE_SUCCESS;
         }
 

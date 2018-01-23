@@ -59,5 +59,5 @@ interface RabbitMqFacadeInterface
      *
      * @return bool
      */
-    public function setAdminPermissions(LoggerInterface $logger);
+    public function setUserPermissions(LoggerInterface $logger);
 }
