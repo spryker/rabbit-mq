@@ -12,6 +12,8 @@ use Psr\Log\LoggerInterface;
 interface UserPermissionHandlerInterface
 {
     /**
+     * @param \Psr\Log\LoggerInterface $logger
+     *
      * @return bool
      */
     public function setPermissions(LoggerInterface $logger);

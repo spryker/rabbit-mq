@@ -8,10 +8,10 @@
 namespace Spryker\Zed\RabbitMq\Business;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
-use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
+use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
 use Spryker\Zed\RabbitMq\RabbitMqDependencyProvider;
