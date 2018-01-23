@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacade getFacade()
+ * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
  */
 class DeleteAllQueuesConsole extends Console
 {
