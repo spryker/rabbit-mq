@@ -11,6 +11,7 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
+use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
 use Spryker\Zed\RabbitMq\RabbitMqDependencyProvider;
@@ -53,6 +54,19 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->createExchangeInfo(),
             $this->getQueueAdapter(),
             $this->createExchangeFilter()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandlerInterface
+     */
+    public function createUserPermissionHandler()
+    {
+        return new UserPermissionHandler(
+            $this->getGuzzleClient(),
+            $this->getConfig()->getApiUserPermissionsUrl(),
+            $this->getConfig()->getApiUsername(),
+            $this->getConfig()->getApiPassword()
         );
     }
 

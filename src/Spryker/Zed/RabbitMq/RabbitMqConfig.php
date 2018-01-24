@@ -18,7 +18,12 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getApiExchangesUrl()
     {
-        return sprintf('http://%s:%s/api/exchanges', 'localhost', 15672);
+        return sprintf(
+            'http://%s:%s/api/exchanges/%s',
+            $this->getApiHost(),
+            $this->getApiPort(),
+            urlencode($this->getVirtualHost())
+        );
     }
 
     /**
@@ -26,7 +31,26 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getApiQueuesUrl()
     {
-        return sprintf('http://%s:%s/api/queues', 'localhost', 15672);
+        return sprintf(
+            'http://%s:%s/api/queues/%s',
+            $this->getApiHost(),
+            $this->getApiPort(),
+            urlencode($this->getVirtualHost())
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiUserPermissionsUrl()
+    {
+        return sprintf(
+            'http://%s:%s/api/permissions/%s/%s',
+            $this->getApiHost(),
+            $this->getApiPort(),
+            urlencode($this->getVirtualHost()),
+            $this->getApiUsername()
+        );
     }
 
     /**
@@ -51,5 +75,29 @@ class RabbitMqConfig extends AbstractBundleConfig
     public function getExchangeNameBlacklist()
     {
         return ['/^amq./', ExchangeInfo::AMQP_DEFAULT_EXCHANGE_NAME];
+    }
+
+    /**
+     * @return string
+     */
+    public function getVirtualHost()
+    {
+        return $this->get(RabbitMqConstants::RABBITMQ_VIRTUAL_HOST);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getApiHost()
+    {
+        return $this->get(RabbitMqConstants::RABBITMQ_API_HOST);
+    }
+
+    /**
+     * @return int
+     */
+    protected function getApiPort()
+    {
+        return $this->get(RabbitMqConstants::RABBITMQ_API_PORT);
     }
 }
