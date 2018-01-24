@@ -18,7 +18,11 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getApiExchangesUrl()
     {
-        return sprintf('http://%s:%s/api/exchanges', 'localhost', 15672);
+        return sprintf(
+            'http://%s:%s/api/exchanges',
+            $this->getApiHost(),
+            $this->getApiPort()
+        );
     }
 
     /**
@@ -26,7 +30,27 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getApiQueuesUrl()
     {
-        return sprintf('http://%s:%s/api/queues', 'localhost', 15672);
+        return sprintf(
+            'http://%s:%s/api/queues',
+            $this->getApiHost(),
+            $this->getApiPort()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiHost()
+    {
+        return $this->get(RabbitMqConstants::RABBITMQ_API_HOST, 'localhost');
+    }
+
+    /**
+     * @return int
+     */
+    public function getApiPort()
+    {
+        return $this->get(RabbitMqConstants::RABBITMQ_API_PORT, 15672);
     }
 
     /**
