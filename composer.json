@@ -8,14 +8,14 @@
   "authors": [
     {
       "name": "Spryker",
-      "homepage": "http://spryker.com"
+      "homepage": "https://spryker.com"
     }
   ],
   "support": {
     "source": "https://github.com/spryker/rabbit-mq"
   },
   "require": {
-    "php": ">=5.4.16",
+    "php": ">=7.1",
     "php-amqplib/php-amqplib": "^2.6",
     "spryker/kernel": "^3.0.0",
     "spryker/queue": "^1.0.0",
@@ -31,7 +31,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Spryker\\Test\\": "tests"
+      "SprykerTest\\": "tests/SprykerTest/"
     }
   },
   "minimum-stability": "dev",
@@ -48,11 +48,5 @@
     "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/vendor/,/templates/ ./",
     "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/vendor/,/templates/ ./"
   },
-  "include-path":  ["src/"],
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://code.spryker.com/repo/private"
-    }
-  ]
+  "include-path":  ["src/"]
 }
