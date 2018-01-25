@@ -12,6 +12,7 @@
 # OS
 .DS_Store
 
+/tests/SprykerTest/Zed/RabbitMq/_support/_generated/*
 /tests/_output/*
 !/tests/_output/.gitkeep
 /vendor/
