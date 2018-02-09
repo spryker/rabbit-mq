@@ -8,6 +8,7 @@
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
 use ArrayObject;
+use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
@@ -17,9 +18,9 @@ class Connection implements ConnectionInterface
     const RABBIT_MQ_EXCHANGE = 'exchange';
 
     /**
-     * @var \Generated\Shared\Transfer\RabbitMqOptionTransfer[]
+     * @var QueueConnectionTransfer
      */
-    protected $queueOptionCollection;
+    protected $queueConnection;
 
     /**
      * @var \PhpAmqpLib\Connection\AMQPStreamConnection
@@ -37,19 +38,25 @@ class Connection implements ConnectionInterface
     protected $queueEstablishmentHelper;
 
     /**
+     * @var string
+     */
+    protected $connectionName;
+
+    /**
      * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
      * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
-     * @param \ArrayObject $queueOptionCollection
+     * @param QueueConnectionTransfer $queueConnection
      */
     public function __construct(
         AMQPStreamConnection $streamConnection,
         QueueEstablishmentHelperInterface $queueEstablishmentHelper,
-        ArrayObject $queueOptionCollection
+        QueueConnectionTransfer $queueConnection
     ) {
 
         $this->streamConnection = $streamConnection;
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
-        $this->queueOptionCollection = $queueOptionCollection;
+        $this->queueConnection = $queueConnection;
+        $this->connectionName = $queueConnection->getName();
 
         $this->setupConnection();
     }
@@ -60,6 +67,14 @@ class Connection implements ConnectionInterface
     public function getChannel()
     {
         return $this->channel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->connectionName;
     }
 
     /**
@@ -77,7 +92,7 @@ class Connection implements ConnectionInterface
      */
     protected function setupQueueAndExchange()
     {
-        foreach ($this->queueOptionCollection as $queueOption) {
+        foreach ($this->queueConnection->getQueueOptionCollection() as $queueOption) {
             if ($queueOption->getDeclarationType() !== self::RABBIT_MQ_EXCHANGE) {
                 $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 

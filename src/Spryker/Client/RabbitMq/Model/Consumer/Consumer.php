@@ -10,8 +10,10 @@ namespace Spryker\Client\RabbitMq\Model\Consumer;
 use Exception;
 use Generated\Shared\Transfer\QueueReceiveMessageTransfer;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
+use Orm\Zed\Product\Persistence\SpyProductQuery;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
+use Propel\Runtime\Collection\ObjectCollection;
 
 class Consumer implements ConsumerInterface
 {

@@ -16,22 +16,28 @@ use Spryker\Shared\RabbitMq\RabbitMqConstants;
 class RabbitMqConfig extends AbstractBundleConfig
 {
     /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer
+     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function getQueueConnection()
+    public function getQueueConnections()
     {
-        $queueConfig = $this->getQueueConnectionConfig();
+        $queueConnectionConfigs = $this->getQueueConnectionConfigs();
 
-        $connectionTransfer = new QueueConnectionTransfer();
-        $connectionTransfer->setHost($queueConfig['host']);
-        $connectionTransfer->setPort($queueConfig['port']);
-        $connectionTransfer->setUsername($queueConfig['username']);
-        $connectionTransfer->setPassword($queueConfig['password']);
-        $connectionTransfer->setVirtualHost($queueConfig['virtualHost']);
+        $connectionTransferCollection = [];
+        foreach ($queueConnectionConfigs as $queueConnectionConfig) {
+            $connectionTransfer = new QueueConnectionTransfer();
+            $connectionTransfer->setName($queueConnectionConfig['name']);
+            $connectionTransfer->setHost($queueConnectionConfig['host']);
+            $connectionTransfer->setPort($queueConnectionConfig['port']);
+            $connectionTransfer->setUsername($queueConnectionConfig['username']);
+            $connectionTransfer->setPassword($queueConnectionConfig['password']);
+            $connectionTransfer->setVirtualHost($queueConnectionConfig['virtualHost']);
 
-        $connectionTransfer->setQueueOptionCollection($this->getQueueOptions());
+            $connectionTransfer->setQueueOptionCollection($this->getQueueOptions());
 
-        return $connectionTransfer;
+            $connectionTransferCollection[] = $connectionTransfer;
+        }
+
+        return $connectionTransferCollection;
     }
 
     /**
@@ -48,14 +54,21 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @return array
      */
-    protected function getQueueConnectionConfig()
+    protected function getQueueConnectionConfigs()
     {
-        return [
-            'host' => $this->get(RabbitMqConstants::RABBITMQ_HOST),
-            'port' => $this->get(RabbitMqConstants::RABBITMQ_PORT),
-            'username' => $this->get(RabbitMqConstants::RABBITMQ_USERNAME),
-            'password' => $this->get(RabbitMqConstants::RABBITMQ_PASSWORD),
-            'virtualHost' => $this->get(RabbitMqConstants::RABBITMQ_VIRTUAL_HOST),
-        ];
+        $connections = [];
+
+        foreach ($this->get(RabbitMqConstants::RABBITMQ_CONNECTIONS) as $connection) {
+            $connections[] = [
+                'name' => $connection[RabbitMqConstants::RABBITMQ_CONNECTION_NAME],
+                'host' => $connection[RabbitMqConstants::RABBITMQ_HOST],
+                'port' => $connection[RabbitMqConstants::RABBITMQ_PORT],
+                'username' => $connection[RabbitMqConstants::RABBITMQ_USERNAME],
+                'password' => $connection[RabbitMqConstants::RABBITMQ_PASSWORD],
+                'virtualHost' => $connection[RabbitMqConstants::RABBITMQ_VIRTUAL_HOST],
+            ];
+        }
+
+        return $connections;
     }
 }

@@ -11,6 +11,13 @@ use Spryker\Shared\Queue\QueueConstants;
 
 interface RabbitMqConstants extends QueueConstants
 {
+    // TODO: add specification for these constants
+
+    const RABBITMQ_CONNECTIONS = 'RABBITMQ_CONNECTIONS';
+
+    const RABBITMQ_DEFAULT_CONNECTION = 'RABBITMQ_DEFAULT_CONNECTION';
+    const RABBITMQ_CONNECTION_NAME = 'RABBITMQ_CONNECTION_NAME';
+
     const RABBITMQ_HOST = 'RABBITMQ_HOST';
     const RABBITMQ_PORT = 'RABBITMQ_PORT';
 
