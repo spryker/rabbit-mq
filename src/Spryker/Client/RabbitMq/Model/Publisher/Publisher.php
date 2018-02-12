@@ -10,18 +10,19 @@ namespace Spryker\Client\RabbitMq\Model\Publisher;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 
 class Publisher implements PublisherInterface
 {
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
     protected $connectionManager;
 
     /**
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager $connectionManager
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface $connectionManager
      */
-    public function __construct(ConnectionManager $connectionManager)
+    public function __construct(ConnectionManagerInterface $connectionManager)
     {
         $this->connectionManager = $connectionManager;
     }

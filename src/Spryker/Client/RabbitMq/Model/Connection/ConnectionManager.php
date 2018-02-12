@@ -7,11 +7,11 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
-use Generated\Shared\Transfer\StoreTransfer;
+use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\RabbitMqFactory;
 use Spryker\Shared\RabbitMq\RabbitMqConfigInterface;
 
-class ConnectionManager
+class ConnectionManager implements ConnectionManagerInterface
 {
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
@@ -29,9 +29,9 @@ class ConnectionManager
     protected $channelMapBuffer = null;
 
     /**
-     * @var \Generated\Shared\Transfer\StoreTransfer
+     * @var RabbitMqToStoreClientInterface
      */
-    protected $currentStoreTransfer;
+    protected $storeClient;
 
     /**
      * @var \Spryker\Client\RabbitMq\RabbitMqFactory
@@ -39,12 +39,12 @@ class ConnectionManager
     protected $factory;
 
     /**
-     * @param \Generated\Shared\Transfer\StoreTransfer $currentStoreTransfer
+     * @param RabbitMqToStoreClientInterface $storeClient
      * @param \Spryker\Client\RabbitMq\RabbitMqFactory $factory
      */
-    public function __construct(StoreTransfer $currentStoreTransfer, RabbitMqFactory $factory)
+    public function __construct(RabbitMqToStoreClientInterface $storeClient, RabbitMqFactory $factory)
     {
-        $this->currentStoreTransfer = $currentStoreTransfer;
+        $this->storeClient = $storeClient;
         $this->factory = $factory;
     }
 
@@ -58,7 +58,7 @@ class ConnectionManager
                 RabbitMqConfigInterface::QUEUE_POOL_NAME_DEFAULT => [$this->getDefaultChannel()],
             ];
 
-            $eventQueueMap = $this->currentStoreTransfer->getQueuePools();
+            $eventQueueMap = $this->storeClient->getCurrentStore()->getQueuePools();
             foreach ($eventQueueMap as $poolName => $connectionNames) {
                 $channelMap[$poolName] = [];
                 foreach ($connectionNames as $connectionName) {
@@ -100,13 +100,13 @@ class ConnectionManager
     }
 
     /**
-     * @param string $poolName
+     * @param string $queuePoolName
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByQueuePoolName($poolName)
+    public function getChannelsByQueuePoolName($queuePoolName)
     {
-        return $this->getChannelMap()[$poolName];
+        return $this->getChannelMap()[$queuePoolName];
     }
 
     /**

@@ -10,6 +10,7 @@ namespace Spryker\Client\RabbitMq;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\Kernel\AbstractFactory;
+use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Consumer\Consumer;
@@ -25,7 +26,7 @@ use Spryker\Zed\Store\Business\StoreFacade;
 class RabbitMqFactory extends AbstractFactory
 {
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
     protected static $connectionManager;
 
@@ -42,12 +43,12 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
     protected function createConnectionManager()
     {
         $connectionManager = new ConnectionManager(
-            (new StoreFacade())->getCurrentStore(),
+            $this->getStoreClient(),
             $this
         );
 
@@ -69,7 +70,7 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
     public function getStaticConnectionManager()
     {
@@ -143,5 +144,13 @@ class RabbitMqFactory extends AbstractFactory
         );
 
         return $streamConnection;
+    }
+
+    /**
+     * @return RabbitMqToStoreClientInterface
+     */
+    protected function getStoreClient()
+    {
+        return $this->getProvidedDependency(RabbitMqDependencyProvider::CLIENT_STORE);
     }
 }

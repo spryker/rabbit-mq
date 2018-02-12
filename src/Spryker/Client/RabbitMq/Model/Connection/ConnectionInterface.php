@@ -10,7 +10,7 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 interface ConnectionInterface
 {
     /**
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     * @return \PhpAmqpLib\Channel\AMQPChannel
      */
     public function getChannel();
 
