@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
+use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\RabbitMqFactory;
 use Spryker\Shared\RabbitMq\RabbitMqConfigInterface;
@@ -14,22 +15,7 @@ use Spryker\Shared\RabbitMq\RabbitMqConfigInterface;
 class ConnectionManager implements ConnectionManagerInterface
 {
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
-     */
-    protected $connectionMap = [];
-
-    /**
-     * @var string|null
-     */
-    protected $defaultConnectionName;
-
-    /**
-     * @var array|null
-     */
-    protected $channelMapBuffer = null;
-
-    /**
-     * @var RabbitMqToStoreClientInterface
+     * @var \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
      */
     protected $storeClient;
 
@@ -39,7 +25,22 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $factory;
 
     /**
-     * @param RabbitMqToStoreClientInterface $storeClient
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[] Keys are connection names.
+     */
+    protected $connectionMap = [];
+
+    /**
+     * @var array|null Keys are pool names, values are lists of channels.
+     */
+    protected $channelMap = null;
+
+    /**
+     * @var string|null
+     */
+    protected $defaultConnectionName;
+
+    /**
+     * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
      * @param \Spryker\Client\RabbitMq\RabbitMqFactory $factory
      */
     public function __construct(RabbitMqToStoreClientInterface $storeClient, RabbitMqFactory $factory)
@@ -53,36 +54,45 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getChannelMap()
     {
-        if ($this->channelMapBuffer === null) {
-            $channelMap = [
-                RabbitMqConfigInterface::QUEUE_POOL_NAME_DEFAULT => [$this->getDefaultChannel()],
-            ];
-
-            $eventQueueMap = $this->storeClient->getCurrentStore()->getQueuePools();
-            foreach ($eventQueueMap as $poolName => $connectionNames) {
-                $channelMap[$poolName] = [];
-                foreach ($connectionNames as $connectionName) {
-                    $channelMap[$poolName][] = $this->getConnectionMap()[$connectionName]->getChannel();
-                }
-            }
-
-            $this->channelMapBuffer = $channelMap;
+        if ($this->channelMap === null) {
+            $this->channelMap = $this->createChannelMap($this->storeClient->getCurrentStore()->getQueuePools());
         }
 
-        return $this->channelMapBuffer;
+        return $this->channelMap;
     }
 
     /**
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface $connection
+     * @param array $queuePools Keys are pool names, values are lists of connection names.
      *
-     * @return void
+     * @return array Keys are pool names, values are lists of channels.
      */
-    protected function addConnection(ConnectionInterface $connection)
+    protected function createChannelMap(array $queuePools)
     {
-        $this->connectionMap[$connection->getName()] = $connection;
-        if ($connection->getIsDefaultConnection()) {
-            $this->defaultConnectionName = $connection->getName();
+        $defaultPoolMap = [
+            RabbitMqConfigInterface::QUEUE_POOL_NAME_DEFAULT => [$this->getDefaultChannel()],
+        ];
+
+        $channelMap = [];
+        foreach ($queuePools as $poolName => $connectionNames) {
+            $channelMap[$poolName] = $this->getChannelsByConnectionName($connectionNames);
         }
+
+        return $defaultPoolMap + $channelMap;
+    }
+
+    /**
+     * @param string[] $connectionNames
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected function getChannelsByConnectionName(array $connectionNames)
+    {
+        $channels = [];
+        foreach ($connectionNames as $connectionName) {
+            $channels[] = $this->getConnectionMap()[$connectionName]->getChannel();
+        }
+
+        return $channels;
     }
 
     /**
@@ -91,12 +101,34 @@ class ConnectionManager implements ConnectionManagerInterface
     protected function getConnectionMap()
     {
         if ($this->connectionMap === null) {
-            foreach ($this->factory->getQueueConnectionConfigs() as $queueConnectionConfig) {
-                $this->addConnection($this->factory->createConnection($queueConnectionConfig));
-            }
+            $this->addConnections();
         }
 
         return $this->connectionMap;
+    }
+
+    /**
+     * @return void
+     */
+    protected function addConnections()
+    {
+        foreach ($this->factory->getQueueConnectionConfigs() as $queueConnectionConfig) {
+            $connection = $this->getConnection($queueConnectionConfig);
+            $this->connectionMap[$connection->getName()] = $connection;
+            if ($connection->getIsDefaultConnection()) {
+                $this->defaultConnectionName = $connection->getName();
+            }
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
+    protected function getConnection(QueueConnectionTransfer $queueConnectionConfig)
+    {
+        return $this->factory->createConnection($queueConnectionConfig);
     }
 
     /**

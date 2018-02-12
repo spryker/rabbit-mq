@@ -9,7 +9,6 @@ namespace Spryker\Client\RabbitMq\Model\Publisher;
 
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 
 class Publisher implements PublisherInterface

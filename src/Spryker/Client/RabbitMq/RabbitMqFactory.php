@@ -10,7 +10,6 @@ namespace Spryker\Client\RabbitMq;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\Kernel\AbstractFactory;
-use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Consumer\Consumer;
@@ -18,7 +17,6 @@ use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelper;
 use Spryker\Client\RabbitMq\Model\Manager\Manager;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
-use Spryker\Zed\Store\Business\StoreFacade;
 
 /**
  * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
@@ -147,7 +145,7 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return RabbitMqToStoreClientInterface
+     * @return \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
      */
     protected function getStoreClient()
     {

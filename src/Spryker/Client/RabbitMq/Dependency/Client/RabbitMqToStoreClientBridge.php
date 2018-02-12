@@ -1,19 +1,21 @@
 <?php
 
-namespace Spryker\Client\RabbitMq\Dependency\Client;
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
 
-use Generated\Shared\Transfer\StoreTransfer;
-use Spryker\Client\Store\StoreClientInterface;
+namespace Spryker\Client\RabbitMq\Dependency\Client;
 
 class RabbitMqToStoreClientBridge implements RabbitMqToStoreClientInterface
 {
     /**
-     * @var StoreClientInterface
+     * @var \Spryker\Client\Store\StoreClientInterface
      */
     protected $storeClient;
 
     /**
-     * @param StoreClientInterface $storeClient
+     * @param \Spryker\Client\Store\StoreClientInterface $storeClient
      */
     public function __construct($storeClient)
     {
@@ -21,7 +23,7 @@ class RabbitMqToStoreClientBridge implements RabbitMqToStoreClientInterface
     }
 
     /**
-     * @return StoreTransfer
+     * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function getCurrentStore()
     {

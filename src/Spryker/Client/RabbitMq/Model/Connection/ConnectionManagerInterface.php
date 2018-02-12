@@ -1,9 +1,8 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: karolygerner
- * Date: 12.February.2018
- * Time: 12:38
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace Spryker\Client\RabbitMq\Model\Connection;
