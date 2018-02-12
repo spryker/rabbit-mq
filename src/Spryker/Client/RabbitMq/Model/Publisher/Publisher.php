@@ -8,19 +8,18 @@
 namespace Spryker\Client\RabbitMq\Model\Publisher;
 
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
-use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 
 class Publisher implements PublisherInterface
 {
     /**
-     * @var ConnectionManager
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager
      */
     protected $connectionManager;
 
     /**
-     * @param ConnectionManager $connectionManager
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager $connectionManager
      */
     public function __construct(ConnectionManager $connectionManager)
     {
@@ -57,10 +56,10 @@ class Publisher implements PublisherInterface
     }
 
     /**
-     * @param QueueSendMessageTransfer $queueMessageTransfer
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueMessageTransfer
      * @param string $queueName
      *
-     * @return AMQPChannel[]
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
     protected function publishBatchMessage(QueueSendMessageTransfer $queueMessageTransfer, $queueName)
     {
@@ -78,11 +77,12 @@ class Publisher implements PublisherInterface
 
     /**
      * @param AMQPChannel[] $channels
+     *
+     * @return void
      */
     protected function publishChannels(array $channels)
     {
-        foreach ($channels as $channel)
-        {
+        foreach ($channels as $channel) {
             $channel->publish_batch();
         }
     }

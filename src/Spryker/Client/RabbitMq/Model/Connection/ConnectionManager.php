@@ -1,22 +1,20 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: karolygerner
- * Date: 08.February.2018
- * Time: 12:42
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
-
 use Generated\Shared\Transfer\StoreTransfer;
-use Spryker\Shared\Event\EventConstants;
+use Spryker\Client\RabbitMq\RabbitMqFactory;
 use Spryker\Shared\RabbitMq\RabbitMqConfigInterface;
 
 class ConnectionManager
 {
     /**
-     * @var ConnectionInterface[]
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
      */
     protected $connectionMap = [];
 
@@ -31,7 +29,7 @@ class ConnectionManager
     protected $channelMapBuffer = null;
 
     /**
-     * @var StoreTransfer
+     * @var \Generated\Shared\Transfer\StoreTransfer
      */
     protected $currentStoreTransfer;
 
@@ -41,10 +39,10 @@ class ConnectionManager
     protected $factory;
 
     /**
-     * @param StoreTransfer $currentStoreTransfer
+     * @param \Generated\Shared\Transfer\StoreTransfer $currentStoreTransfer
      * @param \Spryker\Client\RabbitMq\RabbitMqFactory $factory
      */
-    public function __construct(StoreTransfer $currentStoreTransfer, \Spryker\Client\RabbitMq\RabbitMqFactory $factory)
+    public function __construct(StoreTransfer $currentStoreTransfer, RabbitMqFactory $factory)
     {
         $this->currentStoreTransfer = $currentStoreTransfer;
         $this->factory = $factory;
@@ -75,7 +73,9 @@ class ConnectionManager
     }
 
     /**
-     * @param ConnectionInterface $connection
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface $connection
+     *
+     * @return void
      */
     protected function addConnection(ConnectionInterface $connection)
     {
@@ -86,7 +86,7 @@ class ConnectionManager
     }
 
     /**
-     * @return ConnectionInterface[]
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
      */
     protected function getConnectionMap()
     {

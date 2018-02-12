@@ -7,7 +7,6 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
-use ArrayObject;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -18,7 +17,7 @@ class Connection implements ConnectionInterface
     const RABBIT_MQ_EXCHANGE = 'exchange';
 
     /**
-     * @var QueueConnectionTransfer
+     * @var \Generated\Shared\Transfer\QueueConnectionTransfer
      */
     protected $queueConnection;
 
@@ -50,7 +49,7 @@ class Connection implements ConnectionInterface
     /**
      * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
      * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
-     * @param QueueConnectionTransfer $queueConnection
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnection
      */
     public function __construct(
         AMQPStreamConnection $streamConnection,

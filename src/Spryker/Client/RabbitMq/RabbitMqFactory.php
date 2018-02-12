@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\Kernel\AbstractFactory;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Consumer\Consumer;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelper;
@@ -53,13 +52,12 @@ class RabbitMqFactory extends AbstractFactory
         );
 
         return $connectionManager;
-
     }
 
     /**
-     * @param QueueConnectionTransfer $queueConnectionConfig
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
      *
-     * @return ConnectionInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
     public function createConnection(QueueConnectionTransfer $queueConnectionConfig)
     {
@@ -130,18 +128,18 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @param QueueConnectionTransfer $queueConnectionConfig
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
      *
      * @return \PhpAmqpLib\Connection\AMQPStreamConnection
      */
     protected function createAMQPStreamConnection(QueueConnectionTransfer $queueConnectionConfig)
     {
         $streamConnection = new AMQPStreamConnection(
-                $queueConnectionConfig->getHost(),
-                $queueConnectionConfig->getPort(),
-                $queueConnectionConfig->getUsername(),
-                $queueConnectionConfig->getPassword(),
-                $queueConnectionConfig->getVirtualHost()
+            $queueConnectionConfig->getHost(),
+            $queueConnectionConfig->getPort(),
+            $queueConnectionConfig->getUsername(),
+            $queueConnectionConfig->getPassword(),
+            $queueConnectionConfig->getVirtualHost()
         );
 
         return $streamConnection;
