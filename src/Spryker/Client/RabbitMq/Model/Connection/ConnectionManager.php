@@ -25,14 +25,14 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $factory;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[] Keys are connection names.
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]|null Keys are connection names.
      */
-    protected $connectionMap = [];
+    protected $connectionMap;
 
     /**
-     * @var array|null Keys are pool names, values are lists of channels.
+     * @var array|null Keys are queue pool names, values are lists of channels.
      */
-    protected $channelMap = null;
+    protected $channelMap;
 
     /**
      * @var string|null
@@ -73,8 +73,8 @@ class ConnectionManager implements ConnectionManagerInterface
         ];
 
         $channelMap = [];
-        foreach ($queuePools as $poolName => $connectionNames) {
-            $channelMap[$poolName] = $this->getChannelsByConnectionName($connectionNames);
+        foreach ($queuePools as $queuePoolName => $connectionNames) {
+            $channelMap[$queuePoolName] = $this->getChannelsByConnectionName($connectionNames);
         }
 
         return $defaultPoolMap + $channelMap;

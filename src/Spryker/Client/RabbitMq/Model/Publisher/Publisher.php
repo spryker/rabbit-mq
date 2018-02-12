@@ -8,6 +8,7 @@
 namespace Spryker\Client\RabbitMq\Model\Publisher;
 
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 
@@ -49,10 +50,10 @@ class Publisher implements PublisherInterface
     {
         $usedChannels = [];
         foreach ($queueMessageTransfers as $queueMessageTransfer) {
-            $usedChannels += $this->publishBatchMessage($queueMessageTransfer, $queueName);
+            $usedChannels += $this->addBatchMessage($queueMessageTransfer, $queueName);
         }
 
-        $this->publishChannels($usedChannels);
+        $this->publishBatches($usedChannels);
     }
 
     /**
@@ -61,7 +62,7 @@ class Publisher implements PublisherInterface
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    protected function publishBatchMessage(QueueSendMessageTransfer $queueMessageTransfer, $queueName)
+    protected function addBatchMessage(QueueSendMessageTransfer $queueMessageTransfer, $queueName)
     {
         $usedChannels = [];
         $msg = new AMQPMessage($queueMessageTransfer->getBody());
@@ -76,11 +77,11 @@ class Publisher implements PublisherInterface
     }
 
     /**
-     * @param AMQPChannel[] $channels
+     * @param \PhpAmqpLib\Channel\AMQPChannel[] $channels
      *
      * @return void
      */
-    protected function publishChannels(array $channels)
+    protected function publishBatches(array $channels)
     {
         foreach ($channels as $channel) {
             $channel->publish_batch();
