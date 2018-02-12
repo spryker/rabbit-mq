@@ -11,7 +11,7 @@ use ArrayObject;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use Spryker\Client\Kernel\AbstractBundleConfig;
-use Spryker\Shared\RabbitMq\RabbitMqConstants;
+use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
 class RabbitMqConfig extends AbstractBundleConfig
 {
@@ -31,6 +31,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             $connectionTransfer->setUsername($queueConnectionConfig['username']);
             $connectionTransfer->setPassword($queueConnectionConfig['password']);
             $connectionTransfer->setVirtualHost($queueConnectionConfig['virtualHost']);
+            $connectionTransfer->setIsDefaultConnection($queueConnectionConfig['isDefaultConnection']);
 
             $connectionTransfer->setQueueOptionCollection($this->getQueueOptions());
 
@@ -58,14 +59,19 @@ class RabbitMqConfig extends AbstractBundleConfig
     {
         $connections = [];
 
-        foreach ($this->get(RabbitMqConstants::RABBITMQ_CONNECTIONS) as $connection) {
+        foreach ($this->get(RabbitMqEnv::RABBITMQ_CONNECTIONS) as $connection) {
+            $isDefaultConnection = isset($connection[RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION]) ?
+                (bool)$connection[RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION] :
+                false;
+
             $connections[] = [
-                'name' => $connection[RabbitMqConstants::RABBITMQ_CONNECTION_NAME],
-                'host' => $connection[RabbitMqConstants::RABBITMQ_HOST],
-                'port' => $connection[RabbitMqConstants::RABBITMQ_PORT],
-                'username' => $connection[RabbitMqConstants::RABBITMQ_USERNAME],
-                'password' => $connection[RabbitMqConstants::RABBITMQ_PASSWORD],
-                'virtualHost' => $connection[RabbitMqConstants::RABBITMQ_VIRTUAL_HOST],
+                'name' => $connection[RabbitMqEnv::RABBITMQ_CONNECTION_NAME],
+                'host' => $connection[RabbitMqEnv::RABBITMQ_HOST],
+                'port' => $connection[RabbitMqEnv::RABBITMQ_PORT],
+                'username' => $connection[RabbitMqEnv::RABBITMQ_USERNAME],
+                'password' => $connection[RabbitMqEnv::RABBITMQ_PASSWORD],
+                'virtualHost' => $connection[RabbitMqEnv::RABBITMQ_VIRTUAL_HOST],
+                'isDefaultConnection' => $isDefaultConnection,
             ];
         }
 

@@ -10,14 +10,15 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 
 
 use Generated\Shared\Transfer\StoreTransfer;
-use Spryker\Zed\Store\Business\StoreFacadeInterface;
+use Spryker\Shared\Event\EventConstants;
+use Spryker\Shared\RabbitMq\RabbitMqConfigInterface;
 
 class ConnectionManager
 {
     /**
      * @var ConnectionInterface[]
      */
-    protected $connectionMap;
+    protected $connectionMap = [];
 
     /**
      * @var string|null
@@ -35,11 +36,18 @@ class ConnectionManager
     protected $currentStoreTransfer;
 
     /**
-     * @param StoreTransfer $currentStoreTransfer
+     * @var \Spryker\Client\RabbitMq\RabbitMqFactory
      */
-    public function __construct(StoreTransfer $currentStoreTransfer)
+    protected $factory;
+
+    /**
+     * @param StoreTransfer $currentStoreTransfer
+     * @param \Spryker\Client\RabbitMq\RabbitMqFactory $factory
+     */
+    public function __construct(StoreTransfer $currentStoreTransfer, \Spryker\Client\RabbitMq\RabbitMqFactory $factory)
     {
         $this->currentStoreTransfer = $currentStoreTransfer;
+        $this->factory = $factory;
     }
 
     /**
@@ -49,14 +57,14 @@ class ConnectionManager
     {
         if ($this->channelMapBuffer === null) {
             $channelMap = [
-                null => [$this->getDefaultChannel()]
+                RabbitMqConfigInterface::QUEUE_POOL_NAME_DEFAULT => [$this->getDefaultChannel()],
             ];
 
             $eventQueueMap = $this->currentStoreTransfer->getQueuePools();
             foreach ($eventQueueMap as $poolName => $connectionNames) {
                 $channelMap[$poolName] = [];
                 foreach ($connectionNames as $connectionName) {
-                    $channelMap[$poolName][] = $this->connectionMap[$connectionName]->getChannel();
+                    $channelMap[$poolName][] = $this->getConnectionMap()[$connectionName]->getChannel();
                 }
             }
 
@@ -69,16 +77,30 @@ class ConnectionManager
     /**
      * @param ConnectionInterface $connection
      */
-    public function addConnection(ConnectionInterface $connection)
+    protected function addConnection(ConnectionInterface $connection)
     {
         $this->connectionMap[$connection->getName()] = $connection;
-        if ($this->defaultConnectionName === null) {
+        if ($connection->getIsDefaultConnection()) {
             $this->defaultConnectionName = $connection->getName();
         }
     }
 
     /**
-     * @param string|null $poolName
+     * @return ConnectionInterface[]
+     */
+    protected function getConnectionMap()
+    {
+        if ($this->connectionMap === null) {
+            foreach ($this->factory->getQueueConnectionConfigs() as $queueConnectionConfig) {
+                $this->addConnection($this->factory->createConnection($queueConnectionConfig));
+            }
+        }
+
+        return $this->connectionMap;
+    }
+
+    /**
+     * @param string $poolName
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
@@ -92,6 +114,6 @@ class ConnectionManager
      */
     public function getDefaultChannel()
     {
-        return $this->connectionMap[$this->defaultConnectionName]->getChannel();
+        return $this->getConnectionMap()[$this->defaultConnectionName]->getChannel();
     }
 }

@@ -18,4 +18,9 @@ interface ConnectionInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * @return bool
+     */
+    public function getIsDefaultConnection();
 }

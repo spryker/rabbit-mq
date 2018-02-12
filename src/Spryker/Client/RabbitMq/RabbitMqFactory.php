@@ -47,11 +47,10 @@ class RabbitMqFactory extends AbstractFactory
      */
     protected function createConnectionManager()
     {
-        $connectionManager = new ConnectionManager((new StoreFacade())->getCurrentStore());
-
-        foreach ($this->getQueueConnectionConfigs() as $queueConnectionConfig) {
-            $connectionManager->addConnection($this->createConnection($queueConnectionConfig));
-        }
+        $connectionManager = new ConnectionManager(
+            (new StoreFacade())->getCurrentStore(),
+            $this
+        );
 
         return $connectionManager;
 
@@ -62,7 +61,7 @@ class RabbitMqFactory extends AbstractFactory
      *
      * @return ConnectionInterface
      */
-    protected function createConnection(QueueConnectionTransfer $queueConnectionConfig)
+    public function createConnection(QueueConnectionTransfer $queueConnectionConfig)
     {
         return new Connection(
             $this->createAMQPStreamConnection($queueConnectionConfig),
@@ -125,7 +124,7 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    protected function getQueueConnectionConfigs()
+    public function getQueueConnectionConfigs()
     {
         return $this->getConfig()->getQueueConnections();
     }

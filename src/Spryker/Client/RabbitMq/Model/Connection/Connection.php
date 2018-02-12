@@ -43,6 +43,11 @@ class Connection implements ConnectionInterface
     protected $connectionName;
 
     /**
+     * @var bool
+     */
+    protected $isDefaultConnection;
+
+    /**
      * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
      * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
      * @param QueueConnectionTransfer $queueConnection
@@ -57,6 +62,7 @@ class Connection implements ConnectionInterface
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
         $this->queueConnection = $queueConnection;
         $this->connectionName = $queueConnection->getName();
+        $this->isDefaultConnection = $queueConnection->getIsDefaultConnection();
 
         $this->setupConnection();
     }
@@ -75,6 +81,14 @@ class Connection implements ConnectionInterface
     public function getName()
     {
         return $this->connectionName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsDefaultConnection()
+    {
+        return $this->isDefaultConnection;
     }
 
     /**

@@ -12,6 +12,7 @@
         <property name="password" type="string" />
         <property name="virtualHost" type="string"/>
         <property name="queueOptionCollection" singular="queueOptionItem" type="RabbitMqOption[]"/>
+        <property name="isDefaultConnection" type="bool" />
     </transfer>
 
     <transfer name="RabbitMqOption">

@@ -50,16 +50,38 @@ class Publisher implements PublisherInterface
     {
         $usedChannels = [];
         foreach ($queueMessageTransfers as $queueMessageTransfer) {
-            $msg = new AMQPMessage($queueMessageTransfer->getBody());
-
-            $channels = $this->connectionManager->getChannelsByQueuePoolName($queueMessageTransfer->getQueuePoolName());
-            foreach ($channels as $channel) {
-                $usedChannels[$channel->getChannelId()] = $channel;
-                $channel->batch_basic_publish($msg, $queueName, $queueMessageTransfer->getRoutingKey());
-            }
+            $usedChannels += $this->publishBatchMessage($queueMessageTransfer, $queueName);
         }
 
-        foreach ($usedChannels as $channel)
+        $this->publishChannels($usedChannels);
+    }
+
+    /**
+     * @param QueueSendMessageTransfer $queueMessageTransfer
+     * @param string $queueName
+     *
+     * @return AMQPChannel[]
+     */
+    protected function publishBatchMessage(QueueSendMessageTransfer $queueMessageTransfer, $queueName)
+    {
+        $usedChannels = [];
+        $msg = new AMQPMessage($queueMessageTransfer->getBody());
+        $channels = $this->connectionManager->getChannelsByQueuePoolName($queueMessageTransfer->getQueuePoolName());
+
+        foreach ($channels as $channel) {
+            $usedChannels[$channel->getChannelId()] = $channel;
+            $channel->batch_basic_publish($msg, $queueName, $queueMessageTransfer->getRoutingKey());
+        }
+
+        return $usedChannels;
+    }
+
+    /**
+     * @param AMQPChannel[] $channels
+     */
+    protected function publishChannels(array $channels)
+    {
+        foreach ($channels as $channel)
         {
             $channel->publish_batch();
         }
@@ -69,7 +91,7 @@ class Publisher implements PublisherInterface
      * @param \PhpAmqpLib\Message\AMQPMessage $message
      * @param string $exchangeQueue
      * @param string $routingKey
-     * @param string|null $queuePoolName
+     * @param string $queuePoolName
      *
      * @return void
      */

@@ -7,7 +7,7 @@
 
 namespace Spryker\Zed\RabbitMq;
 
-use Spryker\Shared\RabbitMq\RabbitMqConstants;
+use Spryker\Shared\RabbitMq\RabbitMqEnv;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 
@@ -58,7 +58,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getApiUsername()
     {
-        return $this->get(RabbitMqConstants::RABBITMQ_API_USERNAME);
+        return $this->get(RabbitMqEnv::RABBITMQ_API_USERNAME);
     }
 
     /**
@@ -66,7 +66,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getApiPassword()
     {
-        return $this->get(RabbitMqConstants::RABBITMQ_API_PASSWORD);
+        return $this->get(RabbitMqEnv::RABBITMQ_API_PASSWORD);
     }
 
     /**
@@ -82,7 +82,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getVirtualHost()
     {
-        return $this->get(RabbitMqConstants::RABBITMQ_VIRTUAL_HOST);
+        return $this->get(RabbitMqEnv::RABBITMQ_VIRTUAL_HOST);
     }
 
     /**
@@ -90,7 +90,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     protected function getApiHost()
     {
-        return $this->get(RabbitMqConstants::RABBITMQ_API_HOST);
+        return $this->get(RabbitMqEnv::RABBITMQ_API_HOST);
     }
 
     /**
@@ -98,6 +98,6 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     protected function getApiPort()
     {
-        return $this->get(RabbitMqConstants::RABBITMQ_API_PORT);
+        return $this->get(RabbitMqEnv::RABBITMQ_API_PORT);
     }
 }
