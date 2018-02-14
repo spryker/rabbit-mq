@@ -7,10 +7,8 @@
 
 namespace Spryker\Client\RabbitMq;
 
-use Generated\Shared\Transfer\QueueConnectionTransfer;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\Kernel\AbstractFactory;
-use Spryker\Client\RabbitMq\Model\Connection\Connection;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Consumer\Consumer;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelper;
@@ -18,9 +16,6 @@ use Spryker\Client\RabbitMq\Model\Manager\Manager;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 
-/**
- * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
- */
 class RabbitMqFactory extends AbstractFactory
 {
     /**
@@ -43,33 +38,6 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    protected function createConnectionManager()
-    {
-        $connectionManager = new ConnectionManager(
-            $this->getStoreClient(),
-            $this
-        );
-
-        return $connectionManager;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
-     *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
-     */
-    public function createConnection(QueueConnectionTransfer $queueConnectionConfig)
-    {
-        return new Connection(
-            $this->createAMQPStreamConnection($queueConnectionConfig),
-            $this->createQueueEstablishmentHelper(),
-            $queueConnectionConfig
-        );
-    }
-
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
-     */
     public function getStaticConnectionManager()
     {
         if (static::$connectionManager === null) {
@@ -77,6 +45,35 @@ class RabbitMqFactory extends AbstractFactory
         }
 
         return static::$connectionManager;
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     */
+    protected function createConnectionManager()
+    {
+        $connectionManager = new ConnectionManager(
+            $this->getStoreClient(),
+            $this->createConnectionFactory()
+        );
+
+        return $connectionManager;
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
+     */
+    protected function getStoreClient()
+    {
+        return $this->getProvidedDependency(RabbitMqDependencyProvider::CLIENT_STORE);
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
+     */
+    protected function createConnectionFactory()
+    {
+        return new ConnectionFactory();
     }
 
     /**
@@ -116,39 +113,5 @@ class RabbitMqFactory extends AbstractFactory
     protected function createQueueEstablishmentHelper()
     {
         return new QueueEstablishmentHelper();
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
-     */
-    public function getQueueConnectionConfigs()
-    {
-        return $this->getConfig()->getQueueConnections();
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
-     *
-     * @return \PhpAmqpLib\Connection\AMQPStreamConnection
-     */
-    protected function createAMQPStreamConnection(QueueConnectionTransfer $queueConnectionConfig)
-    {
-        $streamConnection = new AMQPStreamConnection(
-            $queueConnectionConfig->getHost(),
-            $queueConnectionConfig->getPort(),
-            $queueConnectionConfig->getUsername(),
-            $queueConnectionConfig->getPassword(),
-            $queueConnectionConfig->getVirtualHost()
-        );
-
-        return $streamConnection;
-    }
-
-    /**
-     * @return \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
-     */
-    protected function getStoreClient()
-    {
-        return $this->getProvidedDependency(RabbitMqDependencyProvider::CLIENT_STORE);
     }
 }

@@ -9,7 +9,6 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
-use Spryker\Client\RabbitMq\RabbitMqFactory;
 use Spryker\Shared\RabbitMq\RabbitMqConfigInterface;
 
 class ConnectionManager implements ConnectionManagerInterface
@@ -20,9 +19,9 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $storeClient;
 
     /**
-     * @var \Spryker\Client\RabbitMq\RabbitMqFactory
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
      */
-    protected $factory;
+    protected $connectionFactory;
 
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]|null Keys are connection names.
@@ -41,12 +40,12 @@ class ConnectionManager implements ConnectionManagerInterface
 
     /**
      * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
-     * @param \Spryker\Client\RabbitMq\RabbitMqFactory $factory
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface $connectionFactory
      */
-    public function __construct(RabbitMqToStoreClientInterface $storeClient, RabbitMqFactory $factory)
+    public function __construct(RabbitMqToStoreClientInterface $storeClient, ConnectionFactoryInterface $connectionFactory)
     {
         $this->storeClient = $storeClient;
-        $this->factory = $factory;
+        $this->connectionFactory = $connectionFactory;
     }
 
     /**
@@ -112,7 +111,7 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function addConnections()
     {
-        foreach ($this->factory->getQueueConnectionConfigs() as $queueConnectionConfig) {
+        foreach ($this->connectionFactory->getQueueConnectionConfigs() as $queueConnectionConfig) {
             $connection = $this->getConnection($queueConnectionConfig);
             $this->connectionMap[$connection->getName()] = $connection;
             if ($connection->getIsDefaultConnection()) {
@@ -128,7 +127,7 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getConnection(QueueConnectionTransfer $queueConnectionConfig)
     {
-        return $this->factory->createConnection($queueConnectionConfig);
+        return $this->connectionFactory->createConnection($queueConnectionConfig);
     }
 
     /**
