@@ -71,6 +71,14 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * @return string[]
+     */
+    public function getStoreNames()
+    {
+        return $this->queueConnection->getStoreNames();
+    }
+
+    /**
      * @return bool
      */
     public function getIsDefaultConnection()

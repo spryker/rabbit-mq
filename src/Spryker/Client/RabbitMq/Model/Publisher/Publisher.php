@@ -10,7 +10,6 @@ namespace Spryker\Client\RabbitMq\Model\Publisher;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
-use Spryker\Shared\RabbitMq\RabbitMqConfigInterface;
 
 class Publisher implements PublisherInterface
 {
@@ -36,8 +35,10 @@ class Publisher implements PublisherInterface
     public function sendMessage($queueName, QueueSendMessageTransfer $queueSendMessageTransfer)
     {
         $message = $this->createMessage($queueSendMessageTransfer);
-        $queuePoolName = $this->getQueueSendMessageQueuePoolName($queueSendMessageTransfer);
-        $this->publish($message, $queueName, $queueSendMessageTransfer->getRoutingKey(), $queuePoolName);
+        $publishChannels = $this->getChannels($queueSendMessageTransfer);
+        $routingKey = $queueSendMessageTransfer->getRoutingKey();
+
+        $this->publish($message, $queueName, $routingKey, $publishChannels);
     }
 
     /**
@@ -57,20 +58,6 @@ class Publisher implements PublisherInterface
     }
 
     /**
-     * @param QueueSendMessageTransfer $queueSendMessageTransfer
-     *
-     * @return string
-     */
-    protected function getQueueSendMessageQueuePoolName(QueueSendMessageTransfer $queueSendMessageTransfer)
-    {
-        if ($queueSendMessageTransfer->getQueuePoolName() === null) {
-            return RabbitMqConfigInterface::QUEUE_POOL_NAME_DEFAULT;
-        }
-
-        return $queueSendMessageTransfer->getQueuePoolName();
-    }
-
-    /**
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      * @param string $queueName
      *
@@ -80,8 +67,7 @@ class Publisher implements PublisherInterface
     {
         $usedChannels = [];
         $msg = new AMQPMessage($queueSendMessageTransfer->getBody());
-        $queuePoolName = $this->getQueueSendMessageQueuePoolName($queueSendMessageTransfer);
-        $channels = $this->connectionManager->getChannelsByQueuePoolName($queuePoolName);
+        $channels = $this->getChannels($queueSendMessageTransfer);
 
         foreach ($channels as $channel) {
             $usedChannels[$channel->getChannelId()] = $channel;
@@ -89,6 +75,24 @@ class Publisher implements PublisherInterface
         }
 
         return $usedChannels;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected function getChannels(QueueSendMessageTransfer $queueSendMessageTransfer)
+    {
+        if ($queueSendMessageTransfer->getStoreName()) {
+            return $this->connectionManager->getChannelsByStoreName($queueSendMessageTransfer->getStoreName());
+        }
+
+        if ($queueSendMessageTransfer->getQueuePoolName()) {
+            return $this->connectionManager->getChannelsByQueuePoolName($queueSendMessageTransfer->getQueuePoolName());
+        }
+
+        return [$this->connectionManager->getDefaultChannel()];
     }
 
     /**
@@ -107,15 +111,13 @@ class Publisher implements PublisherInterface
      * @param \PhpAmqpLib\Message\AMQPMessage $message
      * @param string $exchangeQueue
      * @param string $routingKey
-     * @param string $queuePoolName
+     * @param \PhpAmqpLib\Channel\AMQPChannel[] $publishChannels
      *
      * @return void
      */
-    protected function publish(AMQPMessage $message, $exchangeQueue, $routingKey, $queuePoolName)
+    protected function publish(AMQPMessage $message, $exchangeQueue, $routingKey, $publishChannels)
     {
-        $channels = $this->connectionManager->getChannelsByQueuePoolName($queuePoolName);
-
-        foreach ($channels as $channel) {
+        foreach ($publishChannels as $channel) {
             $channel->basic_publish($message, $exchangeQueue, $routingKey);
         }
     }

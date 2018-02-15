@@ -17,6 +17,13 @@ interface ConnectionManagerInterface
     public function getChannelsByQueuePoolName($queuePoolName);
 
     /**
+     * @param $storeName
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    public function getChannelsByStoreName($storeName);
+
+    /**
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
     public function getDefaultChannel();

@@ -24,16 +24,9 @@ class RabbitMqConfig extends AbstractBundleConfig
 
         $connectionTransferCollection = [];
         foreach ($queueConnectionConfigs as $queueConnectionConfig) {
-            $connectionTransfer = new QueueConnectionTransfer();
-            $connectionTransfer->setName($queueConnectionConfig['name']);
-            $connectionTransfer->setHost($queueConnectionConfig['host']);
-            $connectionTransfer->setPort($queueConnectionConfig['port']);
-            $connectionTransfer->setUsername($queueConnectionConfig['username']);
-            $connectionTransfer->setPassword($queueConnectionConfig['password']);
-            $connectionTransfer->setVirtualHost($queueConnectionConfig['virtualHost']);
-            $connectionTransfer->setIsDefaultConnection($queueConnectionConfig['isDefaultConnection']);
-
-            $connectionTransfer->setQueueOptionCollection($this->getQueueOptions());
+            $connectionTransfer = (new QueueConnectionTransfer())
+                ->fromArray($queueConnectionConfig, true)
+                ->setQueueOptionCollection($this->getQueueOptions());
 
             $connectionTransferCollection[] = $connectionTransfer;
         }
@@ -71,6 +64,7 @@ class RabbitMqConfig extends AbstractBundleConfig
                 'username' => $connection[RabbitMqEnv::RABBITMQ_USERNAME],
                 'password' => $connection[RabbitMqEnv::RABBITMQ_PASSWORD],
                 'virtualHost' => $connection[RabbitMqEnv::RABBITMQ_VIRTUAL_HOST],
+                'storeNames' => $connection['STORE_NAMES'],
                 'isDefaultConnection' => $isDefaultConnection,
             ];
         }

@@ -29,9 +29,14 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $connectionMap;
 
     /**
-     * @var array|null Keys are queue pool names, values are lists of channels.
+     * @var array|null
      */
-    protected $channelMap;
+    protected $channelMapByPoolName;
+
+    /**
+     * @var array|null
+     */
+    protected $channelMapByStoreName;
 
     /**
      * @var string|null
@@ -51,13 +56,40 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @return array
      */
-    protected function getChannelMap()
+    protected function getChannelMapByPoolName()
     {
-        if ($this->channelMap === null) {
-            $this->channelMap = $this->createChannelMap($this->storeClient->getCurrentStore()->getQueuePools());
+        if ($this->channelMapByPoolName === null) {
+            $this->channelMapByPoolName = $this->mapChannelsByPoolName($this->storeClient->getCurrentStore()->getQueuePools());
         }
 
-        return $this->channelMap;
+        return $this->channelMapByPoolName;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getChannelMapByStoreName()
+    {
+        if ($this->channelMapByStoreName === null) {
+            $this->channelMapByStoreName = $this->mapChannelsByStoreName();
+        }
+
+        return $this->channelMapByStoreName;
+    }
+
+    /**
+     * @return array
+     */
+    protected function mapChannelsByStoreName()
+    {
+        $channelMap = [];
+        foreach ($this->connectionMap as $connection) {
+            foreach ($connection->getStoreNames() as $storeName) {
+                $channelMap[$storeName][] = $connection->getChannel();
+            }
+        }
+
+        return $channelMap;
     }
 
     /**
@@ -65,8 +97,9 @@ class ConnectionManager implements ConnectionManagerInterface
      *
      * @return array Keys are pool names, values are lists of channels.
      */
-    protected function createChannelMap(array $queuePools)
+    protected function mapChannelsByPoolName(array $queuePools)
     {
+        // TODO: not necessary anymore, clean up the constant, rename the variable
         $defaultPoolMap = [
             RabbitMqConfigInterface::QUEUE_POOL_NAME_DEFAULT => [$this->getDefaultChannel()],
         ];
@@ -131,13 +164,23 @@ class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
+     * @param $storeName
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    public function getChannelsByStoreName($storeName)
+    {
+        return $this->getChannelMapByStoreName()[$storeName];
+    }
+
+    /**
      * @param string $queuePoolName
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
     public function getChannelsByQueuePoolName($queuePoolName)
     {
-        return $this->getChannelMap()[$queuePoolName];
+        return $this->getChannelMapByPoolName()[$queuePoolName];
     }
 
     /**

@@ -13,6 +13,7 @@
         <property name="virtualHost" type="string"/>
         <property name="queueOptionCollection" singular="queueOptionItem" type="RabbitMqOption[]"/>
         <property name="isDefaultConnection" type="bool" />
+        <property name="storeNames" type="array" />
     </transfer>
 
     <transfer name="RabbitMqOption">
@@ -59,7 +60,6 @@
 
     <transfer name="QueueSendMessage">
         <property name="routingKey" type="string"/>
-        <property name="queuePoolName" type="string" />
     </transfer>
 
     <transfer name="QueueReceiveMessage">
