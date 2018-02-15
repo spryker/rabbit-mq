@@ -64,7 +64,7 @@ class RabbitMqConfig extends AbstractBundleConfig
                 'username' => $connection[RabbitMqEnv::RABBITMQ_USERNAME],
                 'password' => $connection[RabbitMqEnv::RABBITMQ_PASSWORD],
                 'virtualHost' => $connection[RabbitMqEnv::RABBITMQ_VIRTUAL_HOST],
-                'storeNames' => $connection['STORE_NAMES'],
+                'storeNames' => $connection[RabbitMqEnv::RABBITMQ_STORE_NAMES],
                 'isDefaultConnection' => $isDefaultConnection,
             ];
         }

@@ -34,7 +34,7 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function getQueueConnectionConfigs()
+    public function getConnectionConfigs()
     {
         return $this->getConfig()->getQueueConnections();
     }

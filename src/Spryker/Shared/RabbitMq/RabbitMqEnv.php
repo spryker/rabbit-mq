@@ -77,7 +77,7 @@ interface RabbitMqEnv extends QueueConstants
 
     /**
      * Specification:
-     * - Use this constant to configure the list of Store names where
+     * - Use this constant to configure the list of Store names associated with a connection.
      */
     const RABBITMQ_STORE_NAMES = 'RABBITMQ:RABBITMQ_STORE_NAMES';
 

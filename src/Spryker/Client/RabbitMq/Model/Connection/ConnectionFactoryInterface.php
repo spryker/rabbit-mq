@@ -21,5 +21,5 @@ interface ConnectionFactoryInterface
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function getQueueConnectionConfigs();
+    public function getConnectionConfigs();
 }
