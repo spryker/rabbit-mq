@@ -29,12 +29,12 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $connectionMap;
 
     /**
-     * @var array|null
+     * @var array|null Keys are pool names, values are lists of channels.
      */
     protected $channelMapByPoolName;
 
     /**
-     * @var array|null
+     * @var array|null Keys are store names, values are lists of channels.
      */
     protected $channelMapByStoreName;
 
@@ -95,21 +95,16 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @param array $queuePools Keys are pool names, values are lists of connection names.
      *
-     * @return array Keys are pool names, values are lists of channels.
+     * @return array
      */
     protected function mapChannelsByPoolName(array $queuePools)
     {
-        // TODO: not necessary anymore, clean up the constant, rename the variable
-        $defaultPoolMap = [
-            RabbitMqConfigInterface::QUEUE_POOL_NAME_DEFAULT => [$this->getDefaultChannel()],
-        ];
-
         $channelMap = [];
         foreach ($queuePools as $queuePoolName => $connectionNames) {
             $channelMap[$queuePoolName] = $this->getChannelsByConnectionName($connectionNames);
         }
 
-        return $defaultPoolMap + $channelMap;
+        return $channelMap;
     }
 
     /**
