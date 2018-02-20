@@ -25,7 +25,7 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
     public function createConnection(QueueConnectionTransfer $queueConnectionConfig)
     {
         return new Connection(
-            $this->createAMQPStreamConnection($queueConnectionConfig),
+            $this->createAmqpStreamConnection($queueConnectionConfig),
             $this->createQueueEstablishmentHelper(),
             $queueConnectionConfig
         );
@@ -34,7 +34,7 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function getConnectionConfigs()
+    public function getQueueConnectionConfigs()
     {
         return $this->getConfig()->getQueueConnections();
     }
@@ -44,7 +44,7 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
      *
      * @return \PhpAmqpLib\Connection\AMQPStreamConnection
      */
-    protected function createAMQPStreamConnection(QueueConnectionTransfer $queueConnectionConfig)
+    protected function createAmqpStreamConnection(QueueConnectionTransfer $queueConnectionConfig)
     {
         $streamConnection = new AMQPStreamConnection(
             $queueConnectionConfig->getHost(),

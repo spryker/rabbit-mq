@@ -139,7 +139,7 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function addConnections()
     {
-        foreach ($this->connectionFactory->getConnectionConfigs() as $queueConnectionConfig) {
+        foreach ($this->connectionFactory->getQueueConnectionConfigs() as $queueConnectionConfig) {
             $connection = $this->getConnection($queueConnectionConfig);
             $this->connectionMap[$connection->getName()] = $connection;
             if ($connection->getIsDefaultConnection()) {
