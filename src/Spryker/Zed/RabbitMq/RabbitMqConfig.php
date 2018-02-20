@@ -22,7 +22,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             'http://%s:%s/api/exchanges/%s',
             $this->getApiHost(),
             $this->getApiPort(),
-            urlencode($this->getVirtualHost())
+            urlencode($this->getApiVirtualHost())
         );
     }
 
@@ -35,7 +35,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             'http://%s:%s/api/queues/%s',
             $this->getApiHost(),
             $this->getApiPort(),
-            urlencode($this->getVirtualHost())
+            urlencode($this->getApiVirtualHost())
         );
     }
 
@@ -48,7 +48,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             'http://%s:%s/api/permissions/%s/%s',
             $this->getApiHost(),
             $this->getApiPort(),
-            urlencode($this->getVirtualHost()),
+            urlencode($this->getApiVirtualHost()),
             $this->getApiUsername()
         );
     }
@@ -80,9 +80,9 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getVirtualHost()
+    public function getApiVirtualHost()
     {
-        return $this->get(RabbitMqEnv::RABBITMQ_VIRTUAL_HOST);
+        return $this->get(RabbitMqEnv::RABBITMQ_API_VIRTUAL_HOST);
     }
 
     /**

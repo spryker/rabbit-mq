@@ -83,6 +83,14 @@ interface RabbitMqEnv extends QueueConstants
 
     /**
      * Specification:
+     * - Use this constant to configure the virtual host of the API.
+     *
+     * @api
+     */
+    const RABBITMQ_API_VIRTUAL_HOST = 'RABBITMQ:RABBITMQ_API_VIRTUAL_HOST';
+
+    /**
+     * Specification:
      * - Use this constant to configure the host of the API.
      *
      * @api

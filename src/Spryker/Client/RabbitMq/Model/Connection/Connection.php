@@ -19,7 +19,7 @@ class Connection implements ConnectionInterface
     /**
      * @var \Generated\Shared\Transfer\QueueConnectionTransfer
      */
-    protected $queueConnection;
+    protected $queueConnectionConfig;
 
     /**
      * @var \PhpAmqpLib\Connection\AMQPStreamConnection
@@ -49,7 +49,7 @@ class Connection implements ConnectionInterface
 
         $this->streamConnection = $streamConnection;
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
-        $this->queueConnection = $queueConnection;
+        $this->queueConnectionConfig = $queueConnection;
 
         $this->setupConnection();
     }
@@ -67,7 +67,7 @@ class Connection implements ConnectionInterface
      */
     public function getName()
     {
-        return $this->queueConnection->getName();
+        return $this->queueConnectionConfig->getName();
     }
 
     /**
@@ -75,7 +75,7 @@ class Connection implements ConnectionInterface
      */
     public function getStoreNames()
     {
-        return $this->queueConnection->getStoreNames();
+        return $this->queueConnectionConfig->getStoreNames();
     }
 
     /**
@@ -83,7 +83,7 @@ class Connection implements ConnectionInterface
      */
     public function getIsDefaultConnection()
     {
-        return $this->queueConnection->getIsDefaultConnection();
+        return $this->queueConnectionConfig->getIsDefaultConnection();
     }
 
     /**
@@ -101,7 +101,7 @@ class Connection implements ConnectionInterface
      */
     protected function setupQueueAndExchange()
     {
-        foreach ($this->queueConnection->getQueueOptionCollection() as $queueOption) {
+        foreach ($this->queueConnectionConfig->getQueueOptionCollection() as $queueOption) {
             if ($queueOption->getDeclarationType() !== self::RABBIT_MQ_EXCHANGE) {
                 $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 
