@@ -19,7 +19,7 @@
     "php-amqplib/php-amqplib": "^2.6",
     "spryker/kernel": "^3.0.0",
     "spryker/queue": "^1.2.0",
-    "spryker/store": "^1.4.0",
+    "spryker/store": "^1.6.0",
     "spryker/transfer": "^3.3.4"
   },
   "require-dev": {
