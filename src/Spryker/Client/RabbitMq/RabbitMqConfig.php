@@ -11,27 +11,27 @@ use ArrayObject;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use Spryker\Client\Kernel\AbstractBundleConfig;
-use Spryker\Shared\RabbitMq\RabbitMqConstants;
+use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
 class RabbitMqConfig extends AbstractBundleConfig
 {
     /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer
+     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function getQueueConnection()
+    public function getQueueConnections()
     {
-        $queueConfig = $this->getQueueConnectionConfig();
+        $queueConnectionConfigs = $this->getQueueConnectionConfigs();
 
-        $connectionTransfer = new QueueConnectionTransfer();
-        $connectionTransfer->setHost($queueConfig['host']);
-        $connectionTransfer->setPort($queueConfig['port']);
-        $connectionTransfer->setUsername($queueConfig['username']);
-        $connectionTransfer->setPassword($queueConfig['password']);
-        $connectionTransfer->setVirtualHost($queueConfig['virtualHost']);
+        $connectionTransferCollection = [];
+        foreach ($queueConnectionConfigs as $queueConnectionConfig) {
+            $connectionTransfer = (new QueueConnectionTransfer())
+                ->fromArray($queueConnectionConfig, true)
+                ->setQueueOptionCollection($this->getQueueOptions());
 
-        $connectionTransfer->setQueueOptionCollection($this->getQueueOptions());
+            $connectionTransferCollection[] = $connectionTransfer;
+        }
 
-        return $connectionTransfer;
+        return $connectionTransferCollection;
     }
 
     /**
@@ -48,14 +48,27 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @return array
      */
-    protected function getQueueConnectionConfig()
+    protected function getQueueConnectionConfigs()
     {
-        return [
-            'host' => $this->get(RabbitMqConstants::RABBITMQ_HOST),
-            'port' => $this->get(RabbitMqConstants::RABBITMQ_PORT),
-            'username' => $this->get(RabbitMqConstants::RABBITMQ_USERNAME),
-            'password' => $this->get(RabbitMqConstants::RABBITMQ_PASSWORD),
-            'virtualHost' => $this->get(RabbitMqConstants::RABBITMQ_VIRTUAL_HOST),
-        ];
+        $connections = [];
+
+        foreach ($this->get(RabbitMqEnv::RABBITMQ_CONNECTIONS) as $connection) {
+            $isDefaultConnection = isset($connection[RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION]) ?
+                (bool)$connection[RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION] :
+                false;
+
+            $connections[] = [
+                'name' => $connection[RabbitMqEnv::RABBITMQ_CONNECTION_NAME],
+                'host' => $connection[RabbitMqEnv::RABBITMQ_HOST],
+                'port' => $connection[RabbitMqEnv::RABBITMQ_PORT],
+                'username' => $connection[RabbitMqEnv::RABBITMQ_USERNAME],
+                'password' => $connection[RabbitMqEnv::RABBITMQ_PASSWORD],
+                'virtualHost' => $connection[RabbitMqEnv::RABBITMQ_VIRTUAL_HOST],
+                'storeNames' => $connection[RabbitMqEnv::RABBITMQ_STORE_NAMES],
+                'isDefaultConnection' => $isDefaultConnection,
+            ];
+        }
+
+        return $connections;
     }
 }

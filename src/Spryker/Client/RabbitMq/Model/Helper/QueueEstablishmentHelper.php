@@ -16,7 +16,7 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
      * @param \PhpAmqpLib\Channel\AMQPChannel $channel
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
      *
-     * @return void
+     * @return array
      */
     public function createQueue(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer)
     {
@@ -30,6 +30,8 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
                 $queueParams['exclusive'],
                 $queueParams['auto_delete']
             );
+
+        return $queueParams;
     }
 
     /**
