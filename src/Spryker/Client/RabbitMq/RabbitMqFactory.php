@@ -7,24 +7,21 @@
 
 namespace Spryker\Client\RabbitMq;
 
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\Kernel\AbstractFactory;
-use Spryker\Client\RabbitMq\Model\Connection\Connection;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Consumer\Consumer;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelper;
 use Spryker\Client\RabbitMq\Model\Manager\Manager;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 
-/**
- * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
- */
 class RabbitMqFactory extends AbstractFactory
 {
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    protected static $connection;
+    protected static $connectionManager;
 
     /**
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
@@ -39,27 +36,44 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\Connection
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    public function createConnection()
+    public function getStaticConnectionManager()
     {
-        return new Connection(
-            $this->createAMQPStreamConnection(),
-            $this->createQueueEstablishmentHelper(),
-            $this->getQueueConnectionConfig()->getQueueOptionCollection()
-        );
+        if (static::$connectionManager === null) {
+            static::$connectionManager = $this->createConnectionManager();
+        }
+
+        return static::$connectionManager;
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    public function createStaticConnection()
+    protected function createConnectionManager()
     {
-        if (static::$connection === null) {
-            static::$connection = $this->createConnection();
-        }
+        $connectionManager = new ConnectionManager(
+            $this->getStoreClient(),
+            $this->createConnectionFactory()
+        );
 
-        return static::$connection;
+        return $connectionManager;
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
+     */
+    protected function getStoreClient()
+    {
+        return $this->getProvidedDependency(RabbitMqDependencyProvider::CLIENT_STORE);
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
+     */
+    protected function createConnectionFactory()
+    {
+        return new ConnectionFactory();
     }
 
     /**
@@ -68,7 +82,7 @@ class RabbitMqFactory extends AbstractFactory
     protected function createManager()
     {
         return new Manager(
-            $this->createStaticConnection()->getChannel(),
+            $this->getStaticConnectionManager()->getDefaultChannel(),
             $this->createQueueEstablishmentHelper()
         );
     }
@@ -79,7 +93,7 @@ class RabbitMqFactory extends AbstractFactory
     protected function createPublisher()
     {
         return new Publisher(
-            $this->createStaticConnection()->getChannel()
+            $this->getStaticConnectionManager()
         );
     }
 
@@ -89,7 +103,7 @@ class RabbitMqFactory extends AbstractFactory
     protected function createConsumer()
     {
         return new Consumer(
-            $this->createStaticConnection()->getChannel()
+            $this->getStaticConnectionManager()->getDefaultChannel()
         );
     }
 
@@ -99,29 +113,5 @@ class RabbitMqFactory extends AbstractFactory
     protected function createQueueEstablishmentHelper()
     {
         return new QueueEstablishmentHelper();
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer
-     */
-    protected function getQueueConnectionConfig()
-    {
-        return $this->getConfig()->getQueueConnection();
-    }
-
-    /**
-     * @return \PhpAmqpLib\Connection\AMQPStreamConnection
-     */
-    protected function createAMQPStreamConnection()
-    {
-        $queueConnectionConfig = $this->getQueueConnectionConfig();
-
-        return new AMQPStreamConnection(
-            $queueConnectionConfig->getHost(),
-            $queueConnectionConfig->getPort(),
-            $queueConnectionConfig->getUsername(),
-            $queueConnectionConfig->getPassword(),
-            $queueConnectionConfig->getVirtualHost()
-        );
     }
 }
