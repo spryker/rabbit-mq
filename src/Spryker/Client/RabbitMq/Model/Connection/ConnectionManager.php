@@ -9,7 +9,6 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
-use Spryker\Shared\RabbitMq\RabbitMqConfigInterface;
 
 class ConnectionManager implements ConnectionManagerInterface
 {
@@ -159,7 +158,7 @@ class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param $storeName
+     * @param string $storeName
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
