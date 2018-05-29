@@ -10,6 +10,9 @@ namespace Spryker\Client\RabbitMq;
 interface RabbitMqClientInterface
 {
     /**
+     * Specification:
+     *  - Creates an instance of a concrete adapter
+     *
      * @api
      *
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
