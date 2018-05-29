@@ -125,7 +125,6 @@ class Connection implements ConnectionInterface
     {
         $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 
-        // @deprecated Removed with new Transfer module version which has string[] fix.
         if ($queueOption->getRoutingKeys() === null) {
             return;
         }
