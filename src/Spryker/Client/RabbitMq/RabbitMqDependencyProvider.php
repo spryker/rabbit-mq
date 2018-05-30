@@ -13,7 +13,7 @@ use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientBridge;
 
 class RabbitMqDependencyProvider extends AbstractDependencyProvider
 {
-    const CLIENT_STORE = 'CLIENT_STORE';
+    public const CLIENT_STORE = 'CLIENT_STORE';
 
     /**
      * @param \Spryker\Client\Kernel\Container $container
