@@ -7,9 +7,9 @@
 
 namespace Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter;
 
-use Exception;
 use Generated\Shared\Transfer\RabbitMqExchangeCollectionTransfer;
 use Generated\Shared\Transfer\RabbitMqExchangeTransfer;
+use Throwable;
 
 class ExchangeFilterByName implements ExchangeFilterInterface
 {
@@ -73,7 +73,7 @@ class ExchangeFilterByName implements ExchangeFilterInterface
     {
         try {
             return (preg_match($pattern, null) !== false);
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             return false;
         }
     }

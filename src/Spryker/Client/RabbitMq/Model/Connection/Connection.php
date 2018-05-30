@@ -7,7 +7,7 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
-use ArrayObject;
+use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
@@ -17,9 +17,9 @@ class Connection implements ConnectionInterface
     const RABBIT_MQ_EXCHANGE = 'exchange';
 
     /**
-     * @var \Generated\Shared\Transfer\RabbitMqOptionTransfer[]
+     * @var \Generated\Shared\Transfer\QueueConnectionTransfer
      */
-    protected $queueOptionCollection;
+    protected $queueConnectionConfig;
 
     /**
      * @var \PhpAmqpLib\Connection\AMQPStreamConnection
@@ -39,17 +39,17 @@ class Connection implements ConnectionInterface
     /**
      * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
      * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
-     * @param \ArrayObject $queueOptionCollection
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnection
      */
     public function __construct(
         AMQPStreamConnection $streamConnection,
         QueueEstablishmentHelperInterface $queueEstablishmentHelper,
-        ArrayObject $queueOptionCollection
+        QueueConnectionTransfer $queueConnection
     ) {
 
         $this->streamConnection = $streamConnection;
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
-        $this->queueOptionCollection = $queueOptionCollection;
+        $this->queueConnectionConfig = $queueConnection;
 
         $this->setupConnection();
     }
@@ -60,6 +60,30 @@ class Connection implements ConnectionInterface
     public function getChannel()
     {
         return $this->channel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->queueConnectionConfig->getName();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getStoreNames()
+    {
+        return $this->queueConnectionConfig->getStoreNames();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsDefaultConnection()
+    {
+        return $this->queueConnectionConfig->getIsDefaultConnection();
     }
 
     /**
@@ -77,7 +101,7 @@ class Connection implements ConnectionInterface
      */
     protected function setupQueueAndExchange()
     {
-        foreach ($this->queueOptionCollection as $queueOption) {
+        foreach ($this->queueConnectionConfig->getQueueOptionCollection() as $queueOption) {
             if ($queueOption->getDeclarationType() !== self::RABBIT_MQ_EXCHANGE) {
                 $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 
@@ -101,7 +125,6 @@ class Connection implements ConnectionInterface
     {
         $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 
-        // @deprecated Removed with new Transfer module version which has string[] fix.
         if ($queueOption->getRoutingKeys() === null) {
             return;
         }

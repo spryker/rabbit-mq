@@ -13,4 +13,19 @@ interface ConnectionInterface
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
     public function getChannel();
+
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return bool
+     */
+    public function getIsDefaultConnection();
+
+    /**
+     * @return string[]
+     */
+    public function getStoreNames();
 }
