@@ -149,7 +149,6 @@ class Consumer implements ConsumerInterface
     public function reject(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
         $this->channel->basic_reject($queueReceiveMessageTransfer->getDeliveryTag(), $queueReceiveMessageTransfer->getRequeue());
-        $this->publishOnRoutingKey($queueReceiveMessageTransfer);
 
         return true;
     }
