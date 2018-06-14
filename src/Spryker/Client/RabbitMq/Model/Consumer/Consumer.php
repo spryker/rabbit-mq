@@ -135,7 +135,10 @@ class Consumer implements ConsumerInterface
      */
     public function acknowledge(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
-        return $this->channel->basic_ack($queueReceiveMessageTransfer->getDeliveryTag());
+        $this->channel->basic_ack($queueReceiveMessageTransfer->getDeliveryTag());
+        $this->publishOnRoutingKey($queueReceiveMessageTransfer);
+
+        return true;
     }
 
     /**
@@ -146,6 +149,9 @@ class Consumer implements ConsumerInterface
     public function reject(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
         $this->channel->basic_reject($queueReceiveMessageTransfer->getDeliveryTag(), $queueReceiveMessageTransfer->getRequeue());
+        $this->publishOnRoutingKey($queueReceiveMessageTransfer);
+
+        return true;
     }
 
     /**
@@ -155,9 +161,21 @@ class Consumer implements ConsumerInterface
      */
     public function handleError(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
-        $message = new AMQPMessage($queueReceiveMessageTransfer->getQueueMessage()->getBody());
-        $this->channel->basic_publish($message, $queueReceiveMessageTransfer->getQueueName(), 'error');
+        $this->publishOnRoutingKey($queueReceiveMessageTransfer);
 
         return true;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer $queueReceiveMessageTransfer
+     *
+     * @return void
+     */
+    protected function publishOnRoutingKey(QueueReceiveMessageTransfer $queueReceiveMessageTransfer): void
+    {
+        if ($queueReceiveMessageTransfer->getRoutingKey()) {
+            $message = new AMQPMessage($queueReceiveMessageTransfer->getQueueMessage()->getBody());
+            $this->channel->basic_publish($message, $queueReceiveMessageTransfer->getQueueName(), $queueReceiveMessageTransfer->getRoutingKey());
+        }
     }
 }
