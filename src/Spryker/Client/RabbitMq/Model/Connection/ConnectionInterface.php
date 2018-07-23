@@ -28,4 +28,9 @@ interface ConnectionInterface
      * @return string[]
      */
     public function getStoreNames();
+
+    /**
+     * @return string
+     */
+    public function getVirtualHost();
 }

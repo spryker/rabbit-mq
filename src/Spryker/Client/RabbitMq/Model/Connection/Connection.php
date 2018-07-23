@@ -87,6 +87,14 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * @return string
+     */
+    public function getVirtualHost()
+    {
+        return $this->queueConnectionConfig->getVirtualHost();
+    }
+
+    /**
      * @return void
      */
     protected function setupConnection()

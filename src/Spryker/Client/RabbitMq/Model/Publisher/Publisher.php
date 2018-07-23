@@ -69,8 +69,8 @@ class Publisher implements PublisherInterface
         $msg = new AMQPMessage($queueSendMessageTransfer->getBody());
         $channels = $this->getChannels($queueSendMessageTransfer);
 
-        foreach ($channels as $channel) {
-            $usedChannels[$channel->getChannelId()] = $channel;
+        foreach ($channels as $uniqueChannelId => $channel) {
+            $usedChannels[$uniqueChannelId] = $channel;
             $channel->batch_basic_publish($msg, $queueName, $queueSendMessageTransfer->getRoutingKey());
         }
 
