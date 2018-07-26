@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Spryker\Client\RabbitMq\Model\Publisher;
@@ -69,8 +69,8 @@ class Publisher implements PublisherInterface
         $msg = new AMQPMessage($queueSendMessageTransfer->getBody());
         $channels = $this->getChannels($queueSendMessageTransfer);
 
-        foreach ($channels as $channel) {
-            $usedChannels[$channel->getChannelId()] = $channel;
+        foreach ($channels as $uniqueChannelId => $channel) {
+            $usedChannels[$uniqueChannelId] = $channel;
             $channel->batch_basic_publish($msg, $queueName, $queueSendMessageTransfer->getRoutingKey());
         }
 

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Spryker\Client\RabbitMq\Model\Consumer;
@@ -131,7 +131,7 @@ class Consumer implements ConsumerInterface
     /**
      * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer $queueReceiveMessageTransfer
      *
-     * @return bool
+     * @return void
      */
     public function acknowledge(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
@@ -144,7 +144,7 @@ class Consumer implements ConsumerInterface
     /**
      * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer $queueReceiveMessageTransfer
      *
-     * @return bool
+     * @return void
      */
     public function reject(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {

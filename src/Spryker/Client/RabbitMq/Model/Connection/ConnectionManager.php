@@ -1,14 +1,15 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
+use Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException;
 
 class ConnectionManager implements ConnectionManagerInterface
 {
@@ -84,7 +85,8 @@ class ConnectionManager implements ConnectionManagerInterface
         $channelMap = [];
         foreach ($this->connectionMap as $connection) {
             foreach ($connection->getStoreNames() as $storeName) {
-                $channelMap[$storeName][] = $connection->getChannel();
+                $uniqueChannelId = $this->getUniqueChannelId($connection);
+                $channelMap[$storeName][$uniqueChannelId] = $connection->getChannel();
             }
         }
 
@@ -115,7 +117,8 @@ class ConnectionManager implements ConnectionManagerInterface
     {
         $channels = [];
         foreach ($connectionNames as $connectionName) {
-            $channels[] = $this->getConnectionMap()[$connectionName]->getChannel();
+            $uniqueChannelId = $this->getUniqueChannelId($this->getConnectionMap()[$connectionName]);
+            $channels[$uniqueChannelId] = $this->getConnectionMap()[$connectionName]->getChannel();
         }
 
         return $channels;
@@ -178,10 +181,28 @@ class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
+     * @throws \Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException
+     *
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
     public function getDefaultChannel()
     {
+        if (!isset($this->getConnectionMap()[$this->defaultConnectionName])) {
+            throw new DefaultConnectionNotFoundException(
+                'Default queue connection not found, You can fix this by adding RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION = true in your queue connection in config_* files'
+            );
+        }
+
         return $this->getConnectionMap()[$this->defaultConnectionName]->getChannel();
+    }
+
+    /**
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface $connection
+     *
+     * @return string
+     */
+    protected function getUniqueChannelId(ConnectionInterface $connection)
+    {
+        return $connection->getVirtualHost() . '-' . $connection->getChannel()->getChannelId();
     }
 }
