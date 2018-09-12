@@ -24,6 +24,8 @@
         <property name="autoDelete" type="bool"/>
         <property name="exclusive" type="bool"/>
         <property name="type" type="string"/>
+        <property name="noWait" type="string"/>
+        <property name="arguments" type="array"/>
         <property name="routingKeys" singular="routingKey" type="string[]"/>
         <property name="declarationType" type="string"/>
         <property name="bindingQueueCollection" singular="bindingQueueItem" type="RabbitMqOption[]"/>

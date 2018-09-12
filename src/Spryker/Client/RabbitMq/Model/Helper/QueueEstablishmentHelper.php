@@ -9,6 +9,7 @@ namespace Spryker\Client\RabbitMq\Model\Helper;
 
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Wire\AMQPTable;
 
 class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
 {
@@ -28,7 +29,9 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
                 $queueParams['passive'],
                 $queueParams['durable'],
                 $queueParams['exclusive'],
-                $queueParams['auto_delete']
+                $queueParams['auto_delete'],
+                $queueParams['no_wait'],
+                new AMQPTable($queueParams['arguments'])
             );
 
         return $queueParams;

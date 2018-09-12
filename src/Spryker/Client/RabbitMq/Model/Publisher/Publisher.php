@@ -10,6 +10,7 @@ namespace Spryker\Client\RabbitMq\Model\Publisher;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class Publisher implements PublisherInterface
 {
@@ -19,11 +20,18 @@ class Publisher implements PublisherInterface
     protected $connectionManager;
 
     /**
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface $connectionManager
+     * @var \Spryker\Client\RabbitMq\RabbitMqConfig
      */
-    public function __construct(ConnectionManagerInterface $connectionManager)
+    protected $config;
+
+    /**
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface $connectionManager
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
+     */
+    public function __construct(ConnectionManagerInterface $connectionManager, RabbitMqConfig $config)
     {
         $this->connectionManager = $connectionManager;
+        $this->config = $config;
     }
 
     /**
@@ -66,7 +74,7 @@ class Publisher implements PublisherInterface
     protected function addBatchMessage(QueueSendMessageTransfer $queueSendMessageTransfer, $queueName)
     {
         $usedChannels = [];
-        $msg = new AMQPMessage($queueSendMessageTransfer->getBody());
+        $msg = new AMQPMessage($queueSendMessageTransfer->getBody(), $this->config->getMessageConfig());
         $channels = $this->getChannels($queueSendMessageTransfer);
 
         foreach ($channels as $uniqueChannelId => $channel) {
@@ -129,10 +137,12 @@ class Publisher implements PublisherInterface
      */
     protected function createMessage(QueueSendMessageTransfer $messageTransfer)
     {
-        return new AMQPMessage($messageTransfer->getBody(), $this->getMessageConfig());
+        return new AMQPMessage($messageTransfer->getBody(), $this->config->getMessageConfig());
     }
 
     /**
+     * @deprecated use RabbitMqConfig::getMessageConfig() instead of this.
+     *
      * @return array
      */
     protected function getMessageConfig()
