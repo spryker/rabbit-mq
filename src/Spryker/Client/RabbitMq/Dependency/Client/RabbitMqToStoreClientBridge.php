@@ -7,6 +7,8 @@
 
 namespace Spryker\Client\RabbitMq\Dependency\Client;
 
+use Generated\Shared\Transfer\StoreTransfer;
+
 class RabbitMqToStoreClientBridge implements RabbitMqToStoreClientInterface
 {
     /**
@@ -28,5 +30,15 @@ class RabbitMqToStoreClientBridge implements RabbitMqToStoreClientInterface
     public function getCurrentStore()
     {
         return $this->storeClient->getCurrentStore();
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \Generated\Shared\Transfer\StoreTransfer
+     */
+    public function getStoreByName(string $name): StoreTransfer
+    {
+        return $this->storeClient->getStoreByName($name);
     }
 }

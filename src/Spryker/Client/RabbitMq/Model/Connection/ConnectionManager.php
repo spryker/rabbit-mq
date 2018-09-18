@@ -44,6 +44,11 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $defaultConnectionName;
 
     /**
+     * @var array
+     */
+    protected $connectionNameLocaleMap;
+
+    /**
      * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
      * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface $connectionFactory
      */
@@ -56,10 +61,10 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @return array
      */
-    protected function getChannelMapByPoolName()
+    protected function getConnectionMapByPoolName()
     {
         if ($this->channelMapByPoolName === null) {
-            $this->channelMapByPoolName = $this->mapChannelsByPoolName($this->storeClient->getCurrentStore()->getQueuePools());
+            $this->channelMapByPoolName = $this->mapConnectionsByPoolName($this->storeClient->getCurrentStore()->getQueuePools());
         }
 
         return $this->channelMapByPoolName;
@@ -68,10 +73,10 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @return array
      */
-    protected function getChannelMapByStoreName()
+    protected function getConnectionMapByStoreName()
     {
         if ($this->channelMapByStoreName === null) {
-            $this->channelMapByStoreName = $this->mapChannelsByStoreName();
+            $this->channelMapByStoreName = $this->mapConnectionsByStoreName();
         }
 
         return $this->channelMapByStoreName;
@@ -80,13 +85,13 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @return array
      */
-    protected function mapChannelsByStoreName()
+    protected function mapConnectionsByStoreName()
     {
         $channelMap = [];
         foreach ($this->connectionMap as $connection) {
             foreach ($connection->getStoreNames() as $storeName) {
                 $uniqueChannelId = $this->getUniqueChannelId($connection);
-                $channelMap[$storeName][$uniqueChannelId] = $connection->getChannel();
+                $channelMap[$storeName][$uniqueChannelId] = $connection;
             }
         }
 
@@ -98,11 +103,11 @@ class ConnectionManager implements ConnectionManagerInterface
      *
      * @return array
      */
-    protected function mapChannelsByPoolName(array $queuePools)
+    protected function mapConnectionsByPoolName(array $queuePools)
     {
         $channelMap = [];
         foreach ($queuePools as $queuePoolName => $connectionNames) {
-            $channelMap[$queuePoolName] = $this->getChannelsByConnectionName($connectionNames);
+            $channelMap[$queuePoolName] = $this->getConnectionByName($connectionNames);
         }
 
         return $channelMap;
@@ -113,12 +118,12 @@ class ConnectionManager implements ConnectionManagerInterface
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    protected function getChannelsByConnectionName(array $connectionNames)
+    protected function getConnectionByName(array $connectionNames)
     {
         $channels = [];
         foreach ($connectionNames as $connectionName) {
             $uniqueChannelId = $this->getUniqueChannelId($this->getConnectionMap()[$connectionName]);
-            $channels[$uniqueChannelId] = $this->getConnectionMap()[$connectionName]->getChannel();
+            $channels[$uniqueChannelId] = $this->getConnectionMap()[$connectionName];
         }
 
         return $channels;
@@ -151,6 +156,20 @@ class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
+     * @return void
+     */
+    protected function addConnectionNameLocaleMap()
+    {
+        foreach ($this->connectionFactory->getQueueConnectionConfigs() as $queueConnectionConfig) {
+            foreach ($queueConnectionConfig->getStoreNames() as $storeName) {
+                foreach ($this->getLocalesPerStore($storeName) as $locale) {
+                    $this->connectionNameLocaleMap[$queueConnectionConfig->getName()][$locale] = true;
+                }
+            }
+        }
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
      *
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
@@ -162,22 +181,68 @@ class ConnectionManager implements ConnectionManagerInterface
 
     /**
      * @param string $storeName
+     * @param string|null $locale
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByStoreName($storeName)
+    public function getChannelsByStoreName(string $storeName, ?string $locale)
     {
-        return $this->getChannelMapByStoreName()[$storeName];
+        $connections = $this->getConnectionMapByStoreName()[$storeName];
+
+        return $this->getChannelsFilteredByLocale($connections, $locale);
     }
 
     /**
      * @param string $queuePoolName
+     * @param string|null $locale
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByQueuePoolName($queuePoolName)
+    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $locale)
     {
-        return $this->getChannelMapByPoolName()[$queuePoolName];
+        $connections = $this->getConnectionMapByPoolName()[$queuePoolName];
+
+        return $this->getChannelsFilteredByLocale($connections, $locale);
+    }
+
+    /**
+     * @param array $connections
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected function getChannels(array $connections): array
+    {
+        return array_map(function (ConnectionInterface $connection) {
+            return $connection->getChannel();
+        }, $connections);
+    }
+
+    /**
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[] $connections
+     * @param string|null $locale
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected function getChannelsFilteredByLocale(array $connections, ?string $locale): array
+    {
+        if ($locale === null) {
+            return $this->getChannels($connections);
+        }
+
+        if ($this->connectionNameLocaleMap === null) {
+            $this->addConnectionNameLocaleMap();
+        }
+
+        $channels = [];
+        foreach ($connections as $key => $connection) {
+            if (!isset($this->connectionNameLocaleMap[$connection->getName()][$locale])) {
+                continue;
+            }
+
+            $channels[$key] = $connection->getChannel();
+        }
+
+        return $channels;
     }
 
     /**
@@ -204,5 +269,15 @@ class ConnectionManager implements ConnectionManagerInterface
     protected function getUniqueChannelId(ConnectionInterface $connection)
     {
         return $connection->getVirtualHost() . '-' . $connection->getChannel()->getChannelId();
+    }
+
+    /**
+     * @param string $storeName
+     *
+     * @return array
+     */
+    protected function getLocalesPerStore(string $storeName)
+    {
+        return $this->storeClient->getStoreByName($storeName)->getAvailableLocaleIsoCodes();
     }
 }
