@@ -29,12 +29,12 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $connectionMap;
 
     /**
-     * @var array|null Keys are pool names, values are lists of channels.
+     * @var array|null Keys are pool names, values are lists of connections.
      */
     protected $connectionMapByPoolName;
 
     /**
-     * @var array|null Keys are store names, values are lists of channels.
+     * @var array|null Keys are store names, values are lists of connections.
      */
     protected $connectionMapByStoreName;
 
@@ -120,13 +120,13 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getConnectionByName(array $connectionNames)
     {
-        $channels = [];
+        $connections = [];
         foreach ($connectionNames as $connectionName) {
             $uniqueChannelId = $this->getUniqueChannelId($this->getConnectionMap()[$connectionName]);
-            $channels[$uniqueChannelId] = $this->getConnectionMap()[$connectionName];
+            $connections[$uniqueChannelId] = $this->getConnectionMap()[$connectionName];
         }
 
-        return $channels;
+        return $connections;
     }
 
     /**
