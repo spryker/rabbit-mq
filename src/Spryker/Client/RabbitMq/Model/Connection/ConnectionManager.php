@@ -31,12 +31,12 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @var array|null Keys are pool names, values are lists of channels.
      */
-    protected $channelMapByPoolName;
+    protected $connectionMapByPoolName;
 
     /**
      * @var array|null Keys are store names, values are lists of channels.
      */
-    protected $channelMapByStoreName;
+    protected $connectionMapByStoreName;
 
     /**
      * @var string|null
@@ -63,11 +63,11 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getConnectionMapByPoolName()
     {
-        if ($this->channelMapByPoolName === null) {
-            $this->channelMapByPoolName = $this->mapConnectionsByPoolName($this->storeClient->getCurrentStore()->getQueuePools());
+        if ($this->connectionMapByPoolName === null) {
+            $this->connectionMapByPoolName = $this->mapConnectionsByPoolName($this->storeClient->getCurrentStore()->getQueuePools());
         }
 
-        return $this->channelMapByPoolName;
+        return $this->connectionMapByPoolName;
     }
 
     /**
@@ -75,11 +75,11 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getConnectionMapByStoreName()
     {
-        if ($this->channelMapByStoreName === null) {
-            $this->channelMapByStoreName = $this->mapConnectionsByStoreName();
+        if ($this->connectionMapByStoreName === null) {
+            $this->connectionMapByStoreName = $this->mapConnectionsByStoreName();
         }
 
-        return $this->channelMapByStoreName;
+        return $this->connectionMapByStoreName;
     }
 
     /**
@@ -87,15 +87,15 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function mapConnectionsByStoreName()
     {
-        $channelMap = [];
+        $connectionMap = [];
         foreach ($this->connectionMap as $connection) {
             foreach ($connection->getStoreNames() as $storeName) {
                 $uniqueChannelId = $this->getUniqueChannelId($connection);
-                $channelMap[$storeName][$uniqueChannelId] = $connection;
+                $connectionMap[$storeName][$uniqueChannelId] = $connection;
             }
         }
 
-        return $channelMap;
+        return $connectionMap;
     }
 
     /**
@@ -105,12 +105,12 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function mapConnectionsByPoolName(array $queuePools)
     {
-        $channelMap = [];
+        $connectionMap = [];
         foreach ($queuePools as $queuePoolName => $connectionNames) {
-            $channelMap[$queuePoolName] = $this->getConnectionByName($connectionNames);
+            $connectionMap[$queuePoolName] = $this->getConnectionByName($connectionNames);
         }
 
-        return $channelMap;
+        return $connectionMap;
     }
 
     /**
