@@ -44,7 +44,7 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $defaultConnectionName;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $connectionNameLocaleMap;
 
