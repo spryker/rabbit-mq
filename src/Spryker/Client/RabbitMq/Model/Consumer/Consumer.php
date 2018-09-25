@@ -137,8 +137,6 @@ class Consumer implements ConsumerInterface
     {
         $this->channel->basic_ack($queueReceiveMessageTransfer->getDeliveryTag());
         $this->publishOnRoutingKey($queueReceiveMessageTransfer);
-
-        return true;
     }
 
     /**
@@ -149,8 +147,6 @@ class Consumer implements ConsumerInterface
     public function reject(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
         $this->channel->basic_reject($queueReceiveMessageTransfer->getDeliveryTag(), $queueReceiveMessageTransfer->getRequeue());
-
-        return true;
     }
 
     /**
