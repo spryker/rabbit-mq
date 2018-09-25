@@ -93,11 +93,17 @@ class Publisher implements PublisherInterface
     protected function getChannels(QueueSendMessageTransfer $queueSendMessageTransfer)
     {
         if ($queueSendMessageTransfer->getStoreName()) {
-            return $this->connectionManager->getChannelsByStoreName($queueSendMessageTransfer->getStoreName());
+            return $this->connectionManager->getChannelsByStoreName(
+                $queueSendMessageTransfer->getStoreName(),
+                $queueSendMessageTransfer->getLocale()
+            );
         }
 
         if ($queueSendMessageTransfer->getQueuePoolName()) {
-            return $this->connectionManager->getChannelsByQueuePoolName($queueSendMessageTransfer->getQueuePoolName());
+            return $this->connectionManager->getChannelsByQueuePoolName(
+                $queueSendMessageTransfer->getQueuePoolName(),
+                $queueSendMessageTransfer->getLocale()
+            );
         }
 
         return [$this->connectionManager->getDefaultChannel()];
