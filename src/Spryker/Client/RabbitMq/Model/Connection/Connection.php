@@ -172,7 +172,7 @@ class Connection implements ConnectionInterface
     {
         try {
             $this->close();
-        } catch  (AMQPProtocolChannelException $e) {
+        } catch (AMQPProtocolChannelException $e) {
             // Exchange was likely deleted previously
             return;
         }
