@@ -10,6 +10,7 @@ namespace Spryker\Client\RabbitMq;
 use ArrayObject;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
+use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\Kernel\AbstractBundleConfig;
 use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
@@ -70,5 +71,15 @@ class RabbitMqConfig extends AbstractBundleConfig
         }
 
         return $connections;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMessageConfig()
+    {
+        return [
+            'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,
+        ];
     }
 }
