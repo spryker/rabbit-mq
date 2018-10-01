@@ -10,6 +10,7 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Exception\AMQPProtocolChannelException;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 
 class Connection implements ConnectionInterface
@@ -169,6 +170,11 @@ class Connection implements ConnectionInterface
 
     public function __destruct()
     {
-        $this->close();
+        try {
+            $this->close();
+        } catch (AMQPProtocolChannelException $e) {
+            // Exchange was likely deleted previously
+            return;
+        }
     }
 }
