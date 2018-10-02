@@ -16,6 +16,9 @@ use Spryker\Client\RabbitMq\Model\Manager\Manager;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 
+/**
+ * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
+ */
 class RabbitMqFactory extends AbstractFactory
 {
     /**
@@ -93,7 +96,8 @@ class RabbitMqFactory extends AbstractFactory
     protected function createPublisher()
     {
         return new Publisher(
-            $this->getStaticConnectionManager()
+            $this->getStaticConnectionManager(),
+            $this->getConfig()
         );
     }
 
