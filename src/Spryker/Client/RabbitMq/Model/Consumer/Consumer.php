@@ -205,7 +205,7 @@ class Consumer implements ConsumerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
+     * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer[] $queueReceiveMessageTransfer
      *
      * @return void
      */
