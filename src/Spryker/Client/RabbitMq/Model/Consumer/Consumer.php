@@ -36,6 +36,16 @@ class Consumer implements ConsumerInterface
     protected $collectedMessages = [];
 
     /**
+     * @var int
+     */
+    protected $collectedMessagesCount = 0;
+
+    /**
+     * @var array
+     */
+    protected $processedMessages = [];
+
+    /**
      * @param \PhpAmqpLib\Channel\AMQPChannel $channel
      */
     public function __construct(AMQPChannel $channel)
@@ -76,6 +86,72 @@ class Consumer implements ConsumerInterface
         }
 
         return $this->collectedMessages;
+    }
+
+    /**
+     * @param string $queueName
+     * @param callable $callback
+     * @param int $chunkSize
+     * @param array $options
+     *
+     * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
+     */
+    public function processMessages(string $queueName, callable $callback, int $chunkSize = 100, array $options = []): array
+    {
+        /** @var \Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer $rabbitMqOption */
+        $rabbitMqOption = $options['rabbitmq'];
+
+        $this->channel->basic_qos(null, $chunkSize, null);
+
+        $innerCallback = function ($message) use ($chunkSize, $callback) {
+            $this->collectQueueMessages($message);
+
+            ++$this->collectedMessagesCount;
+
+            if ($this->collectedMessagesCount >= $chunkSize) {
+                $this->processCallback($callback, $this->collectedMessages);
+            }
+        };
+
+        $this->channel->basic_consume(
+            $queueName,
+            $rabbitMqOption->getConsumerTag(),
+            $rabbitMqOption->getNoLocal(),
+            $rabbitMqOption->getNoAck(),
+            $rabbitMqOption->getConsumerExclusive(),
+            $rabbitMqOption->getNoWait(),
+            $innerCallback
+        );
+
+        try {
+            $finished = false;
+            while (count($this->channel->callbacks) && !$finished) {
+                $this->channel->wait(null, false, self::DEFAULT_CONSUMER_TIMEOUT_SECONDS);
+            }
+        } catch (Throwable $e) {
+            $finished = true;
+        }
+
+        $haveUnprocessedMessages = !empty($this->collectedMessages) && $this->collectedMessagesCount < $chunkSize;
+
+        if ($haveUnprocessedMessages) {
+            $this->processCallback($callback, $this->collectedMessages);
+        }
+
+        return $this->processedMessages;
+    }
+
+    /**
+     * @param callable $callback
+     * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer[] $collectedMessages
+     *
+     * @return void
+     */
+    protected function processCallback(callable $callback, array $collectedMessages): void
+    {
+        $processedMessages = call_user_func($callback, $collectedMessages);
+
+        $this->setProcessedMessages($processedMessages);
     }
 
     /**
@@ -126,6 +202,20 @@ class Consumer implements ConsumerInterface
         $queueReceiveMessageTransfer->setDeliveryTag($message->delivery_info['delivery_tag']);
 
         $this->collectedMessages[] = $queueReceiveMessageTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
+     *
+     * @return void
+     */
+    public function setProcessedMessages(array $queueReceiveMessageTransfer): void
+    {
+        if (empty($queueReceiveMessageTransfer)) {
+            return;
+        }
+
+        $this->processedMessages = $queueReceiveMessageTransfer;
     }
 
     /**
