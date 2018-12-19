@@ -147,12 +147,10 @@ class Publisher implements PublisherInterface
         $message = new AMQPMessage($messageTransfer->getBody(), $this->config->getMessageConfig());
         $headers = $messageTransfer->getHeaders();
 
-        if ($headers === null) {
-            return $message;
+        if ($headers !== null) {
+            $headersTable = new AMQPTable($headers);
+            $message->set('application_headers', $headersTable);
         }
-
-        $headersTable = new AMQPTable($headers);
-        $message->set('application_headers', $headersTable);
 
         return $message;
     }
