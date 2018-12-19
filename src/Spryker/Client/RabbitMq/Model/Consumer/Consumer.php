@@ -88,14 +88,18 @@ class Consumer implements ConsumerInterface
     {
         /** @var \Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitmq'];
+
         $queueReceiveMessageTransfer = new QueueReceiveMessageTransfer();
         $message = $this->channel->basic_get($queueName, $rabbitMqOption->getNoAck());
+
         if ($message === null) {
             return $queueReceiveMessageTransfer;
         }
 
         $queueSendMessageTransfer = new QueueSendMessageTransfer();
         $queueSendMessageTransfer->setBody($message->getBody());
+        $queueSendMessageTransfer = $this->addApplicationHeaders($message, $queueSendMessageTransfer);
+
         $queueReceiveMessageTransfer->setQueueMessage($queueSendMessageTransfer);
         $queueReceiveMessageTransfer->setQueueName($queueName);
         $queueReceiveMessageTransfer->setDeliveryTag($message->delivery_info['delivery_tag']);
@@ -113,6 +117,7 @@ class Consumer implements ConsumerInterface
     {
         $queueSendMessageTransfer = new QueueSendMessageTransfer();
         $queueSendMessageTransfer->setBody($message->getBody());
+        $queueSendMessageTransfer = $this->addApplicationHeaders($message, $queueSendMessageTransfer);
 
         $queueReceiveMessageTransfer = new QueueReceiveMessageTransfer();
         $queueReceiveMessageTransfer->setQueueMessage($queueSendMessageTransfer);
@@ -126,6 +131,24 @@ class Consumer implements ConsumerInterface
         $queueReceiveMessageTransfer->setDeliveryTag($message->delivery_info['delivery_tag']);
 
         $this->collectedMessages[] = $queueReceiveMessageTransfer;
+    }
+
+    /**
+     * @param \PhpAmqpLib\Message\AMQPMessage $message $message
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
+     *
+     * @return \Generated\Shared\Transfer\QueueSendMessageTransfer
+     */
+    protected function addApplicationHeaders(AMQPMessage $message, QueueSendMessageTransfer $queueSendMessageTransfer): QueueSendMessageTransfer
+    {
+        $messageProps = $message->get_properties();
+
+        if (!isset($messageProps['application_headers'])) {
+            $headers = $messageProps['application_headers'];
+            $queueSendMessageTransfer->setHeaders(json_encode($headers->getNativeData()));
+        }
+
+        return $queueSendMessageTransfer;
     }
 
     /**
