@@ -16,8 +16,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DeleteAllExchangesConsole extends Console
 {
-    const COMMAND_NAME = 'queue:exchanges:delete-all';
-    const DESCRIPTION = 'This command will delete all exchanges.';
+    public const COMMAND_NAME = 'queue:exchanges:delete-all';
+    public const DESCRIPTION = 'This command will delete all exchanges.';
 
     /**
      * @return void

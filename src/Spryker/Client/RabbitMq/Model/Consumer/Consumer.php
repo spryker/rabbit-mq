@@ -15,15 +15,15 @@ use Throwable;
 
 class Consumer implements ConsumerInterface
 {
-    const CONSUMER_TAG = 'consumerTag';
-    const NO_LOCAL = 'noLocal';
-    const NO_ACK = 'noAck';
-    const EXCLUSIVE = 'exclusive';
-    const NOWAIT = 'nowait';
+    public const CONSUMER_TAG = 'consumerTag';
+    public const NO_LOCAL = 'noLocal';
+    public const NO_ACK = 'noAck';
+    public const EXCLUSIVE = 'exclusive';
+    public const NOWAIT = 'nowait';
 
-    const QUEUE_LOG_FILE = 'queue.log';
-    const DEFAULT_CONSUMER_TIMEOUT_SECONDS = 1;
-    const DEFAULT_PREFETCH_COUNT = 100;
+    public const QUEUE_LOG_FILE = 'queue.log';
+    public const DEFAULT_CONSUMER_TIMEOUT_SECONDS = 1;
+    public const DEFAULT_PREFETCH_COUNT = 100;
 
     /**
      * @var \PhpAmqpLib\Channel\AMQPChannel

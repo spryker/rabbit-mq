@@ -15,7 +15,7 @@ use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 
 class Connection implements ConnectionInterface
 {
-    const RABBIT_MQ_EXCHANGE = 'exchange';
+    public const RABBIT_MQ_EXCHANGE = 'exchange';
 
     /**
      * @var \Generated\Shared\Transfer\QueueConnectionTransfer
