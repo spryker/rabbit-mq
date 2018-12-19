@@ -151,7 +151,7 @@ class Publisher implements PublisherInterface
             return $message;
         }
 
-        $headersTable = new AMQPTable(json_decode($headers, true));
+        $headersTable = new AMQPTable($headers);
         $message->set('application_headers', $headersTable);
 
         return $message;

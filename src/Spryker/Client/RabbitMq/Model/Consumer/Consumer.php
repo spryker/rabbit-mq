@@ -143,9 +143,9 @@ class Consumer implements ConsumerInterface
     {
         $messageProps = $message->get_properties();
 
-        if (!isset($messageProps['application_headers'])) {
+        if (isset($messageProps['application_headers'])) {
             $headers = $messageProps['application_headers'];
-            $queueSendMessageTransfer->setHeaders(json_encode($headers->getNativeData()));
+            $queueSendMessageTransfer->setHeaders($headers->getNativeData());
         }
 
         return $queueSendMessageTransfer;
