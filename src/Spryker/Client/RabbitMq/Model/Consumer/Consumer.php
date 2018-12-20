@@ -141,10 +141,10 @@ class Consumer implements ConsumerInterface
      */
     protected function addApplicationHeaders(AMQPMessage $message, QueueSendMessageTransfer $queueSendMessageTransfer): QueueSendMessageTransfer
     {
-        $messageProps = $message->get_properties();
+        $messageProperties = $message->get_properties();
 
-        if (isset($messageProps['application_headers'])) {
-            $headers = $messageProps['application_headers'];
+        if (isset($messageProperties['application_headers'])) {
+            $headers = $messageProperties['application_headers'];
             $queueSendMessageTransfer->setHeaders($headers->getNativeData());
         }
 
