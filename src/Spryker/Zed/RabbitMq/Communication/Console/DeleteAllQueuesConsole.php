@@ -16,8 +16,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DeleteAllQueuesConsole extends Console
 {
-    const COMMAND_NAME = 'queue:queue:delete-all';
-    const DESCRIPTION = 'This command will delete all queues.';
+    public const COMMAND_NAME = 'queue:queue:delete-all';
+    public const DESCRIPTION = 'This command will delete all queues.';
 
     /**
      * @return void
