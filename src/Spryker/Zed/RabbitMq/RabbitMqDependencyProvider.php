@@ -12,10 +12,13 @@ use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleBridge;
 
+/**
+ * @method \Spryker\Zed\RabbitMq\RabbitMqConfig getConfig()
+ */
 class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
 {
-    const QUEUE_ADAPTER = 'QUEUE_ADAPTER';
-    const GUZZLE_CLIENT = 'GUZZLE_CLIENT';
+    public const QUEUE_ADAPTER = 'QUEUE_ADAPTER';
+    public const GUZZLE_CLIENT = 'GUZZLE_CLIENT';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
