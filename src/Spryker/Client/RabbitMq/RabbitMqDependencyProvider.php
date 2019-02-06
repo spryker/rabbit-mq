@@ -11,6 +11,9 @@ use Spryker\Client\Kernel\AbstractDependencyProvider;
 use Spryker\Client\Kernel\Container;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientBridge;
 
+/**
+ * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
+ */
 class RabbitMqDependencyProvider extends AbstractDependencyProvider
 {
     public const CLIENT_STORE = 'CLIENT_STORE';
