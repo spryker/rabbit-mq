@@ -52,11 +52,13 @@ class Consumer implements ConsumerInterface
      */
     public function receiveMessages($queueName, $chunkSize = 100, array $options = [])
     {
+        $this->channel->callbacks = [];
+
         /** @var \Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitmq'];
 
         $this->channel->basic_qos(null, $chunkSize, null);
-        $consumerTag = $this->channel->basic_consume(
+        $this->channel->basic_consume(
             $queueName,
             $rabbitMqOption->getConsumerTag(),
             $rabbitMqOption->getNoLocal(),
@@ -74,8 +76,6 @@ class Consumer implements ConsumerInterface
         } catch (Throwable $e) {
             $finished = true;
         }
-
-        $this->channel->basic_cancel($consumerTag, true);
 
         return $this->retrieveCollectedMessages();
     }
