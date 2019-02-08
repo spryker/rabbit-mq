@@ -62,6 +62,7 @@
 
     <transfer name="QueueSendMessage">
         <property name="routingKey" type="string"/>
+        <property name="headers" type="array" singular="header" associative="true" />
     </transfer>
 
     <transfer name="QueueReceiveMessage">
