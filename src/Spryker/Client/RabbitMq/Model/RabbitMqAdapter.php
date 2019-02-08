@@ -114,21 +114,21 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
     /**
      * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer $queueReceiveMessageTransfer
      *
-     * @return bool
+     * @return void
      */
     public function acknowledge(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
-        return $this->consumer->acknowledge($queueReceiveMessageTransfer);
+        $this->consumer->acknowledge($queueReceiveMessageTransfer);
     }
 
     /**
      * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer $queueReceiveMessageTransfer
      *
-     * @return bool
+     * @return void
      */
     public function reject(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
-        return $this->consumer->reject($queueReceiveMessageTransfer);
+        $this->consumer->reject($queueReceiveMessageTransfer);
     }
 
     /**
