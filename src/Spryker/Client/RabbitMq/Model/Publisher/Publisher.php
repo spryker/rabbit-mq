@@ -9,6 +9,7 @@ namespace Spryker\Client\RabbitMq\Model\Publisher;
 
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
+use PhpAmqpLib\Wire\AMQPTable;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
 
@@ -74,7 +75,7 @@ class Publisher implements PublisherInterface
     protected function addBatchMessage(QueueSendMessageTransfer $queueSendMessageTransfer, $queueName)
     {
         $usedChannels = [];
-        $msg = new AMQPMessage($queueSendMessageTransfer->getBody(), $this->config->getMessageConfig());
+        $msg = $this->createMessage($queueSendMessageTransfer);
         $channels = $this->getChannels($queueSendMessageTransfer);
 
         foreach ($channels as $uniqueChannelId => $channel) {
@@ -143,7 +144,15 @@ class Publisher implements PublisherInterface
      */
     protected function createMessage(QueueSendMessageTransfer $messageTransfer)
     {
-        return new AMQPMessage($messageTransfer->getBody(), $this->config->getMessageConfig());
+        $message = new AMQPMessage($messageTransfer->getBody(), $this->config->getMessageConfig());
+        $headers = $messageTransfer->getHeaders();
+
+        if ($headers !== null) {
+            $headersTable = new AMQPTable($headers);
+            $message->set('application_headers', $headersTable);
+        }
+
+        return $message;
     }
 
     /**
