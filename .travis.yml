@@ -21,6 +21,7 @@ matrix:
 
 before_install:
   - phpenv config-rm xdebug.ini
+  - phpenv config-add ci/travis.php.ini
 
 before_script:
   - composer install --prefer-dist --no-interaction
