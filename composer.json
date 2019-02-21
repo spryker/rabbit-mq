@@ -1,10 +1,10 @@
 {
   "name": "spryker/rabbit-mq",
-  "description": "Spryker RabbitMq adapter",
+  "description": "RabbitMq module",
   "type": "library",
   "license": "MIT",
   "keywords": ["framework", "rabbit-mq", "queue", "standards"],
-  "homepage": "http://spryker.com",
+  "homepage": "https://spryker.com",
   "authors": [
     {
       "name": "Spryker",
