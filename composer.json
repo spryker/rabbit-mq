@@ -1,19 +1,9 @@
 {
   "name": "spryker/rabbit-mq",
-  "description": "RabbitMq module",
   "type": "library",
-  "license": "MIT",
-  "keywords": ["framework", "rabbit-mq", "queue", "standards"],
+  "description": "RabbitMq module",
   "homepage": "https://spryker.com",
-  "authors": [
-    {
-      "name": "Spryker",
-      "homepage": "https://spryker.com"
-    }
-  ],
-  "support": {
-    "source": "https://github.com/spryker/rabbit-mq"
-  },
+  "license": "MIT",
   "require": {
     "php": ">=7.1",
     "php-amqplib/php-amqplib": "^2.6",
@@ -41,6 +31,10 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "scripts": {
+    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/rabbit-mq/vendor/,/templates/ ./",
+    "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/rabbit-mq/vendor/,/templates/ ./"
+  },
   "extra": {
     "branch-alias": {
       "dev-master": "1.0.x-dev"
@@ -49,9 +43,22 @@
   "config": {
     "sort-packages": true
   },
-  "scripts": {
-    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/rabbit-mq/vendor/,/templates/ ./",
-    "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -v --ignore=/rabbit-mq/vendor/,/templates/ ./"
+  "support": {
+    "source": "https://github.com/spryker/rabbit-mq"
   },
-  "include-path":  ["src/"]
+  "authors": [
+    {
+      "name": "Spryker",
+      "homepage": "https://spryker.com"
+    }
+  ],
+  "keywords": [
+    "framework",
+    "rabbit-mq",
+    "queue",
+    "standards"
+  ],
+  "include-path": [
+    "src/"
+  ]
 }
