@@ -52,6 +52,8 @@ class Consumer implements ConsumerInterface
      */
     public function receiveMessages($queueName, $chunkSize = 100, array $options = [])
     {
+        $this->channel->callbacks = [];
+
         /** @var \Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitmq'];
 
@@ -75,7 +77,7 @@ class Consumer implements ConsumerInterface
             $finished = true;
         }
 
-        return $this->collectedMessages;
+        return $this->retrieveCollectedMessages();
     }
 
     /**
@@ -195,5 +197,16 @@ class Consumer implements ConsumerInterface
             $message = new AMQPMessage($queueReceiveMessageTransfer->getQueueMessage()->getBody());
             $this->channel->basic_publish($message, $queueReceiveMessageTransfer->getQueueName(), $queueReceiveMessageTransfer->getRoutingKey());
         }
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
+     */
+    protected function retrieveCollectedMessages(): array
+    {
+        $collectedMessages = $this->collectedMessages;
+        $this->collectedMessages = [];
+
+        return $collectedMessages;
     }
 }
