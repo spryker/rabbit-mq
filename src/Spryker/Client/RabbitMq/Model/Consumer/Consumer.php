@@ -58,7 +58,7 @@ class Consumer implements ConsumerInterface
         $rabbitMqOption = $options['rabbitmq'];
 
         $this->channel->basic_qos(null, $chunkSize, null);
-        $this->channel->basic_consume(
+        $consumerTag = $this->channel->basic_consume(
             $queueName,
             $rabbitMqOption->getConsumerTag(),
             $rabbitMqOption->getNoLocal(),
@@ -69,12 +69,11 @@ class Consumer implements ConsumerInterface
         );
 
         try {
-            $finished = false;
-            while (count($this->channel->callbacks) && !$finished) {
+            while (count($this->channel->callbacks)) {
                 $this->channel->wait(null, false, self::DEFAULT_CONSUMER_TIMEOUT_SECONDS);
             }
         } catch (Throwable $e) {
-            $finished = true;
+            $this->channel->basic_cancel($consumerTag);
         }
 
         return $this->retrieveCollectedMessages();
