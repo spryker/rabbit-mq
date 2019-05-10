@@ -23,7 +23,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             $this->getApiScheme(),
             $this->getApiHost(),
             $this->getApiPort(),
-            urlencode(c)
+            urlencode($this->getApiVirtualHost())
         );
     }
 
