@@ -19,10 +19,11 @@ class RabbitMqConfig extends AbstractBundleConfig
     public function getApiExchangesUrl()
     {
         return sprintf(
-            'http://%s:%s/api/exchanges/%s',
+            '%s://%s:%s/api/exchanges/%s',
+            $this->getApiScheme(),
             $this->getApiHost(),
             $this->getApiPort(),
-            urlencode($this->getApiVirtualHost())
+            urlencode(c)
         );
     }
 
@@ -32,7 +33,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     public function getApiQueuesUrl()
     {
         return sprintf(
-            'http://%s:%s/api/queues/%s',
+            '%s://%s:%s/api/queues/%s',
+            $this->getApiScheme(),
             $this->getApiHost(),
             $this->getApiPort(),
             urlencode($this->getApiVirtualHost())
@@ -45,7 +47,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     public function getApiUserPermissionsUrl()
     {
         return sprintf(
-            'http://%s:%s/api/permissions/%s/%s',
+            '%s://%s:%s/api/permissions/%s/%s',
+            $this->getApiScheme(),
             $this->getApiHost(),
             $this->getApiPort(),
             urlencode($this->getApiVirtualHost()),
@@ -99,5 +102,13 @@ class RabbitMqConfig extends AbstractBundleConfig
     protected function getApiPort()
     {
         return $this->get(RabbitMqEnv::RABBITMQ_API_PORT);
+    }
+
+     /**
+     * @return string
+     */
+    protected function getApiScheme()
+    {
+        return $this->get(RabbitMqEnv::RABBITMQ_SCHEME);
     }
 }
