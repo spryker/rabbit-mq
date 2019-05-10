@@ -105,8 +105,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
      /**
-     * @return string
-     */
+      * @return string
+      */
     protected function getApiScheme()
     {
         return $this->get(RabbitMqEnv::RABBITMQ_SCHEME, 'http');
