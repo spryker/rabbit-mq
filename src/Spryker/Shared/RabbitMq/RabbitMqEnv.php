@@ -37,6 +37,14 @@ interface RabbitMqEnv extends QueueConstants
 
     /**
      * Specification:
+     * - Use this constant to configure the scheme of a RabbitMQ connection.
+     *
+     * @api
+     */
+    public const RABBITMQ_SCHEME = 'RABBITMQ:RABBITMQ_SCHEME';
+
+    /**
+     * Specification:
      * - Use this constant to configure the host of a RabbitMQ connection.
      *
      * @api
