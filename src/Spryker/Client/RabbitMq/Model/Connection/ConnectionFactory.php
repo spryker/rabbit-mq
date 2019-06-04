@@ -40,18 +40,29 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
      *
      * @return \PhpAmqpLib\Connection\AMQPStreamConnection
      */
-    protected function createAmqpStreamConnection(QueueConnectionTransfer $queueConnectionConfig)
+    protected function createAmqpStreamConnection(QueueConnectionTransfer $queueConnectionTransfer)
     {
         $streamConnection = new AMQPStreamConnection(
-            $queueConnectionConfig->getHost(),
-            $queueConnectionConfig->getPort(),
-            $queueConnectionConfig->getUsername(),
-            $queueConnectionConfig->getPassword(),
-            $queueConnectionConfig->getVirtualHost()
+            $queueConnectionTransfer->getHost(),
+            $queueConnectionTransfer->getPort(),
+            $queueConnectionTransfer->getUsername(),
+            $queueConnectionTransfer->getPassword(),
+            $queueConnectionTransfer->getVirtualHost(),
+            $queueConnectionTransfer->getInsist() ?? false,
+            $queueConnectionTransfer->getLoginMethod() ?? 'AMQPLAIN',
+            $queueConnectionTransfer->getLoginResponse(),
+            $queueConnectionTransfer->getLocale() ?? 'en_US',
+            $queueConnectionTransfer->getConnectionTimeout() ?? 3,
+            $queueConnectionTransfer->getReadWriteTimeout() ?? 130,
+            null,
+            $queueConnectionTransfer->getKeepAlive() ?? false,
+            $queueConnectionTransfer->getHeartBeat() ?? 0,
+            $queueConnectionTransfer->getChannelRpcTimeout() ?? 0,
+            $queueConnectionTransfer->getSslProtocol()
         );
 
         return $streamConnection;

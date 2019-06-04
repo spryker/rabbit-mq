@@ -6,11 +6,23 @@
 
     <transfer name="QueueConnection">
         <property name="name" type="string" />
+
         <property name="host" type="string" />
         <property name="port" type="int" />
         <property name="username" type="string" />
         <property name="password" type="string" />
         <property name="virtualHost" type="string"/>
+        <property name="insist" type="bool"/>
+        <property name="loginMethod" type="string"/>
+        <property name="loginResponse" type="string"/>
+        <property name="locale" type="string"/>
+        <property name="connectionTimeout" type="int"/>
+        <property name="readWriteTimeout" type="int"/>
+        <property name="keepAlive" type="bool"/>
+        <property name="heartBeat" type="int"/>
+        <property name="channelRpcTimeout" type="int"/>
+        <property name="sslProtocol" type="string"/>
+
         <property name="queueOptionCollection" singular="queueOptionItem" type="RabbitMqOption[]"/>
         <property name="isDefaultConnection" type="bool" />
         <property name="storeNames" type="array" />
