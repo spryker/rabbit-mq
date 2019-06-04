@@ -6,7 +6,7 @@
   "license": "MIT",
   "require": {
     "php": ">=7.1",
-    "php-amqplib/php-amqplib": "^2.6",
+    "php-amqplib/php-amqplib": "2.9.0",
     "spryker/guzzle": "^2.0.0",
     "spryker/kernel": "^3.20.0",
     "spryker/log": "^3.0.0",
