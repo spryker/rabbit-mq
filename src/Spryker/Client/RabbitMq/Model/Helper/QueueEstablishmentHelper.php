@@ -64,6 +64,9 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
      */
     protected function convertTransferToArray(RabbitMqOptionTransfer $queueOptionTransfer)
     {
-        return $queueOptionTransfer->toArray();
+        $queueParams = $queueOptionTransfer->toArray();
+        $queueParams['no_wait'] = filter_var($queueParams['no_wait'], FILTER_VALIDATE_BOOLEAN); // Just a precaution for BC
+
+        return $queueParams;
     }
 }
