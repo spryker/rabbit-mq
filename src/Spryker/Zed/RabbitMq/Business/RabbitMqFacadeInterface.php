@@ -60,4 +60,14 @@ interface RabbitMqFacadeInterface
      * @return bool
      */
     public function setUserPermissions(LoggerInterface $logger);
+
+    /**
+     * Specification:
+     * - Checks and updates virtual-host, users and permissions
+     *
+     * @api
+     *
+     * @return bool
+     */
+    public function init(): bool;
 }

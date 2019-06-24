@@ -111,4 +111,65 @@ class RabbitMqConfig extends AbstractBundleConfig
     {
         return $this->get(RabbitMqEnv::RABBITMQ_SCHEME, 'http');
     }
+
+    /**
+     * @return string[]
+     */
+    public function getConnectionConfigs(): array
+    {
+        $connections = [];
+
+        foreach ($this->get(RabbitMqEnv::RABBITMQ_CONNECTIONS) as $storeName => $connection) {
+            $connections[$storeName] = [
+                'name' => $connection[RabbitMqEnv::RABBITMQ_CONNECTION_NAME],
+                'host' => $connection[RabbitMqEnv::RABBITMQ_HOST],
+                'port' => $connection[RabbitMqEnv::RABBITMQ_PORT],
+                'username' => $connection[RabbitMqEnv::RABBITMQ_USERNAME],
+                'password' => $connection[RabbitMqEnv::RABBITMQ_PASSWORD],
+                'virtualHost' => $connection[RabbitMqEnv::RABBITMQ_VIRTUAL_HOST],
+                'storeNames' => $connection[RabbitMqEnv::RABBITMQ_STORE_NAMES],
+            ];
+        }
+
+        return $connections;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiVirtualHostsUrl(): string
+    {
+        return sprintf(
+            '%s://%s:%s/api/vhosts',
+            $this->getApiScheme(),
+            $this->getApiHost(),
+            $this->getApiPort()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiUsersUrl(): string
+    {
+        return sprintf(
+            '%s://%s:%s/api/users',
+            $this->getApiScheme(),
+            $this->getApiHost(),
+            $this->getApiPort()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiPermissionsUrl(): string
+    {
+        return sprintf(
+            '%s://%s:%s/api/permissions',
+            $this->getApiScheme(),
+            $this->getApiHost(),
+            $this->getApiPort()
+        );
+    }
 }
