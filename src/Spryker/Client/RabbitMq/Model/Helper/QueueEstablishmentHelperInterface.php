@@ -24,7 +24,7 @@ interface QueueEstablishmentHelperInterface
      * @param \PhpAmqpLib\Channel\AMQPChannel $channel
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
      *
-     * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
+     * @return void
      */
     public function createExchange(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer);
 }
