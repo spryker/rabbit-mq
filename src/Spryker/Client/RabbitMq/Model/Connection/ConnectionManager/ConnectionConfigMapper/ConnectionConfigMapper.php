@@ -41,7 +41,7 @@ class ConnectionConfigMapper implements ConnectionConfigMapperInterface
     }
 
     /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
+     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[][]
      */
     public function mapConnectionsConfigByStoreName(): array
     {

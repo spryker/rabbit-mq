@@ -10,7 +10,7 @@ namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionC
 interface ConnectionConfigMapperInterface
 {
     /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
+     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[][]
      */
     public function mapConnectionsConfigByStoreName(): array;
 
