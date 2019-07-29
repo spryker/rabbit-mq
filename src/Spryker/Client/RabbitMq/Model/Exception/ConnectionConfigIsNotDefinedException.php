@@ -9,6 +9,6 @@ namespace Spryker\Client\RabbitMq\Model\Exception;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-class ConnectionNotFoundException extends Exception
+class ConnectionConfigIsNotDefinedException extends Exception
 {
 }

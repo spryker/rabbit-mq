@@ -8,12 +8,25 @@
 namespace Spryker\Client\RabbitMq;
 
 use Spryker\Client\Kernel\AbstractFactory;
+use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigFilter\ConnectionConfigFilter;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigFilter\ConnectionConfigFilterInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigMapper\ConnectionConfigMapper;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigMapper\ConnectionConfigMapperInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionCreator\ConnectionCreator;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionCreator\ConnectionCreatorInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManager;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\Model\Consumer\Consumer;
+use Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelper;
+use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 use Spryker\Client\RabbitMq\Model\Manager\Manager;
+use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
+use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 
 /**
@@ -22,7 +35,7 @@ use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 class RabbitMqFactory extends AbstractFactory
 {
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface
      */
     protected static $connectionManager;
 
@@ -39,9 +52,9 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface
      */
-    public function getStaticConnectionManager()
+    public function getStaticConnectionManager(): ConnectionManagerInterface
     {
         if (static::$connectionManager === null) {
             static::$connectionManager = $this->createConnectionManager();
@@ -51,13 +64,16 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface
      */
-    protected function createConnectionManager()
+    public function createConnectionManager(): ConnectionManagerInterface
     {
         $connectionManager = new ConnectionManager(
             $this->getStoreClient(),
-            $this->createConnectionFactory()
+            $this->createConnectionFactory(),
+            $this->createConnectionConfigMapper(),
+            $this->createConnectionConfigFilter(),
+            $this->createConnectionCreator()
         );
 
         return $connectionManager;
@@ -66,7 +82,7 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
      */
-    protected function getStoreClient()
+    public function getStoreClient(): RabbitMqToStoreClientInterface
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::CLIENT_STORE);
     }
@@ -74,15 +90,39 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
      */
-    protected function createConnectionFactory()
+    public function createConnectionFactory(): ConnectionFactoryInterface
     {
         return new ConnectionFactory();
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Manager\Manager
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigMapper\ConnectionConfigMapperInterface
      */
-    protected function createManager()
+    public function createConnectionConfigMapper(): ConnectionConfigMapperInterface
+    {
+        return new ConnectionConfigMapper($this->createConnectionFactory());
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigFilter\ConnectionConfigFilterInterface
+     */
+    public function createConnectionConfigFilter(): ConnectionConfigFilterInterface
+    {
+        return new ConnectionConfigFilter($this->getStoreClient(), $this->createConnectionFactory());
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionCreator\ConnectionCreatorInterface
+     */
+    public function createConnectionCreator(): ConnectionCreatorInterface
+    {
+        return new ConnectionCreator($this->createConnectionFactory());
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface
+     */
+    public function createManager(): ManagerInterface
     {
         return new Manager(
             $this->getStaticConnectionManager()->getDefaultChannel(),
@@ -91,9 +131,9 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Publisher\Publisher
+     * @return \Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface
      */
-    protected function createPublisher()
+    public function createPublisher(): PublisherInterface
     {
         return new Publisher(
             $this->getStaticConnectionManager(),
@@ -102,9 +142,9 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Consumer\Consumer
+     * @return \Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface
      */
-    protected function createConsumer()
+    public function createConsumer(): ConsumerInterface
     {
         return new Consumer(
             $this->getStaticConnectionManager()->getDefaultChannel()
@@ -114,7 +154,7 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface
      */
-    protected function createQueueEstablishmentHelper()
+    public function createQueueEstablishmentHelper(): QueueEstablishmentHelperInterface
     {
         return new QueueEstablishmentHelper();
     }
