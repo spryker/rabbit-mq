@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerTest\Client\RabbitMq\Helper;
@@ -30,7 +30,6 @@ class RabbitMqHelper extends Module
     protected const VIRTUAL_HOST = 'virtual-host';
 
     protected const INCORRECT_LOCALE_CODE = 'INCORRECT_LOCALE_CODE';
-
 
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface
@@ -152,6 +151,7 @@ class RabbitMqHelper extends Module
             'createConnection' => $this->getConnectionMock(),
         ]);
     }
+
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface|object
      */
@@ -162,7 +162,6 @@ class RabbitMqHelper extends Module
             'getVirtualHost' => static::VIRTUAL_HOST,
         ]);
     }
-
 
     /**
      * @return \PhpAmqpLib\Channel\AMQPChannel|object
