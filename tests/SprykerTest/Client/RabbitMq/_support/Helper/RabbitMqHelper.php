@@ -23,7 +23,7 @@ use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManager
 
 class RabbitMqHelper extends Module
 {
-    protected const  STORE_NAME = 'DE';
+    protected const STORE_NAME = 'DE';
     protected const LOCALE_CODE = 'en_US';
     protected const QUEUE_POOL_NAME = 'synchronizationPool';
     protected const DEFAULT_POOL_CONNECTION_NAME = self::STORE_NAME . '-name';
