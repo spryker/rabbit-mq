@@ -14,10 +14,10 @@ use Generated\Shared\Transfer\StoreTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientBridge;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilter;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapper;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreator;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 

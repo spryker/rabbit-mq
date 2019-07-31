@@ -10,8 +10,6 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilterInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface;
