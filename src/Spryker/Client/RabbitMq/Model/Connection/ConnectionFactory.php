@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\Kernel\AbstractFactory;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelper;
+use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 
 /**
  * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
@@ -22,7 +23,7 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
      *
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
-    public function createConnection(QueueConnectionTransfer $queueConnectionConfig)
+    public function createConnection(QueueConnectionTransfer $queueConnectionConfig): ConnectionInterface
     {
         return new Connection(
             $this->createAmqpStreamConnection($queueConnectionConfig),
@@ -34,7 +35,7 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function getQueueConnectionConfigs()
+    public function getQueueConnectionConfigs(): array
     {
         return $this->getConfig()->getQueueConnections();
     }
@@ -44,7 +45,7 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
      *
      * @return \PhpAmqpLib\Connection\AMQPStreamConnection
      */
-    protected function createAmqpStreamConnection(QueueConnectionTransfer $queueConnectionTransfer)
+    public function createAmqpStreamConnection(QueueConnectionTransfer $queueConnectionTransfer): AMQPStreamConnection
     {
         $streamConnection = new AMQPStreamConnection(
             $queueConnectionTransfer->getHost(),
@@ -71,7 +72,7 @@ class ConnectionFactory extends AbstractFactory implements ConnectionFactoryInte
     /**
      * @return \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface
      */
-    protected function createQueueEstablishmentHelper()
+    public function createQueueEstablishmentHelper(): QueueEstablishmentHelperInterface
     {
         return new QueueEstablishmentHelper();
     }

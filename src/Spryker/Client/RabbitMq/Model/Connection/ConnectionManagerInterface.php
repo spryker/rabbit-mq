@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
+namespace Spryker\Client\RabbitMq\Model\Connection;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 

@@ -15,11 +15,11 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientBridge;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigFilter\ConnectionConfigFilter;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigMapper\ConnectionConfigMapper;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionCreator\ConnectionCreator;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManager;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilter;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapper;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreator;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 
 class RabbitMqHelper extends Module
 {
@@ -32,7 +32,7 @@ class RabbitMqHelper extends Module
     protected const INCORRECT_LOCALE_CODE = 'INCORRECT_LOCALE_CODE';
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
     public function createConnectionManagerWithDefaultQueueConnectionAndIncorrectLocale(): ConnectionManagerInterface
     {
@@ -43,7 +43,7 @@ class RabbitMqHelper extends Module
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
     public function createConnectionManagerWithDefaultQueueConnection(): ConnectionManagerInterface
     {
@@ -51,7 +51,7 @@ class RabbitMqHelper extends Module
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
     public function createConnectionManagerWithoutDefaultQueueConnection(): ConnectionManagerInterface
     {
@@ -90,7 +90,7 @@ class RabbitMqHelper extends Module
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer $connectionTransfer
      * @param string $poolConnectionName
      *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionManagerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
     protected function createConnectionManager(
         QueueConnectionTransfer $connectionTransfer,

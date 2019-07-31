@@ -5,16 +5,16 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
+namespace Spryker\Client\RabbitMq\Model\Connection;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigFilter\ConnectionConfigFilterInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigMapper\ConnectionConfigMapperInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionCreator\ConnectionCreatorInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilterInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface;
 use Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException;
 
 class ConnectionManager implements ConnectionManagerInterface
@@ -30,26 +30,26 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $connectionFactory;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigMapper\ConnectionConfigMapperInterface
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface
      */
     protected $connectionConfigMapper;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigFilter\ConnectionConfigFilterInterface
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilterInterface
      */
     protected $connectionConfigFilter;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionCreator\ConnectionCreatorInterface
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface
      */
     protected $connectionCreator;
 
     /**
      * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
      * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface $connectionFactory
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigMapper\ConnectionConfigMapperInterface $connectionConfigMapper
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigFilter\ConnectionConfigFilterInterface $connectionConfigFilter
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionCreator\ConnectionCreatorInterface $connectionCreator
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface $connectionConfigMapper
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilterInterface $connectionConfigFilter
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface $connectionCreator
      */
     public function __construct(
         RabbitMqToStoreClientInterface $storeClient,
