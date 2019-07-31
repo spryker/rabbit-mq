@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionManager\ConnectionConfigFilter;
 
+use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface;
 
@@ -21,11 +22,6 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
      */
     protected $connectionFactory;
-
-    /**
-     * @var bool[]|null
-     */
-    protected $connectionNameLocaleMap;
 
     /**
      * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
@@ -49,34 +45,42 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
             return $connectionsConfig;
         }
 
-        if ($this->connectionNameLocaleMap === null) {
-            $this->addConnectionNameLocaleMap();
-        }
-
         $filteredConnectionsConfig = [];
         foreach ($connectionsConfig as $key => $connectionConfig) {
-            if (!isset($this->connectionNameLocaleMap[$connectionConfig->getName()][$locale])) {
-                continue;
+            if ($this->shouldWriteConnectionConfigByLocale($connectionConfig, $locale)) {
+                $filteredConnectionsConfig[$key] = $connectionConfig;
             }
-
-            $filteredConnectionsConfig[$key] = $connectionConfig;
         }
 
         return $filteredConnectionsConfig;
     }
 
     /**
-     * @return void
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $connectionConfig
+     * @param string $locale
+     *
+     * @return bool
      */
-    protected function addConnectionNameLocaleMap(): void
+    protected function shouldWriteConnectionConfigByLocale(QueueConnectionTransfer $connectionConfig, string $locale): bool
     {
-        foreach ($this->connectionFactory->getQueueConnectionConfigs() as $queueConnectionConfig) {
-            foreach ($queueConnectionConfig->getStoreNames() as $storeName) {
-                foreach ($this->getLocalesPerStore($storeName) as $locale) {
-                    $this->connectionNameLocaleMap[$queueConnectionConfig->getName()][$locale] = true;
-                }
+        foreach ($connectionConfig->getStoreNames() as $storeName) {
+            if ($this->isLocaleDefinedForStore($storeName, $locale)) {
+                return true;
             }
         }
+
+        return false;
+    }
+
+    /**
+     * @param string $storeName
+     * @param string $locale
+     *
+     * @return bool
+     */
+    protected function isLocaleDefinedForStore(string $storeName, string $locale): bool
+    {
+        return in_array($locale, $this->getLocalesPerStore($storeName), true);
     }
 
     /**
