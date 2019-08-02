@@ -70,8 +70,8 @@ class RabbitMqFactory extends AbstractFactory
     public function createConnectionManager(): ConnectionManagerInterface
     {
         return new ConnectionManager(
+            $this->getConfig(),
             $this->getStoreClient(),
-            $this->createConnectionFactory(),
             $this->createConnectionConfigMapper(),
             $this->createConnectionConfigFilter(),
             $this->createConnectionCreator()
@@ -87,19 +87,11 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
-     */
-    public function createConnectionFactory(): ConnectionFactoryInterface
-    {
-        return new ConnectionFactory();
-    }
-
-    /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface
      */
     public function createConnectionConfigMapper(): ConnectionConfigMapperInterface
     {
-        return new ConnectionConfigMapper($this->createConnectionFactory());
+        return new ConnectionConfigMapper($this->getConfig());
     }
 
     /**
@@ -107,7 +99,7 @@ class RabbitMqFactory extends AbstractFactory
      */
     public function createConnectionConfigFilter(): ConnectionConfigFilterInterface
     {
-        return new ConnectionConfigFilter($this->getStoreClient(), $this->createConnectionFactory());
+        return new ConnectionConfigFilter($this->getStoreClient());
     }
 
     /**
@@ -115,7 +107,7 @@ class RabbitMqFactory extends AbstractFactory
      */
     public function createConnectionCreator(): ConnectionCreatorInterface
     {
-        return new ConnectionCreator($this->createConnectionFactory());
+        return new ConnectionCreator($this->createQueueEstablishmentHelper());
     }
 
     /**

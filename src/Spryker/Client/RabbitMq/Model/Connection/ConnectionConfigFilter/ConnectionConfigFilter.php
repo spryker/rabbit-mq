@@ -9,7 +9,6 @@ namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface;
 
 class ConnectionConfigFilter implements ConnectionConfigFilterInterface
 {
@@ -19,18 +18,11 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
     protected $storeClient;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
-     */
-    protected $connectionFactory;
-
-    /**
      * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface $connectionFactory
      */
-    public function __construct(RabbitMqToStoreClientInterface $storeClient, ConnectionFactoryInterface $connectionFactory)
+    public function __construct(RabbitMqToStoreClientInterface $storeClient)
     {
         $this->storeClient = $storeClient;
-        $this->connectionFactory = $connectionFactory;
     }
 
     /**

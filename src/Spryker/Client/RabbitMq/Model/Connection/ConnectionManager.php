@@ -14,18 +14,20 @@ use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionCo
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface;
 use Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException;
+use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class ConnectionManager implements ConnectionManagerInterface
 {
+
+    /**
+     * @var \Spryker\Client\RabbitMq\RabbitMqConfig
+     */
+    protected $config;
+
     /**
      * @var \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
      */
     protected $storeClient;
-
-    /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
-     */
-    protected $connectionFactory;
 
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface
@@ -43,21 +45,21 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $connectionCreator;
 
     /**
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
      * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface $connectionFactory
      * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface $connectionConfigMapper
      * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilterInterface $connectionConfigFilter
      * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface $connectionCreator
      */
     public function __construct(
+        RabbitMqConfig $config,
         RabbitMqToStoreClientInterface $storeClient,
-        ConnectionFactoryInterface $connectionFactory,
         ConnectionConfigMapperInterface $connectionConfigMapper,
         ConnectionConfigFilterInterface $connectionConfigFilter,
         ConnectionCreatorInterface $connectionCreator
     ) {
+        $this->config = $config;
         $this->storeClient = $storeClient;
-        $this->connectionFactory = $connectionFactory;
         $this->connectionConfigMapper = $connectionConfigMapper;
         $this->connectionConfigFilter = $connectionConfigFilter;
         $this->connectionCreator = $connectionCreator;
@@ -134,7 +136,7 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getDefaultConnectionConfig(): QueueConnectionTransfer
     {
-        foreach ($this->connectionFactory->getQueueConnectionConfigs() as $queueConnectionConfig) {
+        foreach ($this->config->getQueueConnections() as $queueConnectionConfig) {
             if ($queueConnectionConfig->getIsDefaultConnection()) {
                 return $queueConnectionConfig;
             }

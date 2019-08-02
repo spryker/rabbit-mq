@@ -8,15 +8,17 @@
 namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
+use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 
 class ConnectionCreator implements ConnectionCreatorInterface
 {
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
+     * @var \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface
      */
-    protected $connectionFactory;
+    protected $queueEstablishmentHelper;
 
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
@@ -24,11 +26,11 @@ class ConnectionCreator implements ConnectionCreatorInterface
     protected $createdConnectionsMap;
 
     /**
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface $connectionFactory
+     * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
      */
-    public function __construct(ConnectionFactoryInterface $connectionFactory)
+    public function __construct(QueueEstablishmentHelperInterface $queueEstablishmentHelper)
     {
-        $this->connectionFactory = $connectionFactory;
+        $this->queueEstablishmentHelper = $queueEstablishmentHelper;
     }
 
     /**
@@ -38,7 +40,7 @@ class ConnectionCreator implements ConnectionCreatorInterface
      */
     public function createConnectionByConfig(QueueConnectionTransfer $connectionConfig): ConnectionInterface
     {
-        return $this->createConnection($connectionConfig);
+        return $this->createOrGetConnection($connectionConfig);
     }
 
     /**
@@ -46,16 +48,59 @@ class ConnectionCreator implements ConnectionCreatorInterface
      *
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
-    protected function createConnection(QueueConnectionTransfer $connectionConfig): ConnectionInterface
+    protected function createOrGetConnection(QueueConnectionTransfer $connectionConfig): ConnectionInterface
     {
         if (isset($this->createdConnectionsMap[$connectionConfig->getName()])) {
             return $this->createdConnectionsMap[$connectionConfig->getName()];
         }
 
-        $connection = $this->connectionFactory->createConnection($connectionConfig);
+        $connection = $this->createConnection($connectionConfig);
         $this->createdConnectionsMap[$connectionConfig->getName()] = $connection;
 
         return $connection;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
+    protected function createConnection(QueueConnectionTransfer $queueConnectionConfig): ConnectionInterface
+    {
+        return new Connection(
+            $this->createAmqpStreamConnection($queueConnectionConfig),
+            $this->queueEstablishmentHelper,
+            $queueConnectionConfig
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \PhpAmqpLib\Connection\AMQPStreamConnection
+     */
+    protected function createAmqpStreamConnection(QueueConnectionTransfer $queueConnectionTransfer): AMQPStreamConnection
+    {
+        $streamConnection = new AMQPStreamConnection(
+            $queueConnectionTransfer->getHost(),
+            $queueConnectionTransfer->getPort(),
+            $queueConnectionTransfer->getUsername(),
+            $queueConnectionTransfer->getPassword(),
+            $queueConnectionTransfer->getVirtualHost(),
+            $queueConnectionTransfer->getInsist() ?? false,
+            $queueConnectionTransfer->getLoginMethod() ?? 'AMQPLAIN',
+            $queueConnectionTransfer->getLoginResponse(),
+            $queueConnectionTransfer->getLocale() ?? 'en_US',
+            $queueConnectionTransfer->getConnectionTimeout() ?? 3,
+            $queueConnectionTransfer->getReadWriteTimeout() ?? 130,
+            null,
+            $queueConnectionTransfer->getKeepAlive() ?? false,
+            $queueConnectionTransfer->getHeartBeat() ?? 0,
+            $queueConnectionTransfer->getChannelRpcTimeout() ?? 0,
+            $queueConnectionTransfer->getSslProtocol()
+        );
+
+        return $streamConnection;
     }
 
     /**
@@ -68,7 +113,7 @@ class ConnectionCreator implements ConnectionCreatorInterface
         $connections = [];
 
         foreach ($connectionsConfig as $connectionConfig) {
-            $connection = $this->createConnection($connectionConfig);
+            $connection = $this->createOrGetConnection($connectionConfig);
             $uniqueChannelId = $this->getUniqueChannelId($connection);
             if (!isset($connections[$uniqueChannelId])) {
                 $connections[$uniqueChannelId] = $connection;

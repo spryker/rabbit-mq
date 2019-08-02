@@ -17,9 +17,9 @@ use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilter;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapper;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreator;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class RabbitMqHelper extends Module
 {
@@ -97,14 +97,14 @@ class RabbitMqHelper extends Module
         string $poolConnectionName = self::DEFAULT_POOL_CONNECTION_NAME
     ): ConnectionManagerInterface {
         $storeClient = $this->getStoreClientMock($poolConnectionName);
-        $connectionFactory = $this->getConnectionFactoryMock([$connectionTransfer]);
+        $configMock = $this->getConfigMock([$connectionTransfer]);
 
         return new ConnectionManager(
+            $configMock,
             $storeClient,
-            $connectionFactory,
-            new ConnectionConfigMapper($connectionFactory),
-            new ConnectionConfigFilter($storeClient, $connectionFactory),
-            new ConnectionCreator($connectionFactory)
+            new ConnectionConfigMapper($configMock),
+            new ConnectionConfigFilter($storeClient),
+            $this->getConnectionCreatorMock()
         );
     }
 
@@ -142,12 +142,21 @@ class RabbitMqHelper extends Module
     /**
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
      *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface|object
+     * @return \Spryker\Client\RabbitMq\RabbitMqConfig|object
      */
-    protected function getConnectionFactoryMock(array $queueConnectionTransfers)
+    protected function getConfigMock(array $queueConnectionTransfers)
     {
-        return Stub::make(ConnectionFactory::class, [
-            'getQueueConnectionConfigs' => $queueConnectionTransfers,
+        return Stub::make(RabbitMqConfig::class, [
+            'getQueueConnections' => $queueConnectionTransfers,
+        ]);
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface|object
+     */
+    protected function getConnectionCreatorMock()
+    {
+        return Stub::make(ConnectionCreator::class, [
             'createConnection' => $this->getConnectionMock(),
         ]);
     }

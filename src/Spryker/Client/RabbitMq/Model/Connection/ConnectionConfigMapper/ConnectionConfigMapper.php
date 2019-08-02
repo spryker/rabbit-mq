@@ -7,15 +7,15 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper;
 
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface;
 use Spryker\Client\RabbitMq\Model\Exception\ConnectionConfigIsNotDefinedException;
+use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class ConnectionConfigMapper implements ConnectionConfigMapperInterface
 {
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
+     * @var \Spryker\Client\RabbitMq\RabbitMqConfig
      */
-    protected $connectionFactory;
+    private $config;
 
     /**
      * @var \Generated\Shared\Transfer\QueueConnectionTransfer[]|null Keys are connection names.
@@ -33,11 +33,11 @@ class ConnectionConfigMapper implements ConnectionConfigMapperInterface
     protected $connectionsConfigMapByPoolName;
 
     /**
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface $connectionFactory
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
      */
-    public function __construct(ConnectionFactoryInterface $connectionFactory)
+    public function __construct(RabbitMqConfig $config)
     {
-        $this->connectionFactory = $connectionFactory;
+        $this->config = $config;
     }
 
     /**
@@ -77,7 +77,7 @@ class ConnectionConfigMapper implements ConnectionConfigMapperInterface
      */
     protected function addConnectionsConfig(): void
     {
-        foreach ($this->connectionFactory->getQueueConnectionConfigs() as $queueConnectionConfig) {
+        foreach ($this->config->getQueueConnections() as $queueConnectionConfig) {
             $this->connectionsConfigMap[$queueConnectionConfig->getName()] = $queueConnectionConfig;
         }
     }
