@@ -18,7 +18,6 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class ConnectionManager implements ConnectionManagerInterface
 {
-
     /**
      * @var \Spryker\Client\RabbitMq\RabbitMqConfig
      */

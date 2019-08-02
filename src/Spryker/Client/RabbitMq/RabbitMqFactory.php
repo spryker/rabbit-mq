@@ -16,8 +16,6 @@ use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionCo
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapperInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreator;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\Model\Consumer\Consumer;
