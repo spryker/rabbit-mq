@@ -13,19 +13,19 @@ interface ConnectionManagerInterface
 {
     /**
      * @param string $queuePoolName
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $locale): array;
+    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array;
 
     /**
      * @param string $storeName
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByStoreName(string $storeName, ?string $locale): array;
+    public function getChannelsByStoreName(string $storeName, ?string $localeCode): array;
 
     /**
      * @return \PhpAmqpLib\Channel\AMQPChannel

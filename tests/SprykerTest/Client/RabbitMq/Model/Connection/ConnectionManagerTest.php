@@ -42,7 +42,7 @@ class ConnectionManagerTest extends Unit
     {
         $this->expectException(ConnectionConfigIsNotDefinedException::class);
 
-        $connectionManager = $this->tester->createConnectionManagerWithDefaultQueueConnectionAndIncorrectLocale();
+        $connectionManager = $this->tester->createConnectionManagerWithDefaultQueueConnectionAndIncorrectLocaleCode();
 
         $connectionManager->getChannelsByQueuePoolName(static::QUEUE_POOL_NAME, static::LOCALE_CODE);
     }
@@ -62,7 +62,7 @@ class ConnectionManagerTest extends Unit
     /**
      * @return void
      */
-    public function testGetChannelsByStoreNameForIncorrectLocale(): void
+    public function testGetChannelsByStoreNameForIncorrectLocaleCode(): void
     {
         $connectionManager = $this->tester->createConnectionManagerWithDefaultQueueConnection();
 
@@ -75,7 +75,7 @@ class ConnectionManagerTest extends Unit
     /**
      * @return void
      */
-    public function testGetChannelsByQueuePoolNameWithoutLocale(): void
+    public function testGetChannelsByQueuePoolNameWithoutLocaleCode(): void
     {
         $connectionManager = $this->tester->createConnectionManagerWithDefaultQueueConnection();
 
@@ -87,7 +87,7 @@ class ConnectionManagerTest extends Unit
     /**
      * @return void
      */
-    public function testGetChannelsByStoreNameForDefinedLocale(): void
+    public function testGetChannelsByStoreNameForDefinedLocaleCode(): void
     {
         $connectionManager = $this->tester->createConnectionManagerWithDefaultQueueConnection();
 
@@ -99,7 +99,7 @@ class ConnectionManagerTest extends Unit
     /**
      * @return void
      */
-    public function testGetChannelsByStoreNameWithoutLocale(): void
+    public function testGetChannelsByStoreNameWithoutLocaleCode(): void
     {
         $connectionManager = $this->tester->createConnectionManagerWithDefaultQueueConnection();
 

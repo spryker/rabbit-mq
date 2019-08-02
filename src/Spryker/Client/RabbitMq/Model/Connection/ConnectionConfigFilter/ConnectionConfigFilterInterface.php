@@ -11,9 +11,9 @@ interface ConnectionConfigFilterInterface
 {
     /**
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $connectionsConfig
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function filterByLocale(array $connectionsConfig, ?string $locale): array;
+    public function filterByLocaleCode(array $connectionsConfig, ?string $localeCode): array;
 }

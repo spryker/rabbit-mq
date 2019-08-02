@@ -27,19 +27,19 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
 
     /**
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $connectionsConfig
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function filterByLocale(array $connectionsConfig, ?string $locale): array
+    public function filterByLocaleCode(array $connectionsConfig, ?string $localeCode): array
     {
-        if ($locale === null) {
+        if ($localeCode === null) {
             return $connectionsConfig;
         }
 
         $filteredConnectionsConfig = [];
         foreach ($connectionsConfig as $key => $connectionConfig) {
-            if ($this->shouldWriteConnectionConfigByLocale($connectionConfig, $locale)) {
+            if ($this->shouldWriteConnectionConfigByLocale($connectionConfig, $localeCode)) {
                 $filteredConnectionsConfig[$key] = $connectionConfig;
             }
         }
@@ -49,14 +49,14 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
 
     /**
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer $connectionConfig
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return bool
      */
-    protected function shouldWriteConnectionConfigByLocale(QueueConnectionTransfer $connectionConfig, string $locale): bool
+    protected function shouldWriteConnectionConfigByLocale(QueueConnectionTransfer $connectionConfig, string $localeCode): bool
     {
         foreach ($connectionConfig->getStoreNames() as $storeName) {
-            if ($this->isLocaleDefinedForStore($storeName, $locale)) {
+            if ($this->isLocaleDefinedForStore($storeName, $localeCode)) {
                 return true;
             }
         }
@@ -66,13 +66,13 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
 
     /**
      * @param string $storeName
-     * @param string $locale
+     * @param string $localeCode
      *
      * @return bool
      */
-    protected function isLocaleDefinedForStore(string $storeName, string $locale): bool
+    protected function isLocaleDefinedForStore(string $storeName, string $localeCode): bool
     {
-        return in_array($locale, $this->getLocalesPerStore($storeName), true);
+        return in_array($localeCode, $this->getLocalesPerStore($storeName), true);
     }
 
     /**

@@ -67,28 +67,28 @@ class ConnectionManager implements ConnectionManagerInterface
 
     /**
      * @param string $queuePoolName
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $locale): array
+    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array
     {
         $connectionsConfigMap = $this->connectionConfigMapper->mapConnectionsConfigByPoolName(
             $this->storeClient->getCurrentStore()->getQueuePools()
         )[$queuePoolName];
 
-        return $this->getChannelsFilteredByLocale($connectionsConfigMap, $locale);
+        return $this->getChannelsFilteredByLocaleCode($connectionsConfigMap, $localeCode);
     }
 
     /**
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $connectionsConfig
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    protected function getChannelsFilteredByLocale(array $connectionsConfig, ?string $locale): array
+    protected function getChannelsFilteredByLocaleCode(array $connectionsConfig, ?string $localeCode): array
     {
-        $filteredConnectionsConfig = $this->connectionConfigFilter->filterByLocale($connectionsConfig, $locale);
+        $filteredConnectionsConfig = $this->connectionConfigFilter->filterByLocaleCode($connectionsConfig, $localeCode);
         $connections = $this->connectionCreator->createConnectionsByConfig($filteredConnectionsConfig);
 
         return $this->getChannels($connections);
@@ -108,15 +108,15 @@ class ConnectionManager implements ConnectionManagerInterface
 
     /**
      * @param string $storeName
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByStoreName(string $storeName, ?string $locale): array
+    public function getChannelsByStoreName(string $storeName, ?string $localeCode): array
     {
         $connectionsConfigMap = $this->connectionConfigMapper->mapConnectionsConfigByStoreName()[$storeName];
 
-        return $this->getChannelsFilteredByLocale($connectionsConfigMap, $locale);
+        return $this->getChannelsFilteredByLocaleCode($connectionsConfigMap, $localeCode);
     }
 
     /**
