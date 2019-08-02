@@ -39,7 +39,7 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
 
         $filteredConnectionsConfig = [];
         foreach ($connectionsConfig as $key => $connectionConfig) {
-            if ($this->shouldWriteConnectionConfigByLocale($connectionConfig, $localeCode)) {
+            if ($this->shouldWriteConnectionConfigByLocaleCode($connectionConfig, $localeCode)) {
                 $filteredConnectionsConfig[$key] = $connectionConfig;
             }
         }
@@ -53,10 +53,10 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
      *
      * @return bool
      */
-    protected function shouldWriteConnectionConfigByLocale(QueueConnectionTransfer $connectionConfig, string $localeCode): bool
+    protected function shouldWriteConnectionConfigByLocaleCode(QueueConnectionTransfer $connectionConfig, string $localeCode): bool
     {
         foreach ($connectionConfig->getStoreNames() as $storeName) {
-            if ($this->isLocaleDefinedForStore($storeName, $localeCode)) {
+            if ($this->isLocaleCodeDefinedForStore($storeName, $localeCode)) {
                 return true;
             }
         }
@@ -70,9 +70,9 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
      *
      * @return bool
      */
-    protected function isLocaleDefinedForStore(string $storeName, string $localeCode): bool
+    protected function isLocaleCodeDefinedForStore(string $storeName, string $localeCode): bool
     {
-        return in_array($localeCode, $this->getLocalesPerStore($storeName), true);
+        return in_array($localeCode, $this->getLocaleCodesPerStore($storeName), true);
     }
 
     /**
@@ -80,7 +80,7 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
      *
      * @return string[]
      */
-    protected function getLocalesPerStore(string $storeName): array
+    protected function getLocaleCodesPerStore(string $storeName): array
     {
         return $this->storeClient->getStoreByName($storeName)->getAvailableLocaleIsoCodes();
     }
