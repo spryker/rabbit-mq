@@ -14,11 +14,11 @@ use Generated\Shared\Transfer\StoreTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientBridge;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter\ConnectionConfigFilter;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper\ConnectionConfigMapper;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreator;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilter;
+use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapper;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class RabbitMqHelper extends Module
@@ -34,7 +34,7 @@ class RabbitMqHelper extends Module
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    public function createConnectionManagerWithDefaultQueueConnectionAndIncorrectLocale(): ConnectionManagerInterface
+    public function createConnectionManagerWithDefaultQueueConnectionAndIncorrectLocaleCode(): ConnectionManagerInterface
     {
         return $this->createConnectionManager(
             $this->createDefaultQueueConnectionTransfer(),
@@ -102,8 +102,8 @@ class RabbitMqHelper extends Module
         return new ConnectionManager(
             $configMock,
             $storeClient,
-            new ConnectionConfigMapper($configMock),
-            new ConnectionConfigFilter($storeClient),
+            new QueueConnectionTransferMapper($configMock),
+            new QueueConnectionTransferFilter($storeClient),
             $this->getConnectionCreatorMock()
         );
     }

@@ -5,12 +5,12 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigFilter;
+namespace Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 
-class ConnectionConfigFilter implements ConnectionConfigFilterInterface
+class QueueConnectionTransferFilter implements QueueConnectionTransferFilterInterface
 {
     /**
      * @var \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
@@ -26,36 +26,38 @@ class ConnectionConfigFilter implements ConnectionConfigFilterInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $connectionsConfig
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
      * @param string|null $localeCode
      *
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function filterByLocaleCode(array $connectionsConfig, ?string $localeCode): array
+    public function filterByLocaleCode(array $queueConnectionTransfers, ?string $localeCode): array
     {
         if ($localeCode === null) {
-            return $connectionsConfig;
+            return $queueConnectionTransfers;
         }
 
-        $filteredConnectionsConfig = [];
-        foreach ($connectionsConfig as $key => $connectionConfig) {
-            if ($this->shouldWriteConnectionConfigByLocaleCode($connectionConfig, $localeCode)) {
-                $filteredConnectionsConfig[$key] = $connectionConfig;
+        $filteredQueueConnectionTransfers = [];
+        foreach ($queueConnectionTransfers as $key => $queueConnectionTransfer) {
+            if ($this->isLocaleCodeDefinedInQueueConnectionTransfer($queueConnectionTransfer, $localeCode)) {
+                $filteredQueueConnectionTransfers[$key] = $queueConnectionTransfer;
             }
         }
 
-        return $filteredConnectionsConfig;
+        return $filteredQueueConnectionTransfers;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $connectionConfig
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
      * @param string $localeCode
      *
      * @return bool
      */
-    protected function shouldWriteConnectionConfigByLocaleCode(QueueConnectionTransfer $connectionConfig, string $localeCode): bool
-    {
-        foreach ($connectionConfig->getStoreNames() as $storeName) {
+    protected function isLocaleCodeDefinedInQueueConnectionTransfer(
+        QueueConnectionTransfer $queueConnectionTransfer,
+        string $localeCode
+    ): bool {
+        foreach ($queueConnectionTransfer->getStoreNames() as $storeName) {
             if ($this->isLocaleCodeDefinedForStore($storeName, $localeCode)) {
                 return true;
             }

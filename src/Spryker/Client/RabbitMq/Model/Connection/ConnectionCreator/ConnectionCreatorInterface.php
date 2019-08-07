@@ -13,16 +13,16 @@ use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 interface ConnectionCreatorInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $connectionsConfig
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
      *
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
      */
-    public function createConnectionsByConfig(array $connectionsConfig): array;
+    public function createConnectionsByQueueConnectionTransfers(array $queueConnectionTransfers): array;
 
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $connectionConfig
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
      *
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
-    public function createConnectionByConfig(QueueConnectionTransfer $connectionConfig): ConnectionInterface;
+    public function createConnectionByQueueConnectionTransfer(QueueConnectionTransfer $queueConnectionTransfer): ConnectionInterface;
 }

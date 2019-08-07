@@ -5,19 +5,19 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionConfigMapper;
+namespace Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper;
 
-interface ConnectionConfigMapperInterface
+interface QueueConnectionTransferMapperInterface
 {
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[][]
      */
-    public function mapConnectionsConfigByStoreName(): array;
+    public function mapQueueConnectionTransfersByStoreName(): array;
 
     /**
      * @param string[][] $queuePools Keys are pool names, values are lists of connection names.
      *
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[][]
      */
-    public function mapConnectionsConfigByPoolName(array $queuePools): array;
+    public function mapQueueConnectionTransfersByPoolName(array $queuePools): array;
 }
