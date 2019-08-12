@@ -151,6 +151,6 @@ class ConnectionManager implements ConnectionManagerInterface
             }
         }
 
-        throw new DefaultConnectionNotFoundException(static::DEFAULT_CONNECTION_NOT_FOUND_EXCEPTION_MESSAGE);
+        throw new DefaultConnectionNotFoundException(static::EXCEPTION_MESSAGE_DEFAULT_CONNECTION_NOT_FOUND);
     }
 }
