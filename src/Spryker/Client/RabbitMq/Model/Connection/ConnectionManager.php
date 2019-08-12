@@ -10,7 +10,7 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface;
 use Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException;
@@ -40,29 +40,29 @@ class ConnectionManager implements ConnectionManagerInterface
     protected $connectionConfigFilter;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface
      */
-    protected $connectionCreator;
+    protected $connectionBuilder;
 
     /**
      * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
      * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
      * @param \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface $connectionConfigMapper
      * @param \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface $connectionConfigFilter
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface $connectionCreator
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface $connectionBuilder
      */
     public function __construct(
         RabbitMqConfig $config,
         RabbitMqToStoreClientInterface $storeClient,
         QueueConnectionTransferMapperInterface $connectionConfigMapper,
         QueueConnectionTransferFilterInterface $connectionConfigFilter,
-        ConnectionCreatorInterface $connectionCreator
+        ConnectionBuilderInterface $connectionBuilder
     ) {
         $this->config = $config;
         $this->storeClient = $storeClient;
         $this->connectionConfigMapper = $connectionConfigMapper;
         $this->connectionConfigFilter = $connectionConfigFilter;
-        $this->connectionCreator = $connectionCreator;
+        $this->connectionBuilder = $connectionBuilder;
     }
 
     /**
@@ -93,7 +93,7 @@ class ConnectionManager implements ConnectionManagerInterface
             $localeCode
         );
 
-        $connections = $this->connectionCreator->createConnectionsByQueueConnectionTransfers(
+        $connections = $this->connectionBuilder->createConnectionsByQueueConnectionTransfers(
             $filteredQueueConnectionTransfers
         );
 
@@ -131,7 +131,7 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     public function getDefaultChannel(): AMQPChannel
     {
-        $defaultConnection = $this->connectionCreator->createConnectionByQueueConnectionTransfer(
+        $defaultConnection = $this->connectionBuilder->createConnectionByQueueConnectionTransfer(
             $this->getDefaultQueueConnectionTransfer()
         );
 

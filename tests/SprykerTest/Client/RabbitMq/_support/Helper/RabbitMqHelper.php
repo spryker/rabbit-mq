@@ -14,7 +14,7 @@ use Generated\Shared\Transfer\StoreTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientBridge;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreator;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilder;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilter;
@@ -104,7 +104,7 @@ class RabbitMqHelper extends Module
             $storeClient,
             new QueueConnectionTransferMapper($configMock),
             new QueueConnectionTransferFilter($storeClient),
-            $this->getConnectionCreatorMock()
+            $this->getConnectionBuilderMock()
         );
     }
 
@@ -152,11 +152,11 @@ class RabbitMqHelper extends Module
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface|object
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface|object
      */
-    protected function getConnectionCreatorMock()
+    protected function getConnectionBuilderMock()
     {
-        return Stub::make(ConnectionCreator::class, [
+        return Stub::make(ConnectionBuilder::class, [
             'createConnection' => $this->getConnectionMock(),
         ]);
     }

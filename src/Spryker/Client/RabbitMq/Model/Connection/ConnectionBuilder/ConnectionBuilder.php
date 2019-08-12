@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator;
+namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -15,7 +15,7 @@ use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
 
-class ConnectionCreator implements ConnectionCreatorInterface
+class ConnectionBuilder implements ConnectionBuilderInterface
 {
     /**
      * @var \Spryker\Client\RabbitMq\RabbitMqConfig

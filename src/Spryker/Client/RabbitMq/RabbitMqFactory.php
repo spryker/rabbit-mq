@@ -10,8 +10,8 @@ namespace Spryker\Client\RabbitMq;
 use Spryker\Client\Kernel\AbstractFactory;
 use Spryker\Client\Queue\Model\Adapter\AdapterInterface;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreator;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilder;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilter;
@@ -72,7 +72,7 @@ class RabbitMqFactory extends AbstractFactory
             $this->getStoreClient(),
             $this->createQueueConnectionTransferMapper(),
             $this->createQueueConnectionTransferFilter(),
-            $this->createConnectionCreator()
+            $this->createConnectionBuilder()
         );
     }
 
@@ -101,11 +101,11 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator\ConnectionCreatorInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface
      */
-    public function createConnectionCreator(): ConnectionCreatorInterface
+    public function createConnectionBuilder(): ConnectionBuilderInterface
     {
-        return new ConnectionCreator(
+        return new ConnectionBuilder(
             $this->getConfig(),
             $this->getStoreClient(),
             $this->createQueueEstablishmentHelper()

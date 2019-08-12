@@ -5,12 +5,12 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionCreator;
+namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 
-interface ConnectionCreatorInterface
+interface ConnectionBuilderInterface
 {
     /**
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
