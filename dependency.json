@@ -1,5 +1,5 @@
 {
   "include": {
-    "Transfer": "Provides transfer objects definition."
+    "spryker/transfer": "Provides transfer objects definition."
   }
 }
