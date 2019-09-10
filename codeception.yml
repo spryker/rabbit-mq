@@ -3,6 +3,7 @@ actor: Tester
 
 include:
   - tests/SprykerTest/Zed/RabbitMq
+  - tests/SprykerTest/Client/RabbitMq
 
 paths:
     tests: tests

@@ -16,10 +16,18 @@ use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
 class RabbitMqConfig extends AbstractBundleConfig
 {
+    protected const AMQP_STREAM_CONNECTION_INSIST = false;
+    protected const AMQP_STREAM_CONNECTION_LOGIN_METHOD = 'AMQPLAIN';
+    protected const AMQP_STREAM_CONNECTION_CONNECTION_TIMEOUT = 3;
+    protected const AMQP_STREAM_CONNECTION_READ_WRITE_TIMEOUT = 130;
+    protected const AMQP_STREAM_CONNECTION_KEEP_ALIVE = false;
+    protected const AMQP_STREAM_CONNECTION_HEART_BEAT = 0;
+    protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
+
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function getQueueConnections()
+    public function getQueueConnections(): array
     {
         $queueConnectionConfigs = $this->getQueueConnectionConfigs();
 
@@ -36,20 +44,9 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
-     * @return \ArrayObject
-     */
-    protected function getQueueOptions()
-    {
-        $queueOptionCollection = new ArrayObject();
-        $queueOptionCollection->append(new RabbitMqOptionTransfer());
-
-        return $queueOptionCollection;
-    }
-
-    /**
      * @return array
      */
-    protected function getQueueConnectionConfigs()
+    protected function getQueueConnectionConfigs(): array
     {
         $connections = [];
 
@@ -74,12 +71,38 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @return \ArrayObject
+     */
+    protected function getQueueOptions()
+    {
+        $queueOptionCollection = new ArrayObject();
+        $queueOptionCollection->append(new RabbitMqOptionTransfer());
+
+        return $queueOptionCollection;
+    }
+
+    /**
      * @return array
      */
-    public function getMessageConfig()
+    public function getMessageConfig(): array
     {
         return [
             'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,
         ];
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\QueueConnectionTransfer
+     */
+    public function getDefaultQueueConnectionConfig(): QueueConnectionTransfer
+    {
+        return (new QueueConnectionTransfer())
+            ->setInsist(static::AMQP_STREAM_CONNECTION_INSIST)
+            ->setLoginMethod(static::AMQP_STREAM_CONNECTION_LOGIN_METHOD)
+            ->setConnectionTimeout(static::AMQP_STREAM_CONNECTION_CONNECTION_TIMEOUT)
+            ->setReadWriteTimeout(static::AMQP_STREAM_CONNECTION_READ_WRITE_TIMEOUT)
+            ->setKeepAlive(static::AMQP_STREAM_CONNECTION_KEEP_ALIVE)
+            ->setHeartBeat(static::AMQP_STREAM_CONNECTION_HEART_BEAT)
+            ->setChannelRpcTimeout(static::AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT);
     }
 }

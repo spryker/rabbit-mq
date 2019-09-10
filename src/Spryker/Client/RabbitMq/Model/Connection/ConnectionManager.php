@@ -8,205 +8,100 @@
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
+use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface;
+use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface;
+use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface;
 use Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException;
+use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class ConnectionManager implements ConnectionManagerInterface
 {
+    protected const EXCEPTION_MESSAGE_DEFAULT_CONNECTION_NOT_FOUND = 'Default queue connection not found. You can fix this by adding `RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION = true` in your queue connection in `config_*.php` files';
+    /**
+     * @var \Spryker\Client\RabbitMq\RabbitMqConfig
+     */
+    protected $config;
+
     /**
      * @var \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
      */
     protected $storeClient;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
+     * @var \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface
      */
-    protected $connectionFactory;
+    protected $connectionConfigMapper;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]|null Keys are connection names.
+     * @var \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface
      */
-    protected $connectionMap;
+    protected $connectionConfigFilter;
 
     /**
-     * @var array|null Keys are pool names, values are lists of connections.
+     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface
      */
-    protected $connectionMapByPoolName;
+    protected $connectionBuilder;
 
     /**
-     * @var array|null Keys are store names, values are lists of connections.
-     */
-    protected $connectionMapByStoreName;
-
-    /**
-     * @var string|null
-     */
-    protected $defaultConnectionName;
-
-    /**
-     * @var array|null
-     */
-    protected $connectionNameLocaleMap;
-
-    /**
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
      * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface $connectionFactory
+     * @param \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface $connectionConfigMapper
+     * @param \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface $connectionConfigFilter
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface $connectionBuilder
      */
-    public function __construct(RabbitMqToStoreClientInterface $storeClient, ConnectionFactoryInterface $connectionFactory)
-    {
+    public function __construct(
+        RabbitMqConfig $config,
+        RabbitMqToStoreClientInterface $storeClient,
+        QueueConnectionTransferMapperInterface $connectionConfigMapper,
+        QueueConnectionTransferFilterInterface $connectionConfigFilter,
+        ConnectionBuilderInterface $connectionBuilder
+    ) {
+        $this->config = $config;
         $this->storeClient = $storeClient;
-        $this->connectionFactory = $connectionFactory;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getConnectionMapByPoolName()
-    {
-        if ($this->connectionMapByPoolName === null) {
-            $this->connectionMapByPoolName = $this->mapConnectionsByPoolName($this->storeClient->getCurrentStore()->getQueuePools());
-        }
-
-        return $this->connectionMapByPoolName;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getConnectionMapByStoreName()
-    {
-        if ($this->connectionMapByStoreName === null) {
-            $this->connectionMapByStoreName = $this->mapConnectionsByStoreName();
-        }
-
-        return $this->connectionMapByStoreName;
-    }
-
-    /**
-     * @return array
-     */
-    protected function mapConnectionsByStoreName()
-    {
-        $connectionMap = [];
-        foreach ($this->connectionMap as $connection) {
-            foreach ($connection->getStoreNames() as $storeName) {
-                $uniqueChannelId = $this->getUniqueChannelId($connection);
-                $connectionMap[$storeName][$uniqueChannelId] = $connection;
-            }
-        }
-
-        return $connectionMap;
-    }
-
-    /**
-     * @param array $queuePools Keys are pool names, values are lists of connection names.
-     *
-     * @return array
-     */
-    protected function mapConnectionsByPoolName(array $queuePools)
-    {
-        $connectionMap = [];
-        foreach ($queuePools as $queuePoolName => $connectionNames) {
-            $connectionMap[$queuePoolName] = $this->getConnectionByName($connectionNames);
-        }
-
-        return $connectionMap;
-    }
-
-    /**
-     * @param string[] $connectionNames
-     *
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
-     */
-    protected function getConnectionByName(array $connectionNames)
-    {
-        $connections = [];
-        foreach ($connectionNames as $connectionName) {
-            $uniqueChannelId = $this->getUniqueChannelId($this->getConnectionMap()[$connectionName]);
-            $connections[$uniqueChannelId] = $this->getConnectionMap()[$connectionName];
-        }
-
-        return $connections;
-    }
-
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
-     */
-    protected function getConnectionMap()
-    {
-        if ($this->connectionMap === null) {
-            $this->addConnections();
-        }
-
-        return $this->connectionMap;
-    }
-
-    /**
-     * @return void
-     */
-    protected function addConnections()
-    {
-        foreach ($this->connectionFactory->getQueueConnectionConfigs() as $queueConnectionConfig) {
-            $connection = $this->getConnection($queueConnectionConfig);
-            $this->connectionMap[$connection->getName()] = $connection;
-            if ($connection->getIsDefaultConnection()) {
-                $this->defaultConnectionName = $connection->getName();
-            }
-        }
-    }
-
-    /**
-     * @return void
-     */
-    protected function addConnectionNameLocaleMap()
-    {
-        foreach ($this->connectionFactory->getQueueConnectionConfigs() as $queueConnectionConfig) {
-            foreach ($queueConnectionConfig->getStoreNames() as $storeName) {
-                foreach ($this->getLocalesPerStore($storeName) as $locale) {
-                    $this->connectionNameLocaleMap[$queueConnectionConfig->getName()][$locale] = true;
-                }
-            }
-        }
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionConfig
-     *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
-     */
-    protected function getConnection(QueueConnectionTransfer $queueConnectionConfig)
-    {
-        return $this->connectionFactory->createConnection($queueConnectionConfig);
-    }
-
-    /**
-     * @param string $storeName
-     * @param string|null $locale
-     *
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
-     */
-    public function getChannelsByStoreName(string $storeName, ?string $locale)
-    {
-        $connections = $this->getConnectionMapByStoreName()[$storeName];
-
-        return $this->getChannelsFilteredByLocale($connections, $locale);
+        $this->connectionConfigMapper = $connectionConfigMapper;
+        $this->connectionConfigFilter = $connectionConfigFilter;
+        $this->connectionBuilder = $connectionBuilder;
     }
 
     /**
      * @param string $queuePoolName
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $locale)
+    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array
     {
-        $connections = $this->getConnectionMapByPoolName()[$queuePoolName];
+        $queueConnectionTransfersByBoolName = $this->connectionConfigMapper->mapQueueConnectionTransfersByPoolName(
+            $this->storeClient->getCurrentStore()->getQueuePools()
+        )[$queuePoolName];
 
-        return $this->getChannelsFilteredByLocale($connections, $locale);
+        return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByBoolName, $localeCode);
     }
 
     /**
-     * @param array $connections
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
+     * @param string|null $localeCode
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected function getChannelsFilteredByLocaleCode(array $queueConnectionTransfers, ?string $localeCode): array
+    {
+        $filteredQueueConnectionTransfers = $this->connectionConfigFilter->filterByLocaleCode(
+            $queueConnectionTransfers,
+            $localeCode
+        );
+
+        $connections = $this->connectionBuilder->createConnectionsByQueueConnectionTransfers(
+            $filteredQueueConnectionTransfers
+        );
+
+        return $this->getChannels($connections);
+    }
+
+    /**
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[] $connections
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
@@ -218,66 +113,44 @@ class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[] $connections
-     * @param string|null $locale
+     * @param string $storeName
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    protected function getChannelsFilteredByLocale(array $connections, ?string $locale): array
+    public function getChannelsByStoreName(string $storeName, ?string $localeCode): array
     {
-        if ($locale === null) {
-            return $this->getChannels($connections);
-        }
+        $queueConnectionTransfersByStoreName = $this->connectionConfigMapper
+            ->mapQueueConnectionTransfersByStoreName()[$storeName];
 
-        if ($this->connectionNameLocaleMap === null) {
-            $this->addConnectionNameLocaleMap();
-        }
+        return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByStoreName, $localeCode);
+    }
 
-        $channels = [];
-        foreach ($connections as $key => $connection) {
-            if (!isset($this->connectionNameLocaleMap[$connection->getName()][$locale])) {
-                continue;
-            }
+    /**
+     * @return \PhpAmqpLib\Channel\AMQPChannel
+     */
+    public function getDefaultChannel(): AMQPChannel
+    {
+        $defaultConnection = $this->connectionBuilder->createConnectionByQueueConnectionTransfer(
+            $this->getDefaultQueueConnectionTransfer()
+        );
 
-            $channels[$key] = $connection->getChannel();
-        }
-
-        return $channels;
+        return $defaultConnection->getChannel();
     }
 
     /**
      * @throws \Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException
      *
-     * @return \PhpAmqpLib\Channel\AMQPChannel
+     * @return \Generated\Shared\Transfer\QueueConnectionTransfer
      */
-    public function getDefaultChannel()
+    protected function getDefaultQueueConnectionTransfer(): QueueConnectionTransfer
     {
-        if (!isset($this->getConnectionMap()[$this->defaultConnectionName])) {
-            throw new DefaultConnectionNotFoundException(
-                'Default queue connection not found, You can fix this by adding RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION = true in your queue connection in config_* files'
-            );
+        foreach ($this->config->getQueueConnections() as $queueConnectionTransfer) {
+            if ($queueConnectionTransfer->getIsDefaultConnection()) {
+                return $queueConnectionTransfer;
+            }
         }
 
-        return $this->getConnectionMap()[$this->defaultConnectionName]->getChannel();
-    }
-
-    /**
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface $connection
-     *
-     * @return string
-     */
-    protected function getUniqueChannelId(ConnectionInterface $connection)
-    {
-        return $connection->getVirtualHost() . '-' . $connection->getChannel()->getChannelId();
-    }
-
-    /**
-     * @param string $storeName
-     *
-     * @return array
-     */
-    protected function getLocalesPerStore(string $storeName)
-    {
-        return $this->storeClient->getStoreByName($storeName)->getAvailableLocaleIsoCodes();
+        throw new DefaultConnectionNotFoundException(static::EXCEPTION_MESSAGE_DEFAULT_CONNECTION_NOT_FOUND);
     }
 }

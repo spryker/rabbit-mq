@@ -8,12 +8,24 @@
 namespace Spryker\Client\RabbitMq;
 
 use Spryker\Client\Kernel\AbstractFactory;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionFactory;
+use Spryker\Client\Queue\Model\Adapter\AdapterInterface;
+use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilder;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilter;
+use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface;
+use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapper;
+use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface;
 use Spryker\Client\RabbitMq\Model\Consumer\Consumer;
+use Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelper;
+use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 use Spryker\Client\RabbitMq\Model\Manager\Manager;
+use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
+use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 
 /**
@@ -29,7 +41,7 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
      */
-    public function createQueueAdapter()
+    public function createQueueAdapter(): AdapterInterface
     {
         return new RabbitMqAdapter(
             $this->createManager(),
@@ -41,7 +53,7 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    public function getStaticConnectionManager()
+    public function getStaticConnectionManager(): ConnectionManagerInterface
     {
         if (static::$connectionManager === null) {
             static::$connectionManager = $this->createConnectionManager();
@@ -53,36 +65,57 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    protected function createConnectionManager()
+    public function createConnectionManager(): ConnectionManagerInterface
     {
-        $connectionManager = new ConnectionManager(
+        return new ConnectionManager(
+            $this->getConfig(),
             $this->getStoreClient(),
-            $this->createConnectionFactory()
+            $this->createQueueConnectionTransferMapper(),
+            $this->createQueueConnectionTransferFilter(),
+            $this->createConnectionBuilder()
         );
-
-        return $connectionManager;
     }
 
     /**
      * @return \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
      */
-    protected function getStoreClient()
+    public function getStoreClient(): RabbitMqToStoreClientInterface
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::CLIENT_STORE);
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionFactoryInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface
      */
-    protected function createConnectionFactory()
+    public function createQueueConnectionTransferMapper(): QueueConnectionTransferMapperInterface
     {
-        return new ConnectionFactory();
+        return new QueueConnectionTransferMapper($this->getConfig());
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Manager\Manager
+     * @return \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface
      */
-    protected function createManager()
+    public function createQueueConnectionTransferFilter(): QueueConnectionTransferFilterInterface
+    {
+        return new QueueConnectionTransferFilter($this->getStoreClient());
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface
+     */
+    public function createConnectionBuilder(): ConnectionBuilderInterface
+    {
+        return new ConnectionBuilder(
+            $this->getConfig(),
+            $this->getStoreClient(),
+            $this->createQueueEstablishmentHelper()
+        );
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface
+     */
+    public function createManager(): ManagerInterface
     {
         return new Manager(
             $this->getStaticConnectionManager()->getDefaultChannel(),
@@ -91,9 +124,9 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Publisher\Publisher
+     * @return \Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface
      */
-    protected function createPublisher()
+    public function createPublisher(): PublisherInterface
     {
         return new Publisher(
             $this->getStaticConnectionManager(),
@@ -102,9 +135,9 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Consumer\Consumer
+     * @return \Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface
      */
-    protected function createConsumer()
+    public function createConsumer(): ConsumerInterface
     {
         return new Consumer(
             $this->getStaticConnectionManager()->getDefaultChannel()
@@ -114,7 +147,7 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface
      */
-    protected function createQueueEstablishmentHelper()
+    public function createQueueEstablishmentHelper(): QueueEstablishmentHelperInterface
     {
         return new QueueEstablishmentHelper();
     }

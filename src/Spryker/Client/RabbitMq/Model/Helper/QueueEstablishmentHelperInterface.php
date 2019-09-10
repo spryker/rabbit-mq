@@ -16,15 +16,15 @@ interface QueueEstablishmentHelperInterface
      * @param \PhpAmqpLib\Channel\AMQPChannel $channel
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
      *
-     * @return array
+     * @return mixed[]
      */
-    public function createQueue(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer);
+    public function createQueue(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer): array;
 
     /**
      * @param \PhpAmqpLib\Channel\AMQPChannel $channel
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
      *
-     * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
+     * @return void
      */
-    public function createExchange(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer);
+    public function createExchange(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer): void;
 }

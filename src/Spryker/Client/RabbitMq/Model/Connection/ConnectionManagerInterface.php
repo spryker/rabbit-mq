@@ -7,26 +7,28 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection;
 
+use PhpAmqpLib\Channel\AMQPChannel;
+
 interface ConnectionManagerInterface
 {
     /**
      * @param string $queuePoolName
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $locale);
+    public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array;
 
     /**
      * @param string $storeName
-     * @param string|null $locale
+     * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
-    public function getChannelsByStoreName(string $storeName, ?string $locale);
+    public function getChannelsByStoreName(string $storeName, ?string $localeCode): array;
 
     /**
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
-    public function getDefaultChannel();
+    public function getDefaultChannel(): AMQPChannel;
 }
