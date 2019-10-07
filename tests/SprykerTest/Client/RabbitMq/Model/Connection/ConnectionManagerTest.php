@@ -13,6 +13,7 @@ use Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException;
 
 /**
  * Auto-generated group annotations
+ *
  * @group SprykerTest
  * @group Client
  * @group RabbitMq

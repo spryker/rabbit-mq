@@ -14,6 +14,7 @@ use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
 
 /**
  * Auto-generated group annotations
+ *
  * @group SprykerTest
  * @group Zed
  * @group Business
