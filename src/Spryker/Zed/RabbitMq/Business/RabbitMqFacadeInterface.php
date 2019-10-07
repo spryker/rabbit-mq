@@ -51,7 +51,7 @@ interface RabbitMqFacadeInterface
     public function deleteAllExchanges(LoggerInterface $logger);
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
