@@ -15,9 +15,9 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class Publisher implements PublisherInterface
 {
-    const DEFAULT_CHANNEL = 'DEFAULT_CHANNEL';
-    const STORE_NAME_BUFFER_KEY_FORMAT = 'STORE_NAME:%d-%d';
-    const QUEUE_POOL_NAME_BUFFER_KEY_FORMAT = 'QUEUE_POOL_NAME:%d-%d';
+    public const DEFAULT_CHANNEL = 'DEFAULT_CHANNEL';
+    public const STORE_NAME_BUFFER_KEY_FORMAT = 'STORE_NAME:%s-%s';
+    public const QUEUE_POOL_NAME_BUFFER_KEY_FORMAT = 'QUEUE_POOL_NAME:%s-%s';
 
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
@@ -114,7 +114,7 @@ class Publisher implements PublisherInterface
     }
 
     /**
-     * @param QueueSendMessageTransfer $queueSendMessageTransfer
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
@@ -134,7 +134,7 @@ class Publisher implements PublisherInterface
     }
 
     /**
-     * @param QueueSendMessageTransfer $queueSendMessageTransfer
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
      */
@@ -158,7 +158,7 @@ class Publisher implements PublisherInterface
      */
     protected function getDefaultChannel(): array
     {
-        if ($this->channelBuffer[static::DEFAULT_CHANNEL] !== []) {
+        if (isset($this->channelBuffer[static::DEFAULT_CHANNEL])) {
             return $this->channelBuffer[static::DEFAULT_CHANNEL];
         }
 
