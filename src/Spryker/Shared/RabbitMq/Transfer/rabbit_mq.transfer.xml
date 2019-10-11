@@ -1,15 +1,14 @@
 <?xml version="1.0"?>
-<transfers
-        xmlns="spryker:transfer-01"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+<transfers xmlns="spryker:transfer-01"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
 
     <transfer name="QueueConnection">
-        <property name="name" type="string" />
-        <property name="host" type="string" />
-        <property name="port" type="int" />
-        <property name="username" type="string" />
-        <property name="password" type="string" />
+        <property name="name" type="string"/>
+        <property name="host" type="string"/>
+        <property name="port" type="int"/>
+        <property name="username" type="string"/>
+        <property name="password" type="string"/>
         <property name="virtualHost" type="string"/>
         <property name="insist" type="bool"/>
         <property name="loginMethod" type="string"/>
@@ -22,8 +21,8 @@
         <property name="channelRpcTimeout" type="int"/>
         <property name="sslProtocol" type="string"/>
         <property name="queueOptionCollection" singular="queueOptionItem" type="RabbitMqOption[]"/>
-        <property name="isDefaultConnection" type="bool" />
-        <property name="storeNames" type="array" />
+        <property name="isDefaultConnection" type="bool"/>
+        <property name="storeNames" type="array"/>
     </transfer>
 
     <transfer name="RabbitMqOption">
@@ -49,7 +48,7 @@
         <property name="consumerExclusive" type="bool"/>
         <property name="noWait" type="bool"/>
         <property name="timeout" type="int"/>
-        <property name="requeueOnReject" type="bool" />
+        <property name="requeueOnReject" type="bool"/>
     </transfer>
 
     <transfer name="RabbitMqQueue">
@@ -70,14 +69,26 @@
         <property name="rabbitMqExchanges" type="RabbitMqExchange[]" singular="rabbitMqExchange"/>
     </transfer>
 
+    <transfer name="Store">
+        <property name="availableLocaleIsoCodes" type="array" singular="availableLocaleCode"/>
+        <property name="queuePools" type="array"/>
+    </transfer>
+
     <transfer name="QueueSendMessage">
         <property name="routingKey" type="string"/>
-        <property name="headers" type="array" singular="header" associative="true" />
+        <property name="headers" type="array" singular="header" associative="true"/>
+        <property name="body" type="string"/>
+        <property name="storeName" type="string"/>
+        <property name="locale" type="string"/>
+        <property name="queuePoolName" type="string"/>
     </transfer>
 
     <transfer name="QueueReceiveMessage">
-        <property name="deliveryTag" type="string" />
-        <property name="routingKey" type="string" />
-        <property name="requeue" type="bool" />
+        <property name="deliveryTag" type="string"/>
+        <property name="routingKey" type="string"/>
+        <property name="requeue" type="bool"/>
+        <property name="queueMessage" type="QueueSendMessage"/>
+        <property name="queueName" type="string"/>
     </transfer>
+
 </transfers>
