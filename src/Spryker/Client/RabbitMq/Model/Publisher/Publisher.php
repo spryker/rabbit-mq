@@ -15,6 +15,10 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class Publisher implements PublisherInterface
 {
+    const DEFAULT_CHANNEL = 'DEFAULT_CHANNEL';
+    const STORE_NAME_BUFFER_KEY_FORMAT = 'STORE_NAME:%d-%d';
+    const QUEUE_POOL_NAME_BUFFER_KEY_FORMAT = 'QUEUE_POOL_NAME:%d-%d';
+
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
@@ -24,6 +28,11 @@ class Publisher implements PublisherInterface
      * @var \Spryker\Client\RabbitMq\RabbitMqConfig
      */
     protected $config;
+
+    /**
+     * @var \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected $channelBuffer = [];
 
     /**
      * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface $connectionManager
@@ -94,20 +103,68 @@ class Publisher implements PublisherInterface
     protected function getChannels(QueueSendMessageTransfer $queueSendMessageTransfer)
     {
         if ($queueSendMessageTransfer->getStoreName()) {
-            return $this->connectionManager->getChannelsByStoreName(
-                $queueSendMessageTransfer->getStoreName(),
-                $queueSendMessageTransfer->getLocale()
-            );
+            return $this->getChannelByStoreName($queueSendMessageTransfer);
         }
 
         if ($queueSendMessageTransfer->getQueuePoolName()) {
-            return $this->connectionManager->getChannelsByQueuePoolName(
-                $queueSendMessageTransfer->getQueuePoolName(),
-                $queueSendMessageTransfer->getLocale()
-            );
+            return $this->getChannelByQueuePoolName($queueSendMessageTransfer);
         }
 
-        return [$this->connectionManager->getDefaultChannel()];
+        return $this->getDefaultChannel();
+    }
+
+    /**
+     * @param QueueSendMessageTransfer $queueSendMessageTransfer
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected function getChannelByStoreName(QueueSendMessageTransfer $queueSendMessageTransfer): array
+    {
+        $localeName = $queueSendMessageTransfer->getLocale();
+        $storeName = $queueSendMessageTransfer->getStoreName();
+
+        $bufferKey = sprintf(static::STORE_NAME_BUFFER_KEY_FORMAT, $storeName, $localeName);
+        if (isset($this->channelBuffer[$bufferKey])) {
+            return $this->channelBuffer[$bufferKey];
+        }
+
+        $this->channelBuffer[$bufferKey] = $this->connectionManager->getChannelsByStoreName($storeName, $localeName);
+
+        return $this->channelBuffer[$bufferKey];
+    }
+
+    /**
+     * @param QueueSendMessageTransfer $queueSendMessageTransfer
+     *
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected function getChannelByQueuePoolName(QueueSendMessageTransfer $queueSendMessageTransfer): array
+    {
+        $localeName = $queueSendMessageTransfer->getLocale();
+        $queuePoolName = $queueSendMessageTransfer->getQueuePoolName();
+
+        $bufferKey = sprintf(static::QUEUE_POOL_NAME_BUFFER_KEY_FORMAT, $queuePoolName, $localeName);
+        if (isset($this->channelBuffer[$bufferKey])) {
+            return $this->channelBuffer[$bufferKey];
+        }
+
+        $this->channelBuffer[$bufferKey] = $this->connectionManager->getChannelsByQueuePoolName($queuePoolName, $localeName);
+
+        return $this->channelBuffer[$bufferKey];
+    }
+
+    /**
+     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     */
+    protected function getDefaultChannel(): array
+    {
+        if ($this->channelBuffer[static::DEFAULT_CHANNEL] !== []) {
+            return $this->channelBuffer[static::DEFAULT_CHANNEL];
+        }
+
+        $this->channelBuffer[static::DEFAULT_CHANNEL] = [$this->connectionManager->getDefaultChannel()];
+
+        return $this->channelBuffer[static::DEFAULT_CHANNEL];
     }
 
     /**
