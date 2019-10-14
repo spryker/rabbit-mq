@@ -15,9 +15,9 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class Publisher implements PublisherInterface
 {
-    public const DEFAULT_CHANNEL = 'DEFAULT_CHANNEL';
-    public const STORE_NAME_BUFFER_KEY_FORMAT = 'STORE_NAME:%s-%s';
-    public const QUEUE_POOL_NAME_BUFFER_KEY_FORMAT = 'QUEUE_POOL_NAME:%s-%s';
+    protected const DEFAULT_CHANNEL = 'DEFAULT_CHANNEL';
+    protected const STORE_NAME_BUFFER_KEY_FORMAT = 'STORE_NAME:%s-%s';
+    protected const QUEUE_POOL_NAME_BUFFER_KEY_FORMAT = 'QUEUE_POOL_NAME:%s-%s';
 
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
