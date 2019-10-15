@@ -22,7 +22,7 @@
         <property name="sslProtocol" type="string"/>
         <property name="queueOptionCollection" singular="queueOptionItem" type="RabbitMqOption[]"/>
         <property name="isDefaultConnection" type="bool"/>
-        <property name="storeNames" type="array"/>
+        <property name="storeNames" type="array" singular="storeNames"/>
     </transfer>
 
     <transfer name="RabbitMqOption">
@@ -34,7 +34,7 @@
         <property name="exclusive" type="bool"/>
         <property name="type" type="string"/>
         <property name="noWait" type="bool"/>
-        <property name="arguments" type="array"/>
+        <property name="arguments" type="array" singular="arguments"/>
         <property name="routingKeys" singular="routingKey" type="string[]"/>
         <property name="declarationType" type="string"/>
         <property name="bindingQueueCollection" singular="bindingQueueItem" type="RabbitMqOption[]"/>
@@ -71,7 +71,7 @@
 
     <transfer name="Store">
         <property name="availableLocaleIsoCodes" type="array" singular="availableLocaleCode"/>
-        <property name="queuePools" type="array"/>
+        <property name="queuePools" type="array" singular="queuePools"/>
     </transfer>
 
     <transfer name="QueueSendMessage">
