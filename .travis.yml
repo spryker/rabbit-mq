@@ -4,6 +4,7 @@ sudo: false
 
 php:
   - 7.1
+  - 7.4snapshot
 
 env:
   global:
@@ -20,7 +21,7 @@ matrix:
     - php: 7.1
 
 before_install:
-  - phpenv config-rm xdebug.ini
+  - if [[ ${TRAVIS_PHP_VERSION} != "7.4snapshot" ]]; then phpenv config-rm xdebug.ini ; fi
   - phpenv config-add ci/travis.php.ini
 
 before_script:
