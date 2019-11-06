@@ -13,12 +13,16 @@ env:
 matrix:
   include:
     - php: 7.2
-      env: PHPCS=1 DEFAULT=0
+      env: VALIDATION=1 DEFAULT=0
+
+    - php:  7.4snapshot
+      env: VALIDATION=1 DEFAULT=0
 
   fast_finish: true
 
   allow_failures:
     - php: 7.1
+    - php: 7.4snapshot
 
 before_install:
   - if [[ ${TRAVIS_PHP_VERSION} != "7.4snapshot" ]]; then phpenv config-rm xdebug.ini ; fi
@@ -29,7 +33,8 @@ before_script:
 
 script:
   - if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept run ; fi
-  - if [[ $PHPCS == 1 ]]; then composer cs-check ; fi
+  - if [[ $VALIDATION == 1 ]]; then composer cs-check ; fi
+  - if [[ $VALIDATION == 1 ]] ; then vendor/bin/console code:phpstan -m Spryker.RabbitMq ; fi
 
 notifications:
   email: false
