@@ -1,0 +1,9 @@
+parameters:
+    ignoreErrors:
+        - '#Return typehint of method .+ has invalid type .+Transfer#'
+        - '#Property .+ has unknown class .+Transfer as its type#'
+        - '#Parameter .+ of method .+ has invalid typehint type .+Transfer#'
+        - '#Call to method .+ on an unknown class .+Transfer#'
+        - '#Call to method store\(\) on an unknown class .+AutoCompletion#'
+        - '#Call to method rabbitMq\(\) on an unknown class .+AutoCompletion#'
+        - '#Parameter \#2 \$subject of function preg_match expects string, null given#'

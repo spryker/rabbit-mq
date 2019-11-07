@@ -37,7 +37,7 @@
     "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -p --ignore=/templates/ src/ tests/",
     "cs-fix": "phpcbf --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -p --ignore=/templates/ src/ tests/",
     "phpstan": [
-      "php -d memory_limit=1024M vendor/bin/phpstan analyze -l 5 -c phpstan.neon src/ tests/"
+      "php -d memory_limit=1024M vendor/bin/phpstan analyze -l 5 -c phpstan.neon src/"
     ]
   },
   "extra": {

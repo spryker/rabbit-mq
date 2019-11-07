@@ -57,7 +57,7 @@ class Consumer implements ConsumerInterface
         /** @var \Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitmq'];
 
-        $this->channel->basic_qos(null, $chunkSize, null);
+        $this->channel->basic_qos(0, $chunkSize, false);
         $consumerTag = $this->channel->basic_consume(
             $queueName,
             $rabbitMqOption->getConsumerTag(),
