@@ -30,7 +30,7 @@ class Publisher implements PublisherInterface
     protected $config;
 
     /**
-     * @var \PhpAmqpLib\Channel\AMQPChannel[]
+     * @var \PhpAmqpLib\Channel\AMQPChannel[][]
      */
     protected $channelBuffer = [];
 

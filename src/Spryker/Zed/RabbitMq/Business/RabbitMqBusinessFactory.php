@@ -100,7 +100,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
+     * @return \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface
      */
     protected function getQueueAdapter()
     {
