@@ -2,6 +2,7 @@ language: php
 
 php:
   - 7.2
+  - 7.4snapshot
 
 env:
   global:
@@ -10,9 +11,6 @@ env:
 matrix:
   include:
     - php: 7.2
-      env: VALIDATION=1 DEFAULT=0
-
-    - php: 7.4snapshot
       env: VALIDATION=1 DEFAULT=0
 
   fast_finish: true
@@ -31,7 +29,7 @@ before_script:
 script:
   - if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept run ; fi
   - if [[ $VALIDATION == 1 ]]; then composer cs-check ; fi
-  - if [[ $VALIDATION == 1 ]] ; then composer phpstan-setup && composer phpstan ; fi
+  - if [[ $VALIDATION == 1 ]]; then composer phpstan-setup && composer phpstan ; fi
 
 notifications:
   email: false
