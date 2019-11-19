@@ -29,7 +29,7 @@ class ExchangeFilterByNameTest extends PHPUnit_Framework_TestCase
     /**
      * @return void
      */
-    public function testFilterWhenBlacklistedByName()
+    public function testFilterWhenBlacklistedByName(): void
     {
         $rabbitMyExchangeCollectionTransfer = new RabbitMqExchangeCollectionTransfer();
         $rabbitMqExchangeTransfer = new RabbitMqExchangeTransfer();
@@ -45,7 +45,7 @@ class ExchangeFilterByNameTest extends PHPUnit_Framework_TestCase
     /**
      * @return void
      */
-    public function testFilterWHenBlacklistedByPattern()
+    public function testFilterWHenBlacklistedByPattern(): void
     {
         $rabbitMyExchangeCollectionTransfer = new RabbitMqExchangeCollectionTransfer();
         $rabbitMqExchangeTransfer = new RabbitMqExchangeTransfer();
@@ -61,7 +61,7 @@ class ExchangeFilterByNameTest extends PHPUnit_Framework_TestCase
     /**
      * @return void
      */
-    public function testDoesNotFilterWhenNotBlacklisted()
+    public function testDoesNotFilterWhenNotBlacklisted(): void
     {
         $rabbitMyExchangeCollectionTransfer = new RabbitMqExchangeCollectionTransfer();
         $rabbitMqExchangeTransfer = new RabbitMqExchangeTransfer();
