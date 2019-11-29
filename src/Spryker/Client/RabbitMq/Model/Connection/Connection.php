@@ -9,7 +9,7 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Exception\AMQPProtocolChannelException;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 
@@ -23,9 +23,9 @@ class Connection implements ConnectionInterface
     protected $queueConnectionConfig;
 
     /**
-     * @var \PhpAmqpLib\Connection\AMQPStreamConnection
+     * @var \PhpAmqpLib\Connection\AbstractConnection
      */
-    protected $streamConnection;
+    protected $connection;
 
     /**
      * @var \PhpAmqpLib\Channel\AMQPChannel
@@ -38,17 +38,17 @@ class Connection implements ConnectionInterface
     protected $queueEstablishmentHelper;
 
     /**
-     * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
+     * @param \PhpAmqpLib\Connection\AbstractConnection $connection
      * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnection
      */
     public function __construct(
-        AMQPStreamConnection $streamConnection,
+        AbstractConnection $connection,
         QueueEstablishmentHelperInterface $queueEstablishmentHelper,
         QueueConnectionTransfer $queueConnection
     ) {
 
-        $this->streamConnection = $streamConnection;
+        $this->connection = $connection;
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
         $this->queueConnectionConfig = $queueConnection;
 
@@ -100,7 +100,7 @@ class Connection implements ConnectionInterface
      */
     protected function setupConnection()
     {
-        $this->channel = $this->streamConnection->channel();
+        $this->channel = $this->connection->channel();
 
         $this->setupQueueAndExchange();
     }
@@ -165,7 +165,7 @@ class Connection implements ConnectionInterface
         }
 
         $this->channel->close();
-        $this->streamConnection->close();
+        $this->connection->close();
     }
 
     public function __destruct()

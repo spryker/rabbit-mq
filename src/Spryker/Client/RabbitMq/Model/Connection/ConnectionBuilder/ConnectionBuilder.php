@@ -8,6 +8,7 @@
 namespace Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder;
 
 use Generated\Shared\Transfer\QueueConnectionTransfer;
+use PhpAmqpLib\Connection\AMQPSocketConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
@@ -87,7 +88,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
     protected function createConnection(QueueConnectionTransfer $queueConnectionTransfer): ConnectionInterface
     {
         return new Connection(
-            $this->createAmqpStreamConnection($queueConnectionTransfer),
+            $this->chooseAmqpConnectionMethod($queueConnectionTransfer),
             $this->queueEstablishmentHelper,
             $queueConnectionTransfer
         );
@@ -119,6 +120,33 @@ class ConnectionBuilder implements ConnectionBuilderInterface
             $queueConnectionTransfer->getHeartBeat() ?? $defaultQueueConnectionTransfer->getHeartBeat(),
             $queueConnectionTransfer->getChannelRpcTimeout() ?? $defaultQueueConnectionTransfer->getChannelRpcTimeout(),
             $queueConnectionTransfer->getSslProtocol()
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \PhpAmqpLib\Connection\AMQPSocketConnection
+     */
+    protected function createAmqpSocketConnection(QueueConnectionTransfer $queueConnectionTransfer): AMQPSocketConnection
+    {
+        $defaultQueueConnectionTransfer = $this->config->getDefaultQueueConnectionConfig();
+
+        return new AMQPSocketConnection(
+            $queueConnectionTransfer->getHost(),
+            $queueConnectionTransfer->getPort(),
+            $queueConnectionTransfer->getUsername(),
+            $queueConnectionTransfer->getPassword(),
+            $queueConnectionTransfer->getVirtualHost(),
+            $queueConnectionTransfer->getInsist() ?? $defaultQueueConnectionTransfer->getInsist(),
+            $queueConnectionTransfer->getLoginMethod() ?? $defaultQueueConnectionTransfer->getLoginMethod(),
+            $queueConnectionTransfer->getLoginResponse(),
+            $queueConnectionTransfer->getLocale() ?? $this->getDefaultLocale(),
+            $queueConnectionTransfer->getConnectionTimeout() ?? $defaultQueueConnectionTransfer->getConnectionTimeout(),
+            $queueConnectionTransfer->getKeepAlive() ?? $defaultQueueConnectionTransfer->getKeepAlive(),
+            $queueConnectionTransfer->getConnectionTimeout() ?? $defaultQueueConnectionTransfer->getConnectionTimeout(),
+            $queueConnectionTransfer->getHeartBeat() ?? $defaultQueueConnectionTransfer->getHeartBeat(),
+            $queueConnectionTransfer->getChannelRpcTimeout() ?? $defaultQueueConnectionTransfer->getChannelRpcTimeout()
         );
     }
 
@@ -158,5 +186,19 @@ class ConnectionBuilder implements ConnectionBuilderInterface
     protected function getUniqueChannelId(ConnectionInterface $connection): string
     {
         return sprintf('%s-%s', $connection->getVirtualHost(), $connection->getChannel()->getChannelId());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \PhpAmqpLib\Connection\AMQPSocketConnection|\PhpAmqpLib\Connection\AMQPStreamConnection
+     */
+    protected function chooseAmqpConnectionMethod(QueueConnectionTransfer $queueConnectionTransfer)
+    {
+        if ($this->config->getQueueConnectionMethod() === 'SocketIO') {
+            return $this->createAmqpSocketConnection($queueConnectionTransfer);
+        }
+
+        return $this->createAmqpStreamConnection($queueConnectionTransfer);
     }
 }

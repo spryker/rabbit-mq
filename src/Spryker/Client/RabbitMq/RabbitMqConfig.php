@@ -105,4 +105,12 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setHeartBeat(static::AMQP_STREAM_CONNECTION_HEART_BEAT)
             ->setChannelRpcTimeout(static::AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT);
     }
+
+    /**
+     * @return string
+     */
+    public function getQueueConnectionMethod(): string
+    {
+        return 'SocketIO';
+    }
 }
