@@ -23,6 +23,9 @@ class RabbitMqConfig extends AbstractBundleConfig
     protected const AMQP_STREAM_CONNECTION_KEEP_ALIVE = false;
     protected const AMQP_STREAM_CONNECTION_HEART_BEAT = 0;
     protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
+    public const AMQP_STREAM_IO_CONNECTION = 'StreamIO';
+    public const AMQP_SOCKET_IO_CONNECTION = 'SocketIO';
+
 
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
@@ -111,6 +114,6 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     public function getQueueConnectionMethod(): string
     {
-        return 'SocketIO';
+        return static::AMQP_SOCKET_IO_CONNECTION;
     }
 }

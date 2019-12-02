@@ -195,7 +195,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      */
     protected function chooseAmqpConnectionMethod(QueueConnectionTransfer $queueConnectionTransfer)
     {
-        if ($this->config->getQueueConnectionMethod() === 'SocketIO') {
+        if ($this->config->getQueueConnectionMethod() === RabbitMqConfig::AMQP_SOCKET_IO_CONNECTION) {
             return $this->createAmqpSocketConnection($queueConnectionTransfer);
         }
 
