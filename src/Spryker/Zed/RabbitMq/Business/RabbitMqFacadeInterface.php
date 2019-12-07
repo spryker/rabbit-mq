@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
+use Generated\Shared\Transfer\HealthCheckServiceResponseTransfer;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -60,4 +61,14 @@ interface RabbitMqFacadeInterface
      * @return bool
      */
     public function setUserPermissions(LoggerInterface $logger);
+
+    /**
+     * Specification:
+     * - Performs health check for the broker service.
+     *
+     * @api
+     *
+     * @return \Generated\Shared\Transfer\HealthCheckServiceResponseTransfer
+     */
+    public function executeHealthCheck(): HealthCheckServiceResponseTransfer;
 }

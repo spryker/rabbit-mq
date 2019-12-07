@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
+use Generated\Shared\Transfer\HealthCheckServiceResponseTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -69,5 +70,17 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
     public function setUserPermissions(LoggerInterface $logger)
     {
         return $this->getFactory()->createUserPermissionHandler()->setPermissions($logger);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @return \Generated\Shared\Transfer\HealthCheckServiceResponseTransfer
+     */
+    public function executeHealthCheck(): HealthCheckServiceResponseTransfer
+    {
+        return $this->getFactory()->createHealthChecker()->executeHealthCheck();
     }
 }

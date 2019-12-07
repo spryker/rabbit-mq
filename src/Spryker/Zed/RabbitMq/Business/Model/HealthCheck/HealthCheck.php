@@ -7,8 +7,8 @@
 
 namespace Spryker\Zed\RabbitMq\Business\Model\HealthCheck;
 
-use \Exception;
 use Generated\Shared\Transfer\HealthCheckServiceResponseTransfer;
+use PhpAmqpLib\Exception\AMQPIOException;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface;
 
 class HealthCheck implements HealthCheckInterface
@@ -35,8 +35,8 @@ class HealthCheck implements HealthCheckInterface
             ->setStatus(true);
 
         try {
-            $this->queueAdapter->getConnectionStatus();
-        } catch (Exception $e) {
+//            $this->queueAdapter->getConnectionStatus();
+        } catch (AMQPIOException $e) {
             return $healthCheckServiceResponseTransfer
                 ->setStatus(false)
                 ->setMessage($e->getMessage());

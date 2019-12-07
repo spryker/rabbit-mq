@@ -12,7 +12,7 @@ use Spryker\Shared\HealthCheckExtension\Dependency\Plugin\HealthCheckPluginInter
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
- * @method \Spryker\Zed\RabbitMq\Business\RabbitMqBusinessFactory getFactory()
+ * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()()
  */
 class BrokerHealthCheckPlugin extends AbstractPlugin implements HealthCheckPluginInterface
 {
@@ -39,6 +39,6 @@ class BrokerHealthCheckPlugin extends AbstractPlugin implements HealthCheckPlugi
      */
     public function check(): HealthCheckServiceResponseTransfer
     {
-        return $this->getFactory()->createHealthChecker()->executeHealthCheck();
+        return $this->getFacade()->executeHealthCheck();
     }
 }
