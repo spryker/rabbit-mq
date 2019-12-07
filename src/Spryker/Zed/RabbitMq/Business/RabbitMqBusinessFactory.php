@@ -11,6 +11,8 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
+use Spryker\Zed\RabbitMq\Business\Model\HealthCheck\HealthCheck;
+use Spryker\Zed\RabbitMq\Business\Model\HealthCheck\HealthCheckInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
@@ -105,5 +107,15 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     protected function getQueueAdapter()
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::QUEUE_ADAPTER);
+    }
+
+    /**
+     * @return \Spryker\Zed\RabbitMq\Business\Model\HealthCheck\HealthCheckInterface
+     */
+    public function createHealthChecker(): HealthCheckInterface
+    {
+        return new HealthCheck(
+            $this->getQueueAdapter()
+        );
     }
 }

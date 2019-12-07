@@ -33,6 +33,14 @@ class Manager implements ManagerInterface
     }
 
     /**
+     * @return bool
+     */
+    public function getConnectionStatus(): bool
+    {
+        return $this->channel->getConnection()->isConnected();
+    }
+
+    /**
      * @param string $queueName
      * @param array $options
      *

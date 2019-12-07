@@ -17,4 +17,9 @@ interface ManagerInterface extends SprykerManagerInterface
      * @return bool
      */
     public function deleteExchange($exchangeName);
+
+    /**
+     * @return bool
+     */
+    public function getConnectionStatus(): bool;
 }

@@ -89,6 +89,14 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
     }
 
     /**
+     * @return bool
+     */
+    public function getConnectionStatus(): bool
+    {
+        return $this->manager->getConnectionStatus();
+    }
+
+    /**
      * @param string $queueName
      * @param int $chunkSize
      * @param array $options
