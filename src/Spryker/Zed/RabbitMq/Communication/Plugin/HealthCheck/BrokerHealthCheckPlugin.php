@@ -16,7 +16,7 @@ use Spryker\Shared\HealthCheckExtension\Dependency\Plugin\HealthCheckPluginInter
  */
 class BrokerHealthCheckPlugin extends AbstractPlugin implements HealthCheckPluginInterface
 {
-    protected const BROKER_HEALTH_CHECK_NAME = 'broker';
+    protected const BROKER_HEALTH_CHECK_SERVICE_NAME = 'broker';
 
     /**
      * {@inheritDoc}
@@ -27,7 +27,7 @@ class BrokerHealthCheckPlugin extends AbstractPlugin implements HealthCheckPlugi
      */
     public function getName(): string
     {
-        return static::BROKER_HEALTH_CHECK_NAME;
+        return static::BROKER_HEALTH_CHECK_SERVICE_NAME;
     }
 
     /**
