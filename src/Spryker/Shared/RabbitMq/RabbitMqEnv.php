@@ -137,4 +137,12 @@ interface RabbitMqEnv extends QueueConstants
      * @api
      */
     public const RABBITMQ_EXCHANGE_BLACKLIST = 'RABBITMQ:RABBITMQ_EXCHANGE_BLACKLIST';
+
+    /**
+     * Specification:
+     * - Use this constant to configure the stream context
+     *
+     * @api
+     */
+    public const RABBITMQ_STREAM_CONTEXT_OPTIONS = 'RABBITMQ:RABBITMQ_STREAM_CONTEXT_OPTIONS';
 }

@@ -55,6 +55,10 @@ class RabbitMqConfig extends AbstractBundleConfig
                 (bool)$connection[RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION] :
                 false;
 
+            $streamContextOptions = isset($connection[RabbitMqEnv::RABBITMQ_STREAM_CONTEXT_OPTIONS]) ?
+                (array)$connection[RabbitMqEnv::RABBITMQ_STREAM_CONTEXT_OPTIONS] :
+                null;
+
             $connections[] = [
                 'name' => $connection[RabbitMqEnv::RABBITMQ_CONNECTION_NAME],
                 'host' => $connection[RabbitMqEnv::RABBITMQ_HOST],
@@ -64,6 +68,7 @@ class RabbitMqConfig extends AbstractBundleConfig
                 'virtualHost' => $connection[RabbitMqEnv::RABBITMQ_VIRTUAL_HOST],
                 'storeNames' => $connection[RabbitMqEnv::RABBITMQ_STORE_NAMES],
                 'isDefaultConnection' => $isDefaultConnection,
+                'streamContextOptions' => $streamContextOptions,
             ];
         }
 
