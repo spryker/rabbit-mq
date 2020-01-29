@@ -140,7 +140,7 @@ interface RabbitMqEnv extends QueueConstants
 
     /**
      * Specification:
-     * - Use this constant to configure the stream context
+     * - Use this constant to configure the stream context.
      *
      * @api
      */

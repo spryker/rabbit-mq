@@ -23,7 +23,7 @@
         <property name="queueOptionCollection" singular="queueOptionItem" type="RabbitMqOption[]"/>
         <property name="isDefaultConnection" type="bool"/>
         <property name="storeNames" type="array" singular="storeNames"/>
-        <property name="streamContextOptions" type="array" singular="streamContextOptions"/>
+        <property name="streamContextOptions" type="array" singular="streamContextOption"/>
     </transfer>
 
     <transfer name="RabbitMqOption">

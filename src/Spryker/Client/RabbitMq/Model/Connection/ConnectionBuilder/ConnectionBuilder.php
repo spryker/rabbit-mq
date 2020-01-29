@@ -114,7 +114,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
             $queueConnectionTransfer->getLocale() ?? $this->getDefaultLocale(),
             $queueConnectionTransfer->getConnectionTimeout() ?? $defaultQueueConnectionTransfer->getConnectionTimeout(),
             $queueConnectionTransfer->getReadWriteTimeout() ?? $defaultQueueConnectionTransfer->getReadWriteTimeout(),
-            $this->createSslContext($queueConnectionTransfer),
+            $this->createStreamContext($queueConnectionTransfer),
             $queueConnectionTransfer->getKeepAlive() ?? $defaultQueueConnectionTransfer->getKeepAlive(),
             $queueConnectionTransfer->getHeartBeat() ?? $defaultQueueConnectionTransfer->getHeartBeat(),
             $queueConnectionTransfer->getChannelRpcTimeout() ?? $defaultQueueConnectionTransfer->getChannelRpcTimeout(),
@@ -127,7 +127,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      *
      * @return resource|null
      */
-    private function createSslContext(QueueConnectionTransfer $queueConnectionTransfer)
+    protected function createStreamContext(QueueConnectionTransfer $queueConnectionTransfer)
     {
         $options = $queueConnectionTransfer->getStreamContextOptions();
 
