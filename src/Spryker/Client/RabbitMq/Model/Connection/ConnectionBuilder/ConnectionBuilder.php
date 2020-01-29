@@ -129,15 +129,25 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      */
     protected function createStreamContext(QueueConnectionTransfer $queueConnectionTransfer)
     {
-        $options = $queueConnectionTransfer->getStreamContextOptions();
+        $streamContextOptions = $queueConnectionTransfer->getStreamContextOptions();
 
-        if (!$options) {
+        if (!$streamContextOptions) {
             return null;
         }
 
         $sslContext = stream_context_create();
-        foreach ($options as $key => $value) {
-            stream_context_set_option($sslContext, 'ssl', $key, $value);
+        foreach ($streamContextOptions as $wrapper => $options) {
+            if (!is_array($options)) {
+                continue;
+            }
+
+            foreach ($options as $key => $value) {
+                stream_context_set_option($sslContext, $wrapper, $key, $value);
+            }
+        }
+
+        if (!stream_context_get_options($sslContext)) {
+            return null;
         }
 
         return $sslContext;
