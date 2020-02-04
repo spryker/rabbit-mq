@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\Kernel\AbstractBundleConfig;
+use Spryker\Client\RabbitMq\Exception\QueuePoolsNotConfiguredException;
 use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
 class RabbitMqConfig extends AbstractBundleConfig
@@ -104,5 +105,24 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setKeepAlive(static::AMQP_STREAM_CONNECTION_KEEP_ALIVE)
             ->setHeartBeat(static::AMQP_STREAM_CONNECTION_HEART_BEAT)
             ->setChannelRpcTimeout(static::AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT);
+    }
+
+
+    /**
+     * @param string $storeName
+     *
+     * @return array
+     *
+     * @throws \Spryker\Client\RabbitMq\Exception\QueuePoolsNotConfiguredException
+     */
+    public function getQueuePoolsForStore(string $storeName): array
+    {
+        $queuePools = $this->get(RabbitMqEnv::RABBIT_MQ_QUEUE_POOLS);
+
+        if (!array_key_exists($storeName, $queuePools)) {
+            throw new QueuePoolsNotConfiguredException('Queue pools are not configured for store %s', $storeName);
+        }
+
+        return $queuePools[$storeName];
     }
 }

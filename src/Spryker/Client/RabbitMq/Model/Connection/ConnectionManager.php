@@ -70,11 +70,14 @@ class ConnectionManager implements ConnectionManagerInterface
      * @param string|null $localeCode
      *
      * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     *
+     * @throws \Spryker\Client\RabbitMq\Exception\QueuePoolsNotConfiguredException
      */
     public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array
     {
+        $queuePools = $this->config->getQueuePoolsForStore(APPLICATION_STORE);
         $queueConnectionTransfersByBoolName = $this->connectionConfigMapper->mapQueueConnectionTransfersByPoolName(
-            $this->storeClient->getCurrentStore()->getQueuePools()
+            $queuePools
         )[$queuePoolName];
 
         return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByBoolName, $localeCode);

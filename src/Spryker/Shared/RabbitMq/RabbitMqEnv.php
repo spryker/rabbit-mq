@@ -137,4 +137,12 @@ interface RabbitMqEnv extends QueueConstants
      * @api
      */
     public const RABBITMQ_EXCHANGE_BLACKLIST = 'RABBITMQ:RABBITMQ_EXCHANGE_BLACKLIST';
+
+    /**
+     * Specification:
+     * - List of all queue pools available for stores.
+     *
+     * @api
+     */
+    public const RABBIT_MQ_QUEUE_POOLS = 'RABBITMQ:RABBIT_MQ_QUEUE_POOLS';
 }
