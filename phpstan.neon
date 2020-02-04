@@ -9,4 +9,3 @@ parameters:
         - '#Parameter \#2 \$subject of function preg_match expects string, null given#'
         - '#Instantiated class .+Transfer not found#'
         - '#Constant APPLICATION_STORE not found#'
-    
