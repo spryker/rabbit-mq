@@ -118,7 +118,7 @@ class RabbitMqConfig extends AbstractBundleConfig
     {
         $queuePools = $this->get(RabbitMqEnv::RABBIT_MQ_QUEUE_POOLS);
 
-        if (!array_key_exists($storeName, $queuePools)) {
+        if (!isset($queuePools[$storeName])) {
             throw new QueuePoolsNotConfiguredException('Queue pools are not configured for store %s', $storeName);
         }
 
