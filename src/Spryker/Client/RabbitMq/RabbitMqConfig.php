@@ -107,13 +107,12 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setChannelRpcTimeout(static::AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT);
     }
 
-
     /**
      * @param string $storeName
      *
-     * @return array
-     *
      * @throws \Spryker\Client\RabbitMq\Exception\QueuePoolsNotConfiguredException
+     *
+     * @return array
      */
     public function getQueuePoolsForStore(string $storeName): array
     {
