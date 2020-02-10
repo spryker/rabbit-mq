@@ -10,6 +10,7 @@ namespace Spryker\Client\RabbitMq\Model\Connection;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
+use Spryker\Client\RabbitMq\Exception\QueuePoolsNotConfiguredException;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface;
@@ -74,6 +75,14 @@ class ConnectionManager implements ConnectionManagerInterface
     public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array
     {
         $queuePools = $this->config->getQueuePoolsForStore(APPLICATION_STORE);
+        $queueConnectionTransfers = $this->connectionConfigMapper->mapQueueConnectionTransfersByPoolName(
+            $queuePools
+        );
+
+        if (!isset($queueConnectionTransfers[$queuePoolName])) {
+            throw new QueuePoolsNotConfiguredException(sprintf('Queue pools are not configured for store %s', APPLICATION_STORE));
+        }
+
         $queueConnectionTransfersByBoolName = $this->connectionConfigMapper->mapQueueConnectionTransfersByPoolName(
             $queuePools
         )[$queuePoolName];

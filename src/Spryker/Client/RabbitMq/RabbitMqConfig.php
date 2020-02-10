@@ -12,8 +12,7 @@ use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\Kernel\AbstractBundleConfig;
-use Spryker\Client\RabbitMq\Exception\QueuePoolsNotConfiguredException;
-use Spryker\Shared\RabbitMq\RabbitMqEnv;
+use Spryker\Shared\Kernel\Store;
 
 class RabbitMqConfig extends AbstractBundleConfig
 {
@@ -110,18 +109,32 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @param string $storeName
      *
-     * @throws \Spryker\Client\RabbitMq\Exception\QueuePoolsNotConfiguredException
-     *
      * @return array
      */
     public function getQueuePoolsForStore(string $storeName): array
     {
-        $queuePools = $this->get(RabbitMqEnv::RABBIT_MQ_QUEUE_POOLS);
+        $queuePoolsByStore = $this->getQueuePoolsByStore();
 
-        if (!isset($queuePools[$storeName])) {
-            throw new QueuePoolsNotConfiguredException(sprintf('Queue pools are not configured for store %s', $storeName));
+        if (isset($queuePoolsByStore[$storeName])) {
+            return $queuePoolsByStore[$storeName];
         }
 
-        return $queuePools[$storeName];
+        return $this->getDefaultQueuePools();
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueuePoolsByStore(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultQueuePools(): array
+    {
+        return Store::getInstance()->getQueuePools();
     }
 }
