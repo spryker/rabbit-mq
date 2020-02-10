@@ -13,6 +13,7 @@ use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\Kernel\AbstractBundleConfig;
 use Spryker\Shared\Kernel\Store;
+use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
 class RabbitMqConfig extends AbstractBundleConfig
 {
