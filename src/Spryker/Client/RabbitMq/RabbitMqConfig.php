@@ -126,7 +126,7 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @return array
      */
-    public function getQueuePoolsByStore(): array
+    protected function getQueuePoolsByStore(): array
     {
         return [];
     }
@@ -134,7 +134,7 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @return array
      */
-    public function getDefaultQueuePools(): array
+    protected function getDefaultQueuePools(): array
     {
         return Store::getInstance()->getQueuePools();
     }
