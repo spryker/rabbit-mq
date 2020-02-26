@@ -163,29 +163,29 @@ class RabbitMqConfig extends AbstractBundleConfig
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createQueueBinding($queueName, $routingKey = '')
+    protected function createQueueBinding($queueName)
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
             ->setQueueName($queueName)
             ->setDurable(true)
             ->setNoWait(false)
-            ->addRoutingKey($routingKey);
+            ->addRoutingKey('');
 
         return $queueOptionTransfer;
     }
 
     /**
-     * @param string $boundQueueName
+     * @param string $errorQueueName
      * @param string $routingKey
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createBoundQueueBinding($boundQueueName, $routingKey)
+    protected function createErrorQueueBinding($errorQueueName, $routingKey)
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
-            ->setQueueName($boundQueueName)
+            ->setQueueName($errorQueueName)
             ->setDurable(true)
             ->setNoWait(false)
             ->addRoutingKey($routingKey);
