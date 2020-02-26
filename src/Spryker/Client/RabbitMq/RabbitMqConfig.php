@@ -152,7 +152,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setType('direct')
             ->setDeclarationType(Connection::RABBIT_MQ_EXCHANGE)
             ->addBindingQueueItem($this->createQueueBinding($queueName))
-            ->addBindingQueueItem($this->createBoundQueueBinding($boundQueueName, $routingKey));
+            ->addBindingQueueItem($this->createErrorQueueBinding($boundQueueName, $routingKey));
 
         return $queueOptionTransfer;
     }
