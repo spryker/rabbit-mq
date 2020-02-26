@@ -159,7 +159,6 @@ class RabbitMqConfig extends AbstractBundleConfig
 
     /**
      * @param string $queueName
-     * @param string $routingKey
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
