@@ -52,6 +52,31 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @return array
      */
+    public function getMessageConfig(): array
+    {
+        return [
+            'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,
+        ];
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\QueueConnectionTransfer
+     */
+    public function getDefaultQueueConnectionConfig(): QueueConnectionTransfer
+    {
+        return (new QueueConnectionTransfer())
+            ->setInsist(static::AMQP_STREAM_CONNECTION_INSIST)
+            ->setLoginMethod(static::AMQP_STREAM_CONNECTION_LOGIN_METHOD)
+            ->setConnectionTimeout(static::AMQP_STREAM_CONNECTION_CONNECTION_TIMEOUT)
+            ->setReadWriteTimeout(static::AMQP_STREAM_CONNECTION_READ_WRITE_TIMEOUT)
+            ->setKeepAlive(static::AMQP_STREAM_CONNECTION_KEEP_ALIVE)
+            ->setHeartBeat(static::AMQP_STREAM_CONNECTION_HEART_BEAT)
+            ->setChannelRpcTimeout(static::AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT);
+    }
+
+    /**
+     * @return array
+     */
     protected function getQueueConnectionConfigs(): array
     {
         $connections = [];
@@ -109,31 +134,6 @@ class RabbitMqConfig extends AbstractBundleConfig
     protected function getQueueConfiguration(): array
     {
         return [];
-    }
-
-    /**
-     * @return array
-     */
-    public function getMessageConfig(): array
-    {
-        return [
-            'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,
-        ];
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer
-     */
-    public function getDefaultQueueConnectionConfig(): QueueConnectionTransfer
-    {
-        return (new QueueConnectionTransfer())
-            ->setInsist(static::AMQP_STREAM_CONNECTION_INSIST)
-            ->setLoginMethod(static::AMQP_STREAM_CONNECTION_LOGIN_METHOD)
-            ->setConnectionTimeout(static::AMQP_STREAM_CONNECTION_CONNECTION_TIMEOUT)
-            ->setReadWriteTimeout(static::AMQP_STREAM_CONNECTION_READ_WRITE_TIMEOUT)
-            ->setKeepAlive(static::AMQP_STREAM_CONNECTION_KEEP_ALIVE)
-            ->setHeartBeat(static::AMQP_STREAM_CONNECTION_HEART_BEAT)
-            ->setChannelRpcTimeout(static::AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT);
     }
 
     /**
