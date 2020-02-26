@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use Spryker\Client\Kernel\AbstractBundleConfig;
+use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
 class RabbitMqConfig extends AbstractBundleConfig
@@ -23,6 +24,11 @@ class RabbitMqConfig extends AbstractBundleConfig
     protected const AMQP_STREAM_CONNECTION_KEEP_ALIVE = false;
     protected const AMQP_STREAM_CONNECTION_HEART_BEAT = 0;
     protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
+
+    /**
+     * @var \ArrayObject|null
+     */
+    protected $queueOptionCollection;
 
     /**
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
@@ -75,10 +81,34 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     protected function getQueueOptions()
     {
-        $queueOptionCollection = new ArrayObject();
-        $queueOptionCollection->append(new RabbitMqOptionTransfer());
+        if ($this->queueOptionCollection !== null) {
+            return $this->queueOptionCollection;
+        }
 
-        return $queueOptionCollection;
+        $queueConfigurations = $this->getQueueConfiguration();
+        $this->queueOptionCollection = new ArrayObject();
+
+        foreach ($queueConfigurations as $queueNameKey => $queueConfiguration) {
+            if (!is_array($queueConfiguration)) {
+                $this->queueOptionCollection->append($this->createQueueOption($queueConfiguration, sprintf('%s.error', $queueConfiguration), 'error'));
+
+                continue;
+            }
+
+            foreach ($queueConfiguration as $routingKey => $queueName) {
+                $this->queueOptionCollection->append($this->createQueueOption($queueNameKey, $queueName, $routingKey));
+            }
+        }
+
+        return $this->queueOptionCollection;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getQueueConfiguration(): array
+    {
+        return [];
     }
 
     /**
@@ -104,5 +134,62 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setKeepAlive(static::AMQP_STREAM_CONNECTION_KEEP_ALIVE)
             ->setHeartBeat(static::AMQP_STREAM_CONNECTION_HEART_BEAT)
             ->setChannelRpcTimeout(static::AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT);
+    }
+
+    /**
+     * @param string $queueName
+     * @param string $boundQueueName
+     * @param string $routingKey
+     *
+     * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
+     */
+    protected function createQueueOption($queueName, $boundQueueName, $routingKey)
+    {
+        $queueOptionTransfer = new RabbitMqOptionTransfer();
+        $queueOptionTransfer
+            ->setQueueName($queueName)
+            ->setDurable(true)
+            ->setType('direct')
+            ->setDeclarationType(Connection::RABBIT_MQ_EXCHANGE)
+            ->addBindingQueueItem($this->createQueueBinding($queueName))
+            ->addBindingQueueItem($this->createBoundQueueBinding($boundQueueName, $routingKey));
+
+        return $queueOptionTransfer;
+    }
+
+    /**
+     * @param string $queueName
+     * @param string $routingKey
+     *
+     * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
+     */
+    protected function createQueueBinding($queueName, $routingKey = '')
+    {
+        $queueOptionTransfer = new RabbitMqOptionTransfer();
+        $queueOptionTransfer
+            ->setQueueName($queueName)
+            ->setDurable(true)
+            ->setNoWait(false)
+            ->addRoutingKey($routingKey);
+
+        return $queueOptionTransfer;
+    }
+
+    /**
+     * @param string $boundQueueName
+     * @param string $routingKey
+     *
+     * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
+     */
+    protected function createBoundQueueBinding($boundQueueName, $routingKey)
+    {
+        $queueOptionTransfer = new RabbitMqOptionTransfer();
+        $queueOptionTransfer
+            ->setQueueName($boundQueueName)
+            ->setDurable(true)
+            ->setNoWait(false)
+            ->addRoutingKey($routingKey);
+
+        return $queueOptionTransfer;
     }
 }
