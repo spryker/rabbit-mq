@@ -24,7 +24,7 @@ before_install:
   - phpenv config-add ci/travis.php.ini
 
 before_script:
-  - composer install --prefer-dist --no-interaction
+  - composer install --no-interaction
 
 script:
   - if [[ $DEFAULT == 1 ]]; then vendor/bin/codecept run ; fi
