@@ -31,5 +31,9 @@ script:
   - if [[ $VALIDATION == 1 ]]; then composer cs-check ; fi
   - if [[ $VALIDATION == 1 ]]; then composer phpstan-setup && composer phpstan ; fi
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 notifications:
   email: false
