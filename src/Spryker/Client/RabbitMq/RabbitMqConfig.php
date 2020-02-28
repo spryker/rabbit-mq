@@ -115,6 +115,7 @@ class RabbitMqConfig extends AbstractBundleConfig
 
         foreach ($queueConfigurations as $queueNameKey => $queueConfiguration) {
             if (!is_array($queueConfiguration)) {
+                $this->queueOptionCollection->append($this->createQueueOption($queueConfiguration, $queueConfiguration));
                 continue;
             }
 
@@ -141,7 +142,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createQueueOption($queueName, $boundQueueName, $routingKey)
+    protected function createQueueOption($queueName, $boundQueueName, $routingKey = '')
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
@@ -150,7 +151,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setType('direct')
             ->setDeclarationType(Connection::RABBIT_MQ_EXCHANGE)
             ->addBindingQueueItem($this->createQueueBinding($queueName))
-            ->addBindingQueueItem($this->createQueueBinding($queueName));
+            ->addBindingQueueItem($this->createQueueBinding($boundQueueName));
 
         return $queueOptionTransfer;
     }
