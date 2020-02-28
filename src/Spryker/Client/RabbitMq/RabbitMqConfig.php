@@ -115,7 +115,9 @@ class RabbitMqConfig extends AbstractBundleConfig
 
         foreach ($queueConfigurations as $queueNameKey => $queueConfiguration) {
             if (!is_array($queueConfiguration)) {
-                $this->queueOptionCollection->append($this->createQueueOption($queueConfiguration, $queueConfiguration));
+                $this->queueOptionCollection->append(
+                    $this->createQueueOptionWithBoundedQueueName($queueConfiguration, $queueConfiguration)
+                );
                 continue;
             }
 
@@ -125,6 +127,18 @@ class RabbitMqConfig extends AbstractBundleConfig
         }
 
         return $this->queueOptionCollection;
+    }
+
+    /**
+     * @param string $queueName
+     * @param string $boundQueueName
+     * @param string $routingKey
+     *
+     * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
+     */
+    protected function createQueueOptionWithBoundedQueueName($queueName, $boundQueueName, $routingKey = '')
+    {
+        return $this->createQueueOption($queueName, $boundQueueName, $routingKey);
     }
 
     /**
@@ -151,24 +165,25 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setType('direct')
             ->setDeclarationType(Connection::RABBIT_MQ_EXCHANGE)
             ->addBindingQueueItem($this->createQueueBinding($queueName))
-            ->addBindingQueueItem($this->createQueueBinding($boundQueueName));
+            ->addBindingQueueItem($this->createQueueBinding($boundQueueName, $routingKey));
 
         return $queueOptionTransfer;
     }
 
     /**
      * @param string $queueName
+     * @param string $routingKey
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createQueueBinding($queueName)
+    protected function createQueueBinding($queueName, $routingKey = '')
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
             ->setQueueName($queueName)
             ->setDurable(true)
             ->setNoWait(false)
-            ->addRoutingKey('');
+            ->addRoutingKey($routingKey);
 
         return $queueOptionTransfer;
     }
