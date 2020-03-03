@@ -115,14 +115,17 @@ class RabbitMqConfig extends AbstractBundleConfig
 
         foreach ($queueConfigurations as $queueNameKey => $queueConfiguration) {
             if (!is_array($queueConfiguration)) {
+                $defaultBoundQueueNamePrefix = $this->getDefaultBoundQueueNamePrefix();
                 $this->queueOptionCollection->append(
-                    $this->createQueueOptionWithBoundedQueueName($queueConfiguration, $queueConfiguration)
+                    $this->createExchangeOptionTransfer($queueConfiguration, sprintf('%s.%s', $queueConfiguration, $defaultBoundQueueNamePrefix), $defaultBoundQueueNamePrefix)
                 );
                 continue;
             }
 
             foreach ($queueConfiguration as $routingKey => $queueName) {
-                $this->queueOptionCollection->append($this->createQueueOption($queueNameKey, $queueName, $routingKey));
+                $this->queueOptionCollection->append(
+                    $this->createExchangeOptionTransfer($queueNameKey, $queueName, $routingKey)
+                );
             }
         }
 
@@ -130,15 +133,11 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
-     * @param string $queueName
-     * @param string $boundQueueName
-     * @param string $routingKey
-     *
-     * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
+     * @return string
      */
-    protected function createQueueOptionWithBoundedQueueName($queueName, $boundQueueName, $routingKey = '')
+    protected function getDefaultBoundQueueNamePrefix(): string
     {
-        return $this->createQueueOption($queueName, $boundQueueName, $routingKey);
+        return '';
     }
 
     /**
@@ -156,7 +155,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createQueueOption($queueName, $boundQueueName, $routingKey = '')
+    protected function createExchangeOptionTransfer($queueName, $boundQueueName, $routingKey = '')
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
@@ -164,8 +163,8 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setDurable(true)
             ->setType('direct')
             ->setDeclarationType(Connection::RABBIT_MQ_EXCHANGE)
-            ->addBindingQueueItem($this->createQueueBinding($queueName))
-            ->addBindingQueueItem($this->createQueueBinding($boundQueueName));
+            ->addBindingQueueItem($this->createQueueOptionTransfer($queueName, $routingKey))
+            ->addBindingQueueItem($this->createQueueOptionTransfer($boundQueueName, $routingKey));
 
         return $queueOptionTransfer;
     }
@@ -176,14 +175,14 @@ class RabbitMqConfig extends AbstractBundleConfig
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createQueueBinding($queueName)
+    protected function createQueueOptionTransfer($queueName, $routingKey = '')
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
             ->setQueueName($queueName)
             ->setDurable(true)
             ->setNoWait(false)
-            ->addRoutingKey('');
+            ->addRoutingKey($routingKey);
 
         return $queueOptionTransfer;
     }
