@@ -114,12 +114,43 @@ class ConnectionBuilder implements ConnectionBuilderInterface
             $queueConnectionTransfer->getLocale() ?? $this->getDefaultLocale(),
             $queueConnectionTransfer->getConnectionTimeout() ?? $defaultQueueConnectionTransfer->getConnectionTimeout(),
             $queueConnectionTransfer->getReadWriteTimeout() ?? $defaultQueueConnectionTransfer->getReadWriteTimeout(),
-            null,
+            $this->createStreamContext($queueConnectionTransfer),
             $queueConnectionTransfer->getKeepAlive() ?? $defaultQueueConnectionTransfer->getKeepAlive(),
             $queueConnectionTransfer->getHeartBeat() ?? $defaultQueueConnectionTransfer->getHeartBeat(),
             $queueConnectionTransfer->getChannelRpcTimeout() ?? $defaultQueueConnectionTransfer->getChannelRpcTimeout(),
             $queueConnectionTransfer->getSslProtocol()
         );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return resource|null
+     */
+    protected function createStreamContext(QueueConnectionTransfer $queueConnectionTransfer)
+    {
+        $streamContextOptions = $queueConnectionTransfer->getStreamContextOptions();
+
+        if (!$streamContextOptions) {
+            return null;
+        }
+
+        $sslContext = stream_context_create();
+        foreach ($streamContextOptions as $wrapper => $options) {
+            if (!is_array($options)) {
+                continue;
+            }
+
+            foreach ($options as $key => $value) {
+                stream_context_set_option($sslContext, $wrapper, $key, $value);
+            }
+        }
+
+        if (!stream_context_get_options($sslContext)) {
+            return null;
+        }
+
+        return $sslContext;
     }
 
     /**
