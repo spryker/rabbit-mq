@@ -15,12 +15,8 @@ matrix:
 
   fast_finish: true
 
-  allow_failures:
-      -   php: 7.2
-      -   php: 7.4snapshot
-
 before_install:
-  - if [[ ${TRAVIS_PHP_VERSION} != "7.4snapshot" ]]; then phpenv config-rm xdebug.ini ; fi
+  - if [[ ${TRAVIS_PHP_VERSION} != "7.4" ]]; then phpenv config-rm xdebug.ini ; fi
   - phpenv config-add ci/travis.php.ini
 
 before_script:
