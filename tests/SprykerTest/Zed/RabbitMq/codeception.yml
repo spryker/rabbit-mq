@@ -9,12 +9,8 @@ paths:
 coverage:
     enabled: true
     remote: false
-    whitelist: { include: ['../../../../src/*'] }
 
 suites:
     Business:
         path: Business
         class_name: RabbitMqBusinessTester
-        modules:
-            enabled:
-                - Asserts
