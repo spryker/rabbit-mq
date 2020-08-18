@@ -39,9 +39,9 @@ class RabbitMqDependencyProvider extends AbstractDependencyProvider
      */
     protected function addStoreClient(Container $container)
     {
-        $container[static::CLIENT_STORE] = function (Container $container) {
+        $container->set(static::CLIENT_STORE, function (Container $container) {
             return new RabbitMqToStoreClientBridge($container->getLocator()->store()->client());
-        };
+        });
 
         return $container;
     }

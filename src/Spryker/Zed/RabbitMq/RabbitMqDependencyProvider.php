@@ -40,9 +40,9 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addQueueAdapter(Container $container)
     {
-        $container[static::QUEUE_ADAPTER] = function () use ($container) {
+        $container->set(static::QUEUE_ADAPTER, function () use ($container) {
             return $container->getLocator()->rabbitMq()->client()->createQueueAdapter();
-        };
+        });
 
         return $container;
     }
@@ -54,11 +54,11 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addGuzzleClient(Container $container)
     {
-        $container[static::GUZZLE_CLIENT] = function () {
+        $container->set(static::GUZZLE_CLIENT, function () {
             $rabbitMqToGuzzleBridge = new RabbitMqToGuzzleBridge(new Client());
 
             return $rabbitMqToGuzzleBridge;
-        };
+        });
 
         return $container;
     }
