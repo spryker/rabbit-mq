@@ -16,6 +16,7 @@
     "spryker/transfer": "^3.8.0"
   },
   "require-dev": {
+    "phpstan/phpstan": "*",
     "spryker/code-sniffer": "*",
     "spryker/testify": "*"
   },
