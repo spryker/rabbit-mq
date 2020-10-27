@@ -5,7 +5,7 @@
   "homepage": "https://spryker.com",
   "license": "MIT",
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.3",
     "php-amqplib/php-amqplib": "^2.6.1",
     "spryker/guzzle": "^2.0.0",
     "spryker/kernel": "^3.30.0",
