@@ -1,4 +1,7 @@
 parameters:
+    level: 6
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
         - '#Return typehint of method .+ has invalid type .+Transfer#'
         - '#Property .+ has unknown class .+Transfer as its type#'
