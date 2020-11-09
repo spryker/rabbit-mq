@@ -14,6 +14,8 @@ use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 class RabbitMqConfig extends AbstractBundleConfig
 {
     /**
+     * @api
+     *
      * @return string
      */
     public function getApiExchangesUrl()
@@ -28,6 +30,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getApiQueuesUrl()
@@ -42,6 +46,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getApiUserPermissionsUrl()
@@ -57,6 +63,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getApiUsername()
@@ -65,6 +73,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getApiPassword()
@@ -73,6 +83,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return array
      */
     public function getExchangeNameBlacklist()
@@ -81,6 +93,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getApiVirtualHost()

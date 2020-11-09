@@ -31,6 +31,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     protected $queueOptionCollection;
 
     /**
+     * @api
+     *
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
     public function getQueueConnections(): array
@@ -50,6 +52,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return array
      */
     public function getMessageConfig(): array
@@ -60,6 +64,8 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer
      */
     public function getDefaultQueueConnectionConfig(): QueueConnectionTransfer
@@ -121,11 +127,12 @@ class RabbitMqConfig extends AbstractBundleConfig
         foreach ($queueConfigurations as $queueNameKey => $queueConfiguration) {
             if (!is_array($queueConfiguration)) {
                 $defaultBoundQueueNamePrefix = $this->getDefaultBoundQueueNamePrefix();
-                $boundQueueName = $defaultBoundQueueNamePrefix === "" ? $queueConfiguration : sprintf('%s.%s', $queueConfiguration, $defaultBoundQueueNamePrefix);
+                $boundQueueName = $defaultBoundQueueNamePrefix === '' ? $queueConfiguration : sprintf('%s.%s', $queueConfiguration, $defaultBoundQueueNamePrefix);
 
                 $this->queueOptionCollection->append(
                     $this->createExchangeOptionTransfer($queueConfiguration, $boundQueueName, $defaultBoundQueueNamePrefix)
                 );
+
                 continue;
             }
 
