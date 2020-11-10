@@ -162,4 +162,15 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
     {
         $this->publisher->sendMessages($queueName, $queueSendMessageTransfers);
     }
+
+
+    /**
+     * @param string $queueName
+     *
+     * @return int|null
+     */
+    public function getQueueSize(string $queueName): ?int
+    {
+        return $this->manager->getQueueSize($queueName);
+    }
 }
