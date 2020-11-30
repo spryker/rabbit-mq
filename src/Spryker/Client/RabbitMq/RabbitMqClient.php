@@ -15,6 +15,8 @@ use Spryker\Client\Kernel\AbstractClient;
 class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
 {
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface

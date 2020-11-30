@@ -11,3 +11,4 @@ parameters:
         - '#Call to method rabbitMq\(\) on an unknown class .+AutoCompletion#'
         - '#Parameter \#2 \$subject of function preg_match expects string, null given#'
         - '#Instantiated class .+Transfer not found#'
+        - '#PHPDoc tag \@var for variable \$rabbitMqOption contains unknown class Generated\\Shared\\Transfer\\#'

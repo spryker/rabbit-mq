@@ -51,7 +51,8 @@ interface RabbitMqFacadeInterface
     public function deleteAllExchanges(LoggerInterface $logger);
 
     /**
-     * {@inheritDoc}
+     * Specification:
+     * - Sets the user permissions.
      *
      * @api
      *
