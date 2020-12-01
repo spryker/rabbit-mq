@@ -68,8 +68,8 @@ class Publisher implements PublisherInterface
     public function sendMessages($queueName, array $queueSendMessageTransfers)
     {
         $usedChannels = [];
-        foreach ($queueSendMessageTransfers as $queueMessageTransfer) {
-            $usedChannels += $this->addBatchMessage($queueMessageTransfer, $queueName);
+        foreach ($queueSendMessageTransfers as $queueSendMessageTransfer) {
+            $usedChannels += $this->addBatchMessage($queueSendMessageTransfer, $queueName);
         }
 
         $this->publishBatches($usedChannels);
