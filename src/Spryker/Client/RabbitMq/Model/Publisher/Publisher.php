@@ -61,14 +61,14 @@ class Publisher implements PublisherInterface
 
     /**
      * @param string $queueName
-     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer[] $queueMessageTransfers
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer[] $queueSendMessageTransfers
      *
      * @return void
      */
-    public function sendMessages($queueName, array $queueMessageTransfers)
+    public function sendMessages($queueName, array $queueSendMessageTransfers)
     {
         $usedChannels = [];
-        foreach ($queueMessageTransfers as $queueMessageTransfer) {
+        foreach ($queueSendMessageTransfers as $queueMessageTransfer) {
             $usedChannels += $this->addBatchMessage($queueMessageTransfer, $queueName);
         }
 
