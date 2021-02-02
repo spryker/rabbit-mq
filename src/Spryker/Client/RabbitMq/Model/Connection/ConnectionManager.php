@@ -19,6 +19,7 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 class ConnectionManager implements ConnectionManagerInterface
 {
     protected const EXCEPTION_MESSAGE_DEFAULT_CONNECTION_NOT_FOUND = 'Default queue connection not found. You can fix this by adding `RabbitMqEnv::RABBITMQ_DEFAULT_CONNECTION = true` in your queue connection in `config_*.php` files';
+
     /**
      * @var \Spryker\Client\RabbitMq\RabbitMqConfig
      */

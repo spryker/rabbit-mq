@@ -47,7 +47,6 @@ class Connection implements ConnectionInterface
         QueueEstablishmentHelperInterface $queueEstablishmentHelper,
         QueueConnectionTransfer $queueConnection
     ) {
-
         $this->streamConnection = $streamConnection;
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
         $this->queueConnectionConfig = $queueConnection;
