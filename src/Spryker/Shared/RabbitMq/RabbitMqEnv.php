@@ -145,4 +145,12 @@ interface RabbitMqEnv extends QueueConstants
      * @api
      */
     public const RABBITMQ_STREAM_CONTEXT_OPTIONS = 'RABBITMQ:RABBITMQ_STREAM_CONTEXT_OPTIONS';
+
+    /**
+     * Specification:
+     * - Use this constant to disable runtime setting up queues and exchanges.
+     *
+     * @api
+     */
+    public const RABBITMQ_DISABLE_RUNTIME_SETTING_UP = 'RABBITMQ:RABBITMQ_DISABLE_RUNTIME_SETTING_UP';
 }

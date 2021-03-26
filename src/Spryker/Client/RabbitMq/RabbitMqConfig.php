@@ -81,6 +81,20 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
+     * @return bool
+     */
+    public function isRuntimeSettingUpDisabled(): bool
+    {
+        if ($this->getConfig()->hasKey(RabbitMqEnv::RABBITMQ_DISABLE_RUNTIME_SETTING_UP)) {
+            return (bool)$this->get(RabbitMqEnv::RABBITMQ_DISABLE_RUNTIME_SETTING_UP);
+        }
+
+        return false;
+    }
+
+    /**
      * @return array
      */
     protected function getQueueConnectionConfigs(): array

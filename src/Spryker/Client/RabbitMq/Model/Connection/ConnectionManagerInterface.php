@@ -31,4 +31,9 @@ interface ConnectionManagerInterface
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
     public function getDefaultChannel(): AMQPChannel;
+
+    /**
+     * @return void
+     */
+    public function setupQueuesAndExchanges(): void;
 }

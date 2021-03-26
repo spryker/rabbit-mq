@@ -8,6 +8,8 @@
 namespace Spryker\Client\RabbitMq;
 
 use Spryker\Client\Kernel\AbstractClient;
+use Spryker\Client\Queue\Model\Adapter\AdapterInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 
 /**
  * @method \Spryker\Client\RabbitMq\RabbitMqFactory getFactory()
@@ -21,8 +23,20 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
      *
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
      */
-    public function createQueueAdapter()
+    public function createQueueAdapter(): AdapterInterface
     {
         return $this->getFactory()->createQueueAdapter();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     */
+    public function getConnectionManager(): ConnectionManagerInterface
+    {
+        return $this->getFactory()->getStaticConnectionManager();
     }
 }

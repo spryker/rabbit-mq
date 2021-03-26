@@ -52,6 +52,18 @@ interface RabbitMqFacadeInterface
 
     /**
      * Specification:
+     * - Set up all queues and exchanges.
+     *
+     * @api
+     *
+     * @param \Psr\Log\LoggerInterface $logger
+     *
+     * @return void
+     */
+    public function setupQueuesAndExchanges(LoggerInterface $logger): void;
+
+    /**
+     * Specification:
      * - Sets the user permissions.
      *
      * @api

@@ -89,7 +89,8 @@ class ConnectionBuilder implements ConnectionBuilderInterface
         return new Connection(
             $this->createAmqpStreamConnection($queueConnectionTransfer),
             $this->queueEstablishmentHelper,
-            $queueConnectionTransfer
+            $queueConnectionTransfer,
+            $this->config->isRuntimeSettingUpDisabled()
         );
     }
 

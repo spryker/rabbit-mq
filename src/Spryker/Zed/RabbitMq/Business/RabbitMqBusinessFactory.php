@@ -7,13 +7,21 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
+use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
+use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
+use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandlerInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
+use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface;
+use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInterface;
+use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 use Spryker\Zed\RabbitMq\RabbitMqDependencyProvider;
 
 /**
@@ -24,7 +32,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInterface
      */
-    public function createQueue()
+    public function createQueue(): QueueInterface
     {
         return new Queue(
             $this->createQueueInfo(),
@@ -35,7 +43,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface
      */
-    protected function createQueueInfo()
+    protected function createQueueInfo(): QueueInfoInterface
     {
         return new QueueInfo(
             $this->getGuzzleClient(),
@@ -48,7 +56,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInterface
      */
-    public function createExchange()
+    public function createExchange(): ExchangeInterface
     {
         return new Exchange(
             $this->createExchangeInfo(),
@@ -60,7 +68,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandlerInterface
      */
-    public function createUserPermissionHandler()
+    public function createUserPermissionHandler(): UserPermissionHandlerInterface
     {
         return new UserPermissionHandler(
             $this->getGuzzleClient(),
@@ -68,6 +76,14 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getConfig()->getApiUsername(),
             $this->getConfig()->getApiPassword()
         );
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     */
+    public function getConectionManager(): ConnectionManagerInterface
+    {
+        return $this->getProvidedDependency(RabbitMqDependencyProvider::CONNECTION_MANAGER);
     }
 
     /**
@@ -86,7 +102,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface
      */
-    protected function getGuzzleClient()
+    protected function getGuzzleClient(): RabbitMqToGuzzleInterface
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::GUZZLE_CLIENT);
     }
@@ -94,7 +110,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface
      */
-    protected function createExchangeFilter()
+    protected function createExchangeFilter(): ExchangeFilterInterface
     {
         return new ExchangeFilterByName($this->getConfig()->getExchangeNameBlacklist());
     }
@@ -102,7 +118,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface
      */
-    protected function getQueueAdapter()
+    protected function getQueueAdapter(): RabbitMqAdapterInterface
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::QUEUE_ADAPTER);
     }

@@ -7,6 +7,8 @@
 
 namespace Spryker\Client\RabbitMq;
 
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+
 interface RabbitMqClientInterface
 {
     /**
@@ -18,4 +20,14 @@ interface RabbitMqClientInterface
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
      */
     public function createQueueAdapter();
+
+    /**
+     * Specification:
+     *  - Return connection manager
+     *
+     * @api
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     */
+    public function getConnectionManager(): ConnectionManagerInterface;
 }
