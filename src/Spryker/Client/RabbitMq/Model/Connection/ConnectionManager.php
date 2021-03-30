@@ -138,7 +138,7 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @return void
      */
-    public function setupQueuesAndExchanges(): void
+    public function setupConnection(): void
     {
          $this->getDefaultConnection()->setupQueuesAndExchanges();
     }

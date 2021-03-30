@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exception\AMQPProtocolChannelException;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
+use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class Connection implements ConnectionInterface
 {
@@ -41,20 +42,20 @@ class Connection implements ConnectionInterface
      * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
      * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnection
-     * @param bool $runtimeSettingUpDisabled
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $clientConfig
      */
     public function __construct(
         AMQPStreamConnection $streamConnection,
         QueueEstablishmentHelperInterface $queueEstablishmentHelper,
         QueueConnectionTransfer $queueConnection,
-        bool $runtimeSettingUpDisabled = true
+        RabbitMqConfig $clientConfig
     ) {
         $this->streamConnection = $streamConnection;
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
         $this->queueConnectionConfig = $queueConnection;
         $this->channel = $this->streamConnection->channel();
 
-        if (!$runtimeSettingUpDisabled) {
+        if ($clientConfig->isRuntimeSettingUpEnabled()) {
             $this->setupQueuesAndExchanges();
         }
     }

@@ -35,5 +35,5 @@ interface ConnectionManagerInterface
     /**
      * @return void
      */
-    public function setupQueuesAndExchanges(): void;
+    public function setupConnection(): void;
 }

@@ -152,5 +152,5 @@ interface RabbitMqEnv extends QueueConstants
      *
      * @api
      */
-    public const RABBITMQ_DISABLE_RUNTIME_SETTING_UP = 'RABBITMQ:RABBITMQ_DISABLE_RUNTIME_SETTING_UP';
+    public const RABBITMQ_ENABLE_RUNTIME_SETTING_UP = 'RABBITMQ:RABBITMQ_ENABLE_RUNTIME_SETTING_UP';
 }

@@ -36,7 +36,7 @@ class QueueSetupConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->getFacade()->setupQueuesAndExchanges($this->getMessenger());
+        $this->getFacade()->setupConnection($this->getMessenger());
 
         return static::CODE_SUCCESS;
     }

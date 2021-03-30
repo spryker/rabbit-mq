@@ -60,7 +60,7 @@ interface RabbitMqFacadeInterface
      *
      * @return void
      */
-    public function setupQueuesAndExchanges(LoggerInterface $logger): void;
+    public function setupConnection(LoggerInterface $logger): void;
 
     /**
      * Specification:

@@ -83,15 +83,14 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @api
      *
+     * Specification:
+     * - Allow creation queues and exchanges in runtime.
+     *
      * @return bool
      */
-    public function isRuntimeSettingUpDisabled(): bool
+    public function isRuntimeSettingUpEnabled(): bool
     {
-        if ($this->getConfig()->hasKey(RabbitMqEnv::RABBITMQ_DISABLE_RUNTIME_SETTING_UP)) {
-            return (bool)$this->get(RabbitMqEnv::RABBITMQ_DISABLE_RUNTIME_SETTING_UP);
-        }
-
-        return false;
+        return (bool)$this->get(RabbitMqEnv::RABBITMQ_ENABLE_RUNTIME_SETTING_UP, true);
     }
 
     /**

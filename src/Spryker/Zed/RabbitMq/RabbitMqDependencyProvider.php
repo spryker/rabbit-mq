@@ -8,8 +8,7 @@
 namespace Spryker\Zed\RabbitMq;
 
 use GuzzleHttp\Client;
-use Spryker\Client\Queue\Model\Adapter\AdapterInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleBridge;
@@ -21,7 +20,7 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const QUEUE_ADAPTER = 'QUEUE_ADAPTER';
     public const GUZZLE_CLIENT = 'GUZZLE_CLIENT';
-    public const CONNECTION_MANAGER = 'CONNECTION_MANAGER';
+    public const CONNECTION_INITIALIZER = 'CONNECTION_INITIALIZER';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -32,7 +31,7 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = $this->addQueueAdapter($container);
         $container = $this->addGuzzleClient($container);
-        $container = $this->addConnectionManager($container);
+        $container = $this->addConnectionInitializer($container);
 
         return $container;
     }
@@ -44,7 +43,7 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addQueueAdapter(Container $container)
     {
-        $container->set(static::QUEUE_ADAPTER, static function () use ($container): AdapterInterface {
+        $container->set(static::QUEUE_ADAPTER, function () use ($container) {
             return $container->getLocator()->rabbitMq()->client()->createQueueAdapter();
         });
 
@@ -58,8 +57,10 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addGuzzleClient(Container $container)
     {
-        $container->set(static::GUZZLE_CLIENT, static function (): RabbitMqToGuzzleBridge {
-            return new RabbitMqToGuzzleBridge(new Client());
+        $container->set(static::GUZZLE_CLIENT, function () {
+            $rabbitMqToGuzzleBridge = new RabbitMqToGuzzleBridge(new Client());
+
+            return $rabbitMqToGuzzleBridge;
         });
 
         return $container;
@@ -70,10 +71,10 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addConnectionManager(Container $container)
+    protected function addConnectionInitializer(Container $container): Container
     {
-        $container->set(static::CONNECTION_MANAGER, static function () use ($container): ConnectionManagerInterface {
-            return $container->getLocator()->rabbitMq()->client()->getConnectionManager();
+        $container->set(static::CONNECTION_INITIALIZER, static function () use ($container): ConnectionInitializerInterface {
+            return $container->getLocator()->rabbitMq()->client()->getConnectionInitializer();
         });
 
         return $container;

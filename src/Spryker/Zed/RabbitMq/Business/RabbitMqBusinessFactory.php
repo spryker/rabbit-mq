@@ -7,21 +7,14 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
-use Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
-use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
-use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
-use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandlerInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
-use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface;
-use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInterface;
-use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 use Spryker\Zed\RabbitMq\RabbitMqDependencyProvider;
 
 /**
@@ -32,7 +25,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInterface
      */
-    public function createQueue(): QueueInterface
+    public function createQueue()
     {
         return new Queue(
             $this->createQueueInfo(),
@@ -43,7 +36,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface
      */
-    protected function createQueueInfo(): QueueInfoInterface
+    protected function createQueueInfo()
     {
         return new QueueInfo(
             $this->getGuzzleClient(),
@@ -56,7 +49,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInterface
      */
-    public function createExchange(): ExchangeInterface
+    public function createExchange()
     {
         return new Exchange(
             $this->createExchangeInfo(),
@@ -68,7 +61,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandlerInterface
      */
-    public function createUserPermissionHandler(): UserPermissionHandlerInterface
+    public function createUserPermissionHandler()
     {
         return new UserPermissionHandler(
             $this->getGuzzleClient(),
@@ -79,11 +72,11 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface
      */
-    public function getConectionManager(): ConnectionManagerInterface
+    public function getConectionInitializer(): ConnectionInitializerInterface
     {
-        return $this->getProvidedDependency(RabbitMqDependencyProvider::CONNECTION_MANAGER);
+        return $this->getProvidedDependency(RabbitMqDependencyProvider::CONNECTION_INITIALIZER);
     }
 
     /**
@@ -102,7 +95,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface
      */
-    protected function getGuzzleClient(): RabbitMqToGuzzleInterface
+    protected function getGuzzleClient()
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::GUZZLE_CLIENT);
     }
@@ -110,7 +103,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface
      */
-    protected function createExchangeFilter(): ExchangeFilterInterface
+    protected function createExchangeFilter()
     {
         return new ExchangeFilterByName($this->getConfig()->getExchangeNameBlacklist());
     }
@@ -118,7 +111,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface
      */
-    protected function getQueueAdapter(): RabbitMqAdapterInterface
+    protected function getQueueAdapter()
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::QUEUE_ADAPTER);
     }

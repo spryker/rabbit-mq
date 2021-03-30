@@ -7,7 +7,7 @@
 
 namespace Spryker\Client\RabbitMq;
 
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface;
 
 interface RabbitMqClientInterface
 {
@@ -23,11 +23,11 @@ interface RabbitMqClientInterface
 
     /**
      * Specification:
-     *  - Return connection manager
+     *  - Return connection initializer.
      *
      * @api
      *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface
      */
-    public function getConnectionManager(): ConnectionManagerInterface;
+    public function getConnectionInitializer(): ConnectionInitializerInterface;
 }
