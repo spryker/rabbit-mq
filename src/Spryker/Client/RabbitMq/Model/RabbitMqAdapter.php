@@ -51,7 +51,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
      *
      * @return array
      */
-    public function createQueue($queueName, array $options = [])
+    public function createQueue($queueName, array $options = [], ?string $storeName = null)
     {
         return $this->manager->createQueue($queueName, $options);
     }
@@ -62,7 +62,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
      *
      * @return bool
      */
-    public function purgeQueue($queueName, array $options = [])
+    public function purgeQueue($queueName, array $options = [], ?string $storeName = null)
     {
         return $this->manager->purgeQueue($queueName, $options);
     }
@@ -73,7 +73,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
      *
      * @return bool
      */
-    public function deleteQueue($queueName, array $options = [])
+    public function deleteQueue($queueName, array $options = [], ?string $storeName = null)
     {
         return $this->manager->deleteQueue($queueName, $options);
     }
@@ -95,7 +95,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
      *
      * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
      */
-    public function receiveMessages($queueName, $chunkSize = 100, array $options = [])
+    public function receiveMessages($queueName, $chunkSize = 100, array $options = [], ?string $storeName = null)
     {
         return $this->consumer->receiveMessages($queueName, $chunkSize, $options);
     }
@@ -106,7 +106,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
      *
      * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer
      */
-    public function receiveMessage($queueName, array $options = [])
+    public function receiveMessage($queueName, array $options = [], ?string $storeName = null)
     {
         return $this->consumer->receiveMessage($queueName, $options);
     }

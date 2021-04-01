@@ -9,6 +9,10 @@ namespace Spryker\Client\RabbitMq\Dependency\Client;
 
 use Generated\Shared\Transfer\StoreTransfer;
 
+/**
+ * @deprecated
+ *
+ */
 interface RabbitMqToStoreClientInterface
 {
     /**

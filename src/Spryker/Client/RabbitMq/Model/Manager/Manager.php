@@ -38,7 +38,7 @@ class Manager implements ManagerInterface
      *
      * @return array
      */
-    public function createQueue($queueName, array $options = [])
+    public function createQueue($queueName, array $options = [], ?string $storeName = null)
     {
         /** @var \Generated\Shared\Transfer\RabbitMqOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitMqConsumerOption'];
@@ -52,7 +52,7 @@ class Manager implements ManagerInterface
      *
      * @return bool
      */
-    public function deleteQueue($queueName, array $options = [])
+    public function deleteQueue($queueName, array $options = [], ?string $storeName = null)
     {
         return $this->channel->queue_delete($queueName);
     }
@@ -63,7 +63,7 @@ class Manager implements ManagerInterface
      *
      * @return bool
      */
-    public function purgeQueue($queueName, array $options = [])
+    public function purgeQueue($queueName, array $options = [], ?string $storeName = null)
     {
         return $this->channel->queue_purge($queueName);
     }

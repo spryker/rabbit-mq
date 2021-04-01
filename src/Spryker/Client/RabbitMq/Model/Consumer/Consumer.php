@@ -50,7 +50,7 @@ class Consumer implements ConsumerInterface
      *
      * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
      */
-    public function receiveMessages($queueName, $chunkSize = 100, array $options = [])
+    public function receiveMessages($queueName, $chunkSize = 100, array $options = [], ?string $storeName = null)
     {
         $this->channel->callbacks = [];
 
@@ -85,7 +85,7 @@ class Consumer implements ConsumerInterface
      *
      * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer
      */
-    public function receiveMessage($queueName, array $options = [])
+    public function receiveMessage($queueName, array $options = [], ?string $storeName = null)
     {
         /** @var \Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitmq'];

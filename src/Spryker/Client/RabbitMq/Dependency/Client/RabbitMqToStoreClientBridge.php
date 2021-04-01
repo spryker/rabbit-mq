@@ -25,6 +25,8 @@ class RabbitMqToStoreClientBridge implements RabbitMqToStoreClientInterface
     }
 
     /**
+     * @deprecated
+     *
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function getCurrentStore()

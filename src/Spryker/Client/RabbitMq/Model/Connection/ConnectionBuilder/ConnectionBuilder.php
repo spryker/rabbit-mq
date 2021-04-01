@@ -158,6 +158,11 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      */
     protected function getDefaultLocale(): string
     {
+        if ($this->config->getDefaultLocaleCode()) {
+            return $this->config->getDefaultLocaleCode();
+        }
+
+        // @todo deprecate
         return current($this->storeClient->getCurrentStore()->getAvailableLocaleIsoCodes());
     }
 

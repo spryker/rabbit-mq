@@ -200,4 +200,12 @@ class RabbitMqConfig extends AbstractBundleConfig
 
         return $queueOptionTransfer;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getDefaultLocaleCode(): ?string
+    {
+        return 'en_US';
+    }
 }
