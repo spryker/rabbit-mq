@@ -12,7 +12,7 @@ class ConnectionInitializer implements ConnectionInitializerInterface
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    private $connectionManager;
+    protected $connectionManager;
 
     /**
      * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface $connectionManager

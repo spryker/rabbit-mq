@@ -39,6 +39,11 @@ class Connection implements ConnectionInterface
     protected $queueEstablishmentHelper;
 
     /**
+     * @var \Spryker\Client\RabbitMq\RabbitMqConfig
+     */
+    protected $clientConfig;
+
+    /**
      * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
      * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnection
@@ -54,8 +59,9 @@ class Connection implements ConnectionInterface
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
         $this->queueConnectionConfig = $queueConnection;
         $this->channel = $this->streamConnection->channel();
+        $this->clientConfig = $clientConfig;
 
-        if ($clientConfig->isRuntimeSettingUpEnabled()) {
+        if ($this->clientConfig->isRuntimeSettingUpEnabled()) {
             $this->setupQueuesAndExchanges();
         }
     }
@@ -101,18 +107,6 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @deprecated Use {@link \Spryker\Client\RabbitMq\Model\Connection\Connection::setupQueuesAndExchanges()} instead
-     *
-     * @return void
-     */
-    protected function setupConnection()
-    {
-        $this->channel = $this->streamConnection->channel();
-
-        $this->setupQueuesAndExchanges();
-    }
-
-    /**
      * @return void
      */
     public function setupQueuesAndExchanges(): void
@@ -129,16 +123,6 @@ class Connection implements ConnectionInterface
                 $this->createQueueAndBind($bindingQueueItem, $queueOption->getQueueName());
             }
         }
-    }
-
-    /**
-     * @deprecated Use {@link \Spryker\Client\RabbitMq\Model\Connection\Connection::setupQueuesAndExchanges()} instead
-     *
-     * @return void
-     */
-    protected function setupQueueAndExchange()
-    {
-        $this->setupQueuesAndExchanges();
     }
 
     /**

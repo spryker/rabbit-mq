@@ -81,10 +81,10 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
-     * @api
-     *
      * Specification:
      * - Allow creation queues and exchanges in runtime.
+     *
+     * @api
      *
      * @return bool
      */
