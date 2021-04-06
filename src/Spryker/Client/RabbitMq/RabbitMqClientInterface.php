@@ -23,7 +23,7 @@ interface RabbitMqClientInterface
 
     /**
      * Specification:
-     *  - Return connection.
+     *  - Return default connection.
      *
      * @api
      *
