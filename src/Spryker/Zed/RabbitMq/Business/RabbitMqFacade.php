@@ -62,11 +62,9 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
      *
      * @api
      *
-     * @param \Psr\Log\LoggerInterface $logger
-     *
      * @return void
      */
-    public function setupConnection(LoggerInterface $logger): void
+    public function setupConnection(): void
     {
         $this->getFactory()->getConection()->setupQueuesAndExchanges();
     }

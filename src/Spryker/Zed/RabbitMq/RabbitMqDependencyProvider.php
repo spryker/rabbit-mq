@@ -73,7 +73,7 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addConnection(Container $container): Container
     {
-        $container->set(static::CONNECTION, static function () use ($container): ConnectionInterface {
+        $container->set(static::CONNECTION, function () use ($container): ConnectionInterface {
             return $container->getLocator()->rabbitMq()->client()->getConnection();
         });
 

@@ -52,15 +52,13 @@ interface RabbitMqFacadeInterface
 
     /**
      * Specification:
-     * - Set up all queues and exchanges.
+     * - Set up all queues and exchanges for the default connection.
      *
      * @api
      *
-     * @param \Psr\Log\LoggerInterface $logger
-     *
      * @return void
      */
-    public function setupConnection(LoggerInterface $logger): void;
+    public function setupConnection(): void;
 
     /**
      * Specification:
