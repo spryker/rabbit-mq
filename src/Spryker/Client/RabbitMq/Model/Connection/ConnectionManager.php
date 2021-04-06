@@ -136,14 +136,6 @@ class ConnectionManager implements ConnectionManagerInterface
     }
 
     /**
-     * @return void
-     */
-    public function setupConnection(): void
-    {
-         $this->getDefaultConnection()->setupQueuesAndExchanges();
-    }
-
-    /**
      * @throws \Spryker\Client\RabbitMq\Model\Exception\DefaultConnectionNotFoundException
      *
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer
@@ -162,7 +154,7 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
-    protected function getDefaultConnection(): ConnectionInterface
+    public function getDefaultConnection(): ConnectionInterface
     {
         return $this->connectionBuilder->createConnectionByQueueConnectionTransfer(
             $this->getDefaultQueueConnectionTransfer()

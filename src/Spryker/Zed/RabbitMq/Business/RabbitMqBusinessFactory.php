@@ -7,7 +7,7 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
@@ -72,11 +72,11 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
-    public function getConectionInitializer(): ConnectionInitializerInterface
+    public function getConection(): ConnectionInterface
     {
-        return $this->getProvidedDependency(RabbitMqDependencyProvider::CONNECTION_INITIALIZER);
+        return $this->getProvidedDependency(RabbitMqDependencyProvider::CONNECTION);
     }
 
     /**

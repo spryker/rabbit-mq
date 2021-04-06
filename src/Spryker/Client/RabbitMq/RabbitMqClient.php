@@ -8,7 +8,7 @@
 namespace Spryker\Client\RabbitMq;
 
 use Spryker\Client\Kernel\AbstractClient;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 
 /**
  * @method \Spryker\Client\RabbitMq\RabbitMqFactory getFactory()
@@ -32,10 +32,10 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
      *
      * @api
      *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
-    public function getConnectionInitializer(): ConnectionInitializerInterface
+    public function getConnection(): ConnectionInterface
     {
-        return $this->getFactory()->createConnectionInitializer();
+        return $this->getFactory()->getStaticConnectionManager()->getDefaultConnection();
     }
 }

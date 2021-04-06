@@ -8,7 +8,7 @@
 namespace Spryker\Zed\RabbitMq;
 
 use GuzzleHttp\Client;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleBridge;
@@ -20,7 +20,7 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const QUEUE_ADAPTER = 'QUEUE_ADAPTER';
     public const GUZZLE_CLIENT = 'GUZZLE_CLIENT';
-    public const CONNECTION_INITIALIZER = 'CONNECTION_INITIALIZER';
+    public const CONNECTION = 'CONNECTION';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -31,7 +31,7 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container = $this->addQueueAdapter($container);
         $container = $this->addGuzzleClient($container);
-        $container = $this->addConnectionInitializer($container);
+        $container = $this->addConnection($container);
 
         return $container;
     }
@@ -71,10 +71,10 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addConnectionInitializer(Container $container): Container
+    protected function addConnection(Container $container): Container
     {
-        $container->set(static::CONNECTION_INITIALIZER, static function () use ($container): ConnectionInitializerInterface {
-            return $container->getLocator()->rabbitMq()->client()->getConnectionInitializer();
+        $container->set(static::CONNECTION, static function () use ($container): ConnectionInterface {
+            return $container->getLocator()->rabbitMq()->client()->getConnection();
         });
 
         return $container;

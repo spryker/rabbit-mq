@@ -12,8 +12,6 @@ use Spryker\Client\Queue\Model\Adapter\AdapterInterface;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilder;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializer;
-use Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManager;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilter;
@@ -76,14 +74,6 @@ class RabbitMqFactory extends AbstractFactory
             $this->createQueueConnectionTransferFilter(),
             $this->createConnectionBuilder()
         );
-    }
-
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInitializerInterface
-     */
-    public function createConnectionInitializer(): ConnectionInitializerInterface
-    {
-        return new ConnectionInitializer($this->getStaticConnectionManager());
     }
 
     /**

@@ -33,7 +33,7 @@ interface ConnectionManagerInterface
     public function getDefaultChannel(): AMQPChannel;
 
     /**
-     * @return void
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
-    public function setupConnection(): void;
+    public function getDefaultConnection(): ConnectionInterface;
 }
