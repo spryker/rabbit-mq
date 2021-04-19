@@ -75,7 +75,7 @@ class ConnectionManager implements ConnectionManagerInterface
     public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array
     {
         $queueConnectionTransfersByBoolName = $this->connectionConfigMapper->mapQueueConnectionTransfersByPoolName(
-            $this->storeClient->getCurrentStore()->getQueuePools()
+            $this->getQueuePools()
         )[$queuePoolName];
 
         return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByBoolName, $localeCode);
@@ -122,9 +122,13 @@ class ConnectionManager implements ConnectionManagerInterface
     public function getChannelsByStoreName(string $storeName, ?string $localeCode): array
     {
         $queueConnectionTransfersByStoreName = $this->connectionConfigMapper
-            ->mapQueueConnectionTransfersByStoreName()[$storeName];
+            ->mapQueueConnectionTransfersByStoreName();
 
-        return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByStoreName, $localeCode);
+        if (!isset($queueConnectionTransfersByStoreName[$storeName])) {
+            return [];
+        }
+
+        return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByStoreName[$storeName], $localeCode);
     }
 
     /**
@@ -146,12 +150,24 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getDefaultQueueConnectionTransfer(): QueueConnectionTransfer
     {
-        foreach ($this->config->getQueueConnections() as $queueConnectionTransfer) {
+        $queueConnectionTransfers = $this->config->getQueueConnections(
+            $this->config->isQueueStorePrefixEnabled() ? $this->storeClient->getStores() : null
+        );
+
+        foreach ($queueConnectionTransfers as $queueConnectionTransfer) {
             if ($queueConnectionTransfer->getIsDefaultConnection()) {
                 return $queueConnectionTransfer;
             }
         }
 
         throw new DefaultConnectionNotFoundException(static::EXCEPTION_MESSAGE_DEFAULT_CONNECTION_NOT_FOUND);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getQueuePools(): array
+    {
+        return $this->storeClient->getCurrentStore()->getQueuePools();
     }
 }

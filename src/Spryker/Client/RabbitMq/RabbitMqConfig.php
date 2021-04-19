@@ -33,9 +33,20 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @api
      *
+     * @return bool
+     */
+    public function isQueueStorePrefixEnabled(): bool
+    {
+        // @todo move to project level
+        return true;
+    }
+
+    /**
+     * @api
+     *
      * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
      */
-    public function getQueueConnections(): array
+    public function getQueueConnections(?array $storeNames = null): array
     {
         $queueConnectionConfigs = $this->getQueueConnectionConfigs();
 
@@ -44,6 +55,9 @@ class RabbitMqConfig extends AbstractBundleConfig
             $connectionTransfer = (new QueueConnectionTransfer())
                 ->fromArray($queueConnectionConfig, true)
                 ->setQueueOptionCollection($this->getQueueOptions());
+            if ($storeNames && !$connectionTransfer->getStoreNames()) {
+                $connectionTransfer->setStoreNames($storeNames);
+            }
 
             $connectionTransferCollection[] = $connectionTransfer;
         }

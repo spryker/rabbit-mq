@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper;
 
+use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Exception\ConnectionConfigIsNotDefinedException;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
 
@@ -35,11 +36,18 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
     protected $queueConnectionTransfersByPoolName;
 
     /**
-     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
+     * @var \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
      */
-    public function __construct(RabbitMqConfig $config)
+    protected $storeClient;
+
+    /**
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
+     * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
+     */
+    public function __construct(RabbitMqConfig $config, RabbitMqToStoreClientInterface $storeClient)
     {
         $this->config = $config;
+        $this->storeClient = $storeClient;
     }
 
     /**
@@ -80,7 +88,11 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
      */
     protected function addQueueConnectionTransfersByConnectionName(): void
     {
-        foreach ($this->config->getQueueConnections() as $queueConnectionTransfer) {
+        $queueConnectionTransfers = $this->config->getQueueConnections(
+            $this->config->isQueueStorePrefixEnabled() ? $this->storeClient->getStores() : null
+        );
+
+        foreach ($queueConnectionTransfers as $queueConnectionTransfer) {
             $this->queueConnectionTransfersByConnectionName[$queueConnectionTransfer->getName()] = $queueConnectionTransfer;
         }
     }

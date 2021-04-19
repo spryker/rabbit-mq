@@ -46,7 +46,8 @@ class RabbitMqFactory extends AbstractFactory
         return new RabbitMqAdapter(
             $this->createManager(),
             $this->createPublisher(),
-            $this->createConsumer()
+            $this->createConsumer(),
+            $this->getConfig()
         );
     }
 
@@ -89,7 +90,7 @@ class RabbitMqFactory extends AbstractFactory
      */
     public function createQueueConnectionTransferMapper(): QueueConnectionTransferMapperInterface
     {
-        return new QueueConnectionTransferMapper($this->getConfig());
+        return new QueueConnectionTransferMapper($this->getConfig(), $this->getStoreClient());
     }
 
     /**

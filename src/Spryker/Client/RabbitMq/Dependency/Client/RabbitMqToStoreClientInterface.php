@@ -9,10 +9,6 @@ namespace Spryker\Client\RabbitMq\Dependency\Client;
 
 use Generated\Shared\Transfer\StoreTransfer;
 
-/**
- * @deprecated
- *
- */
 interface RabbitMqToStoreClientInterface
 {
     /**
@@ -26,4 +22,11 @@ interface RabbitMqToStoreClientInterface
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function getStoreByName(string $name): StoreTransfer;
+
+    /**
+     * @api
+     *
+     * @return string[]
+     */
+    public function getStores(): array;
 }
