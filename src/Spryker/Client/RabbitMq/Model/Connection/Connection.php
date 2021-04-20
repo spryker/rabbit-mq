@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exception\AMQPProtocolChannelException;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
+use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class Connection implements ConnectionInterface
 {
@@ -38,20 +39,31 @@ class Connection implements ConnectionInterface
     protected $queueEstablishmentHelper;
 
     /**
+     * @var \Spryker\Client\RabbitMq\RabbitMqConfig
+     */
+    protected $clientConfig;
+
+    /**
      * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
      * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
      * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnection
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $clientConfig
      */
     public function __construct(
         AMQPStreamConnection $streamConnection,
         QueueEstablishmentHelperInterface $queueEstablishmentHelper,
-        QueueConnectionTransfer $queueConnection
+        QueueConnectionTransfer $queueConnection,
+        RabbitMqConfig $clientConfig
     ) {
         $this->streamConnection = $streamConnection;
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
         $this->queueConnectionConfig = $queueConnection;
+        $this->channel = $this->streamConnection->channel();
+        $this->clientConfig = $clientConfig;
 
-        $this->setupConnection();
+        if ($this->clientConfig->isRuntimeSettingUpEnabled()) {
+            $this->setupQueuesAndExchanges();
+        }
     }
 
     /**
@@ -97,17 +109,7 @@ class Connection implements ConnectionInterface
     /**
      * @return void
      */
-    protected function setupConnection()
-    {
-        $this->channel = $this->streamConnection->channel();
-
-        $this->setupQueueAndExchange();
-    }
-
-    /**
-     * @return void
-     */
-    protected function setupQueueAndExchange()
+    public function setupQueuesAndExchanges(): void
     {
         foreach ($this->queueConnectionConfig->getQueueOptionCollection() as $queueOption) {
             if ($queueOption->getDeclarationType() !== self::RABBIT_MQ_EXCHANGE) {
