@@ -1,68 +1,68 @@
 {
-  "name": "spryker/rabbit-mq",
-  "type": "library",
-  "description": "RabbitMq module",
-  "homepage": "https://spryker.com",
-  "license": "MIT",
-  "require": {
-    "php": ">=7.3",
-    "php-amqplib/php-amqplib": "^2.10.0",
-    "spryker/guzzle": "^2.0.0",
-    "spryker/kernel": "^3.30.0",
-    "spryker/log": "^3.0.0",
-    "spryker/queue": "^1.4.0",
-    "spryker/store": "^1.9.0",
-    "spryker/symfony": "^3.0.0",
-    "spryker/transfer": "^3.8.0"
-  },
-  "require-dev": {
-    "phpstan/phpstan": "^0.12.57",
-    "spryker/code-sniffer": "*",
-    "spryker/testify": "^3.35.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Spryker\\": "src/Spryker/",
-      "SprykerTest\\Client\\RabbitMq\\Helper\\": "tests/SprykerTest/Client/RabbitMq/_support/Helper/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "SprykerTest\\": "tests/SprykerTest/"
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "scripts": {
-    "cs-check": "phpcs -p -s --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/",
-    "cs-fix": "phpcbf -p --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/",
-    "stan": "phpstan analyse src/",
-    "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12 && mv composer.backup composer.json"
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.0.x-dev"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "support": {
-    "source": "https://github.com/spryker/rabbit-mq"
-  },
-  "authors": [
-    {
-      "name": "Spryker",
-      "homepage": "https://spryker.com"
-    }
-  ],
-  "keywords": [
-    "framework",
-    "rabbit-mq",
-    "queue",
-    "standards"
-  ],
-  "include-path": [
-    "src/"
-  ]
+    "name": "spryker/rabbit-mq",
+    "type": "library",
+    "description": "RabbitMq module",
+    "homepage": "https://spryker.com",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.3",
+        "php-amqplib/php-amqplib": "^2.10.0",
+        "spryker/guzzle": "^2.0.0",
+        "spryker/kernel": "^3.30.0",
+        "spryker/log": "^3.0.0",
+        "spryker/queue": "^1.4.0",
+        "spryker/store": "^1.9.0",
+        "spryker/symfony": "^3.0.0",
+        "spryker/transfer": "^3.8.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.12.57",
+        "spryker/code-sniffer": "*",
+        "spryker/testify": "^3.35.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spryker\\": "src/Spryker/",
+            "SprykerTest\\Client\\RabbitMq\\Helper\\": "tests/SprykerTest/Client/RabbitMq/_support/Helper/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SprykerTest\\": "tests/SprykerTest/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "cs-check": "phpcs -p -s --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/",
+        "cs-fix": "phpcbf -p --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/",
+        "stan": "phpstan analyse src/",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12 && mv composer.backup composer.json"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "support": {
+        "source": "https://github.com/spryker/rabbit-mq"
+    },
+    "authors": [
+        {
+            "name": "Spryker",
+            "homepage": "https://spryker.com"
+        }
+    ],
+    "keywords": [
+        "framework",
+        "rabbit-mq",
+        "queue",
+        "standards"
+    ],
+    "include-path": [
+        "src/"
+    ]
 }
