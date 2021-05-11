@@ -43,12 +43,4 @@ class RabbitMqToStoreClientBridge implements RabbitMqToStoreClientInterface
     {
         return $this->storeClient->getStoreByName($name);
     }
-
-    /**
-     * @return string[]
-     */
-    public function getStores(): array
-    {
-        return $this->storeClient->getStores();
-    }
 }

@@ -150,11 +150,7 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getDefaultQueueConnectionTransfer(): QueueConnectionTransfer
     {
-        $queueConnectionTransfers = $this->config->getQueueConnections(
-            $this->config->isQueueStorePrefixEnabled() ? $this->storeClient->getStores() : null
-        );
-
-        foreach ($queueConnectionTransfers as $queueConnectionTransfer) {
+        foreach ($this->config->getQueueConnections() as $queueConnectionTransfer) {
             if ($queueConnectionTransfer->getIsDefaultConnection()) {
                 return $queueConnectionTransfer;
             }
@@ -168,6 +164,10 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getQueuePools(): array
     {
+        if ($this->config->getQueuePools()) {
+            return $this->config->getQueuePools();
+        }
+
         return $this->storeClient->getCurrentStore()->getQueuePools();
     }
 }

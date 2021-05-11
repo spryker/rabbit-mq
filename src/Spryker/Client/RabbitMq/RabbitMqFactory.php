@@ -90,7 +90,7 @@ class RabbitMqFactory extends AbstractFactory
      */
     public function createQueueConnectionTransferMapper(): QueueConnectionTransferMapperInterface
     {
-        return new QueueConnectionTransferMapper($this->getConfig(), $this->getStoreClient());
+        return new QueueConnectionTransferMapper($this->getConfig());
     }
 
     /**

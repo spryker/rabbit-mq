@@ -61,7 +61,6 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
      */
     public function createQueue($queueName, array $options = [])
     {
-        $queueName = $this->resolveQueueName($queueName, $storeName);
         return $this->manager->createQueue($queueName, $options);
     }
 
