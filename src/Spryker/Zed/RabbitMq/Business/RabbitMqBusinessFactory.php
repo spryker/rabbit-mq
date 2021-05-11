@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
@@ -68,6 +69,14 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getConfig()->getApiUsername(),
             $this->getConfig()->getApiPassword()
         );
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
+    public function getConection(): ConnectionInterface
+    {
+        return $this->getProvidedDependency(RabbitMqDependencyProvider::CONNECTION);
     }
 
     /**

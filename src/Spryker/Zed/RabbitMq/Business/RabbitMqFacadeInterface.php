@@ -52,6 +52,16 @@ interface RabbitMqFacadeInterface
 
     /**
      * Specification:
+     * - Set up all queues and exchanges for the default connection.
+     *
+     * @api
+     *
+     * @return void
+     */
+    public function setupConnection(): void;
+
+    /**
+     * Specification:
      * - Sets the user permissions.
      *
      * @api

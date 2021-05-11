@@ -136,11 +136,7 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     public function getDefaultChannel(): AMQPChannel
     {
-        $defaultConnection = $this->connectionBuilder->createConnectionByQueueConnectionTransfer(
-            $this->getDefaultQueueConnectionTransfer()
-        );
-
-        return $defaultConnection->getChannel();
+        return $this->getDefaultConnection()->getChannel();
     }
 
     /**
@@ -157,6 +153,16 @@ class ConnectionManager implements ConnectionManagerInterface
         }
 
         throw new DefaultConnectionNotFoundException(static::EXCEPTION_MESSAGE_DEFAULT_CONNECTION_NOT_FOUND);
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
+    public function getDefaultConnection(): ConnectionInterface
+    {
+        return $this->connectionBuilder->createConnectionByQueueConnectionTransfer(
+            $this->getDefaultQueueConnectionTransfer()
+        );
     }
 
     /**
