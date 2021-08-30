@@ -1,1 +1,23 @@
-[]
+[
+    {
+        "fileName": "/vendor/spryker/rabbit-mq/src/Spryker/Client/RabbitMq/Dependency/Client/RabbitMqToStoreClientInterface.php",
+        "description": "\n      Bridges: The bridge interface has incorrect method 'getStoreByName' signature. That violates the rule \"All bridge methods must have exactly the same signature as their interface\"\n    ",
+        "rule": "BridgeMethodsRule",
+        "ruleset": "Spryker",
+        "priority": "2"
+    },
+    {
+        "fileName": "/vendor/spryker/rabbit-mq/src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleBridge.php",
+        "description": "\n      Bridges: The bridge has incorrect method 'get' signature. That violates the rule \"All bridge methods must have exactly the same signature as their interface\"\n    ",
+        "rule": "BridgeMethodsRule",
+        "ruleset": "Spryker",
+        "priority": "2"
+    },
+    {
+        "fileName": "/vendor/spryker/rabbit-mq/src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleInterface.php",
+        "description": "\n      Bridges: The bridge interface has incorrect method 'get' signature. That violates the rule \"All bridge methods must have exactly the same signature as their interface\"\n    ",
+        "rule": "BridgeMethodsRule",
+        "ruleset": "Spryker",
+        "priority": "2"
+    }
+]
