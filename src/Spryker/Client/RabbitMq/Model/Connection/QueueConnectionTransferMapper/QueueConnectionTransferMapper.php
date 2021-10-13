@@ -12,6 +12,9 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInterface
 {
+    /**
+     * @var string
+     */
     protected const CONNECTION_CONFIG_IS_NOT_DEFINED_EXCEPTION_MESSAGE = 'Couldn\'t find configuration "%s" to create connection. Please, check `RabbitMqEnv::RABBITMQ_CONNECTIONS` in `config_*.php` files, or your `stores.php`';
 
     /**

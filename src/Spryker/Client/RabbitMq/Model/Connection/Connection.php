@@ -16,6 +16,9 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class Connection implements ConnectionInterface
 {
+    /**
+     * @var string
+     */
     public const RABBIT_MQ_EXCHANGE = 'exchange';
 
     /**

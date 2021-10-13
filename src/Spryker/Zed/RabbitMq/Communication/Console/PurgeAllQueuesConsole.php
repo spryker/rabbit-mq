@@ -16,7 +16,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeAllQueuesConsole extends Console
 {
+    /**
+     * @var string
+     */
     public const COMMAND_NAME = 'queue:queue:purge-all';
+    /**
+     * @var string
+     */
     public const DESCRIPTION = 'This command will purge all queues.';
 
     /**

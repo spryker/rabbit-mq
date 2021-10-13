@@ -18,8 +18,17 @@ use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleBridge;
  */
 class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
 {
+    /**
+     * @var string
+     */
     public const QUEUE_ADAPTER = 'QUEUE_ADAPTER';
+    /**
+     * @var string
+     */
     public const GUZZLE_CLIENT = 'GUZZLE_CLIENT';
+    /**
+     * @var string
+     */
     public const CONNECTION = 'CONNECTION';
 
     /**

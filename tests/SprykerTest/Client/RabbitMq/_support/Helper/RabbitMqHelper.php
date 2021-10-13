@@ -23,12 +23,27 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class RabbitMqHelper extends Module
 {
+    /**
+     * @var string
+     */
     protected const STORE_NAME = 'DE';
+    /**
+     * @var string
+     */
     protected const LOCALE_CODE = 'en_US';
+    /**
+     * @var string
+     */
     protected const QUEUE_POOL_NAME = 'synchronizationPool';
     protected const DEFAULT_POOL_CONNECTION_NAME = self::STORE_NAME . '-name';
+    /**
+     * @var string
+     */
     protected const VIRTUAL_HOST = 'virtual-host';
 
+    /**
+     * @var string
+     */
     protected const INCORRECT_LOCALE_CODE = 'INCORRECT_LOCALE_CODE';
 
     /**
