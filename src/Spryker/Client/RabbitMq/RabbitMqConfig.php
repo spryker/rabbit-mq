@@ -17,12 +17,33 @@ use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
 class RabbitMqConfig extends AbstractBundleConfig
 {
+    /**
+     * @var bool
+     */
     protected const AMQP_STREAM_CONNECTION_INSIST = false;
+    /**
+     * @var string
+     */
     protected const AMQP_STREAM_CONNECTION_LOGIN_METHOD = 'AMQPLAIN';
+    /**
+     * @var int
+     */
     protected const AMQP_STREAM_CONNECTION_CONNECTION_TIMEOUT = 3;
+    /**
+     * @var int
+     */
     protected const AMQP_STREAM_CONNECTION_READ_WRITE_TIMEOUT = 130;
+    /**
+     * @var bool
+     */
     protected const AMQP_STREAM_CONNECTION_KEEP_ALIVE = false;
+    /**
+     * @var int
+     */
     protected const AMQP_STREAM_CONNECTION_HEART_BEAT = 0;
+    /**
+     * @var int
+     */
     protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
 
     /**

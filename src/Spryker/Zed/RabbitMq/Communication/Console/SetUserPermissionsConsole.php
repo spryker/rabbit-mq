@@ -16,7 +16,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SetUserPermissionsConsole extends Console
 {
+    /**
+     * @var string
+     */
     public const COMMAND_NAME = 'queue:permission:set';
+    /**
+     * @var string
+     */
     public const DESCRIPTION = 'This command adds configure, read and write permission for the user.';
 
     /**

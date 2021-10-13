@@ -15,14 +15,38 @@ use Throwable;
 
 class Consumer implements ConsumerInterface
 {
+    /**
+     * @var string
+     */
     public const CONSUMER_TAG = 'consumerTag';
+    /**
+     * @var string
+     */
     public const NO_LOCAL = 'noLocal';
+    /**
+     * @var string
+     */
     public const NO_ACK = 'noAck';
+    /**
+     * @var string
+     */
     public const EXCLUSIVE = 'exclusive';
+    /**
+     * @var string
+     */
     public const NOWAIT = 'nowait';
 
+    /**
+     * @var string
+     */
     public const QUEUE_LOG_FILE = 'queue.log';
+    /**
+     * @var int
+     */
     public const DEFAULT_CONSUMER_TIMEOUT_SECONDS = 1;
+    /**
+     * @var int
+     */
     public const DEFAULT_PREFETCH_COUNT = 100;
 
     /**

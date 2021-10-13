@@ -15,8 +15,17 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class Publisher implements PublisherInterface
 {
+    /**
+     * @var string
+     */
     protected const DEFAULT_CHANNEL = 'DEFAULT_CHANNEL';
+    /**
+     * @var string
+     */
     protected const STORE_NAME_BUFFER_KEY_FORMAT = 'STORE_NAME:%s-%s';
+    /**
+     * @var string
+     */
     protected const QUEUE_POOL_NAME_BUFFER_KEY_FORMAT = 'QUEUE_POOL_NAME:%s-%s';
 
     /**

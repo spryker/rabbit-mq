@@ -16,7 +16,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class QueueSetupConsole extends Console
 {
+    /**
+     * @var string
+     */
     public const COMMAND_NAME = 'queue:setup';
+    /**
+     * @var string
+     */
     public const DESCRIPTION = 'Set up queues and exchanges';
 
     /**
