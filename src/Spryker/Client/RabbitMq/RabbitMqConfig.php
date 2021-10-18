@@ -44,7 +44,7 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @var int
      */
-    protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
+    protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = null;
 
     /**
      * @var \ArrayObject|null
