@@ -42,7 +42,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      */
     protected const AMQP_STREAM_CONNECTION_HEART_BEAT = 0;
     /**
-     * @var int|null
+     * @var int
      */
     protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
 
