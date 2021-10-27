@@ -16,6 +16,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to define the available RabbitMQ connections.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_CONNECTIONS = 'RABBITMQ:RABBITMQ_CONNECTIONS';
@@ -25,6 +26,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to state which RabbitMQ connection is the default connection.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_DEFAULT_CONNECTION = 'RABBITMQ:RABBITMQ_DEFAULT_CONNECTION';
@@ -34,6 +36,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to set a logical name for a RabbitMQ connection.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_CONNECTION_NAME = 'RABBITMQ:RABBITMQ_CONNECTION_NAME';
@@ -43,6 +46,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the scheme of a RabbitMQ connection.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_SCHEME = 'RABBITMQ:RABBITMQ_SCHEME';
@@ -52,6 +56,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the host of a RabbitMQ connection.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_HOST = 'RABBITMQ:RABBITMQ_HOST';
@@ -61,6 +66,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the port of a RabbitMQ connection.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_PORT = 'RABBITMQ:RABBITMQ_PORT';
@@ -70,6 +76,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the username of a RabbitMQ connection.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_USERNAME = 'RABBITMQ:RABBITMQ_USERNAME';
@@ -79,6 +86,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the password of a RabbitMQ connection.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_PASSWORD = 'RABBITMQ:RABBITMQ_PASSWORD';
@@ -88,6 +96,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the virtual host of a RabbitMQ connection.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_VIRTUAL_HOST = 'RABBITMQ:RABBITMQ_VIRTUAL_HOST';
@@ -105,6 +114,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the virtual host of the API.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_API_VIRTUAL_HOST = 'RABBITMQ:RABBITMQ_API_VIRTUAL_HOST';
@@ -114,6 +124,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the host of the API.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_API_HOST = 'RABBITMQ:RABBITMQ_API_HOST';
@@ -123,6 +134,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the port of the API.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_API_PORT = 'RABBITMQ:RABBITMQ_API_PORT';
@@ -132,6 +144,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the username of the API access.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_API_USERNAME = 'RABBITMQ:RABBITMQ_API_USERNAME';
@@ -141,6 +154,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the password of the API access.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_API_PASSWORD = 'RABBITMQ:RABBITMQ_API_PASSWORD';
@@ -151,6 +165,7 @@ interface RabbitMqEnv extends QueueConstants
      * - PCRE compatible pattern or full names of exchanges can be used.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_EXCHANGE_BLACKLIST = 'RABBITMQ:RABBITMQ_EXCHANGE_BLACKLIST';
@@ -160,6 +175,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to configure the stream context.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_STREAM_CONTEXT_OPTIONS = 'RABBITMQ:RABBITMQ_STREAM_CONTEXT_OPTIONS';
@@ -169,6 +185,7 @@ interface RabbitMqEnv extends QueueConstants
      * - Use this constant to disable runtime setting up queues and exchanges.
      *
      * @api
+     *
      * @var string
      */
     public const RABBITMQ_ENABLE_RUNTIME_SETTING_UP = 'RABBITMQ:RABBITMQ_ENABLE_RUNTIME_SETTING_UP';
