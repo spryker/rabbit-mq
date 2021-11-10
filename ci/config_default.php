@@ -23,5 +23,4 @@ $config[PropelConstants::ZED_DB_PORT] = getenv('SPRYKER_DB_PORT');
 $config[PropelConstants::ZED_DB_USERNAME] = getenv('SPRYKER_DB_USERNAME');
 $config[PropelConstants::ZED_DB_PASSWORD] = getenv('SPRYKER_DB_PASSWORD');
 $config[PropelConstants::ZED_DB_DATABASE] = getenv('SPRYKER_DB_DATABASE');
-$config[PropelConstants::ZED_DB_REPLICAS] = json_decode(getenv('SPRYKER_DB_REPLICAS') ?: '[]', true);
 $config[PropelConstants::USE_SUDO_TO_MANAGE_DATABASE] = false;
