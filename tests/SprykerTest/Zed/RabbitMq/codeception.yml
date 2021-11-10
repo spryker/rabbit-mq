@@ -14,3 +14,12 @@ suites:
     Business:
         path: Business
         class_name: RabbitMqBusinessTester
+        modules:
+            enabled:
+                - \SprykerTest\Shared\Testify\Helper\Environment:
+                      isolated: true
+                - \SprykerTest\Shared\Testify\Helper\ConfigHelper
+                - \SprykerTest\Shared\Testify\Helper\LocatorHelper
+                - \SprykerTest\Shared\Testify\Helper\VirtualFilesystemHelper
+                - \SprykerTest\Shared\Transfer\Helper\TransferGenerateHelper:
+                      isolated: true

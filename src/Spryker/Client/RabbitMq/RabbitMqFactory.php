@@ -46,7 +46,7 @@ class RabbitMqFactory extends AbstractFactory
         return new RabbitMqAdapter(
             $this->createManager(),
             $this->createPublisher(),
-            $this->createConsumer()
+            $this->createConsumer(),
         );
     }
 
@@ -72,7 +72,7 @@ class RabbitMqFactory extends AbstractFactory
             $this->getStoreClient(),
             $this->createQueueConnectionTransferMapper(),
             $this->createQueueConnectionTransferFilter(),
-            $this->createConnectionBuilder()
+            $this->createConnectionBuilder(),
         );
     }
 
@@ -108,7 +108,7 @@ class RabbitMqFactory extends AbstractFactory
         return new ConnectionBuilder(
             $this->getConfig(),
             $this->getStoreClient(),
-            $this->createQueueEstablishmentHelper()
+            $this->createQueueEstablishmentHelper(),
         );
     }
 
@@ -119,7 +119,7 @@ class RabbitMqFactory extends AbstractFactory
     {
         return new Manager(
             $this->getStaticConnectionManager()->getDefaultChannel(),
-            $this->createQueueEstablishmentHelper()
+            $this->createQueueEstablishmentHelper(),
         );
     }
 
@@ -130,7 +130,7 @@ class RabbitMqFactory extends AbstractFactory
     {
         return new Publisher(
             $this->getStaticConnectionManager(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -140,7 +140,7 @@ class RabbitMqFactory extends AbstractFactory
     public function createConsumer(): ConsumerInterface
     {
         return new Consumer(
-            $this->getStaticConnectionManager()->getDefaultChannel()
+            $this->getStaticConnectionManager()->getDefaultChannel(),
         );
     }
 

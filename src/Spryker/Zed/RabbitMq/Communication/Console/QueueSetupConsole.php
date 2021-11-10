@@ -20,6 +20,7 @@ class QueueSetupConsole extends Console
      * @var string
      */
     public const COMMAND_NAME = 'queue:setup';
+
     /**
      * @var string
      */

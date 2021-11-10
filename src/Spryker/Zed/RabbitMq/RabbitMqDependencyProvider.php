@@ -22,10 +22,12 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
      * @var string
      */
     public const QUEUE_ADAPTER = 'QUEUE_ADAPTER';
+
     /**
      * @var string
      */
     public const GUZZLE_CLIENT = 'GUZZLE_CLIENT';
+
     /**
      * @var string
      */

@@ -19,18 +19,22 @@ class Consumer implements ConsumerInterface
      * @var string
      */
     public const CONSUMER_TAG = 'consumerTag';
+
     /**
      * @var string
      */
     public const NO_LOCAL = 'noLocal';
+
     /**
      * @var string
      */
     public const NO_ACK = 'noAck';
+
     /**
      * @var string
      */
     public const EXCLUSIVE = 'exclusive';
+
     /**
      * @var string
      */
@@ -40,10 +44,12 @@ class Consumer implements ConsumerInterface
      * @var string
      */
     public const QUEUE_LOG_FILE = 'queue.log';
+
     /**
      * @var int
      */
     public const DEFAULT_CONSUMER_TIMEOUT_SECONDS = 1;
+
     /**
      * @var int
      */
@@ -72,7 +78,7 @@ class Consumer implements ConsumerInterface
      * @param int $chunkSize
      * @param array $options
      *
-     * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
+     * @return array<\Generated\Shared\Transfer\QueueReceiveMessageTransfer>
      */
     public function receiveMessages($queueName, $chunkSize = 100, array $options = [])
     {
@@ -81,20 +87,23 @@ class Consumer implements ConsumerInterface
         /** @var \Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitmq'];
 
+        /** @var string $consumerTag */
+        $consumerTag = $rabbitMqOption->getConsumerTag();
+
         $this->channel->basic_qos(0, $chunkSize, false);
         $consumerTag = $this->channel->basic_consume(
             $queueName,
-            $rabbitMqOption->getConsumerTag(),
+            $consumerTag,
             $rabbitMqOption->getNoLocal(),
             $rabbitMqOption->getNoAck(),
             $rabbitMqOption->getConsumerExclusive(),
             $rabbitMqOption->getNoWait(),
-            [$this, 'collectQueueMessages']
+            [$this, 'collectQueueMessages'],
         );
 
         try {
             while (count($this->channel->callbacks)) {
-                $this->channel->wait(null, false, self::DEFAULT_CONSUMER_TIMEOUT_SECONDS);
+                $this->channel->wait(null, false, static::DEFAULT_CONSUMER_TIMEOUT_SECONDS);
             }
         } catch (Throwable $e) {
             $this->channel->basic_cancel($consumerTag);
@@ -183,7 +192,9 @@ class Consumer implements ConsumerInterface
      */
     public function acknowledge(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
-        $this->channel->basic_ack($queueReceiveMessageTransfer->getDeliveryTag());
+        /** @var int $deliveryTag */
+        $deliveryTag = $queueReceiveMessageTransfer->getDeliveryTag();
+        $this->channel->basic_ack($deliveryTag);
         $this->publishOnRoutingKey($queueReceiveMessageTransfer);
     }
 
@@ -194,7 +205,9 @@ class Consumer implements ConsumerInterface
      */
     public function reject(QueueReceiveMessageTransfer $queueReceiveMessageTransfer)
     {
-        $this->channel->basic_reject($queueReceiveMessageTransfer->getDeliveryTag(), $queueReceiveMessageTransfer->getRequeue());
+        /** @var int $deliveryTag */
+        $deliveryTag = $queueReceiveMessageTransfer->getDeliveryTag();
+        $this->channel->basic_reject($deliveryTag, $queueReceiveMessageTransfer->getRequeue());
     }
 
     /**
@@ -223,7 +236,7 @@ class Consumer implements ConsumerInterface
     }
 
     /**
-     * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer[]
+     * @return array<\Generated\Shared\Transfer\QueueReceiveMessageTransfer>
      */
     protected function retrieveCollectedMessages(): array
     {

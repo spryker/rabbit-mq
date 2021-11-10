@@ -28,10 +28,12 @@ class ConnectionManagerTest extends Unit
      * @var string
      */
     protected const STORE_NAME = 'DE';
+
     /**
      * @var string
      */
     protected const LOCALE_CODE = 'en_US';
+
     /**
      * @var string
      */
@@ -41,6 +43,7 @@ class ConnectionManagerTest extends Unit
      * @var string
      */
     protected const INCORRECT_LOCALE_CODE = 'INCORRECT_LOCALE_CODE';
+
     /**
      * @var string
      */

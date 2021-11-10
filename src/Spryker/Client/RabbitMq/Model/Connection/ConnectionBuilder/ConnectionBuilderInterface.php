@@ -13,9 +13,9 @@ use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 interface ConnectionBuilderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
+     * @param array<\Generated\Shared\Transfer\QueueConnectionTransfer> $queueConnectionTransfers
      *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
+     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface>
      */
     public function createConnectionsByQueueConnectionTransfers(array $queueConnectionTransfers): array;
 

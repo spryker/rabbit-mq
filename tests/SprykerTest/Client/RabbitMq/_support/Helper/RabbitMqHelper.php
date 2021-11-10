@@ -27,15 +27,18 @@ class RabbitMqHelper extends Module
      * @var string
      */
     protected const STORE_NAME = 'DE';
+
     /**
      * @var string
      */
     protected const LOCALE_CODE = 'en_US';
+
     /**
      * @var string
      */
     protected const QUEUE_POOL_NAME = 'synchronizationPool';
     protected const DEFAULT_POOL_CONNECTION_NAME = self::STORE_NAME . '-name';
+
     /**
      * @var string
      */
@@ -53,7 +56,7 @@ class RabbitMqHelper extends Module
     {
         return $this->createConnectionManager(
             $this->createDefaultQueueConnectionTransfer(),
-            static::INCORRECT_LOCALE_CODE
+            static::INCORRECT_LOCALE_CODE,
         );
     }
 
@@ -119,7 +122,7 @@ class RabbitMqHelper extends Module
             $storeClient,
             new QueueConnectionTransferMapper($configMock),
             new QueueConnectionTransferFilter($storeClient),
-            $this->getConnectionBuilderMock()
+            $this->getConnectionBuilderMock(),
         );
     }
 
@@ -155,7 +158,7 @@ class RabbitMqHelper extends Module
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
+     * @param array<\Generated\Shared\Transfer\QueueConnectionTransfer> $queueConnectionTransfers
      *
      * @return \Spryker\Client\RabbitMq\RabbitMqConfig|object
      */

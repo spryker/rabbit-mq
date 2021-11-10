@@ -15,7 +15,7 @@ interface ConnectionManagerInterface
      * @param string $queuePoolName
      * @param string|null $localeCode
      *
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array;
 
@@ -23,7 +23,7 @@ interface ConnectionManagerInterface
      * @param string $storeName
      * @param string|null $localeCode
      *
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     public function getChannelsByStoreName(string $storeName, ?string $localeCode): array;
 
