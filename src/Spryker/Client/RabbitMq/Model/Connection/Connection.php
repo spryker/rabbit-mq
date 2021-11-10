@@ -86,7 +86,7 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getStoreNames()
     {
@@ -115,7 +115,7 @@ class Connection implements ConnectionInterface
     public function setupQueuesAndExchanges(): void
     {
         foreach ($this->queueConnectionConfig->getQueueOptionCollection() as $queueOption) {
-            if ($queueOption->getDeclarationType() !== self::RABBIT_MQ_EXCHANGE) {
+            if ($queueOption->getDeclarationType() !== static::RABBIT_MQ_EXCHANGE) {
                 $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 
                 continue;
@@ -138,11 +138,13 @@ class Connection implements ConnectionInterface
     {
         $this->queueEstablishmentHelper->createQueue($this->channel, $queueOption);
 
-        if ($queueOption->getRoutingKeys() === null) {
+        /** @var array<string>|null $routingKeys */
+        $routingKeys = $queueOption->getRoutingKeys();
+        if ($routingKeys === null) {
             return;
         }
 
-        foreach ($queueOption->getRoutingKeys() as $routingKey) {
+        foreach ($routingKeys as $routingKey) {
             $this->bindQueues($queueOption->getQueueName(), $exchangeQueueName, $routingKey);
         }
     }

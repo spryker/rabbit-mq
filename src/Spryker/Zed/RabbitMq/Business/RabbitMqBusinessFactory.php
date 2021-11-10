@@ -29,7 +29,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     {
         return new Queue(
             $this->createQueueInfo(),
-            $this->getQueueAdapter()
+            $this->getQueueAdapter(),
         );
     }
 
@@ -42,7 +42,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getGuzzleClient(),
             $this->getConfig()->getApiQueuesUrl(),
             $this->getConfig()->getApiUsername(),
-            $this->getConfig()->getApiPassword()
+            $this->getConfig()->getApiPassword(),
         );
     }
 
@@ -54,7 +54,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
         return new Exchange(
             $this->createExchangeInfo(),
             $this->getQueueAdapter(),
-            $this->createExchangeFilter()
+            $this->createExchangeFilter(),
         );
     }
 
@@ -67,7 +67,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getGuzzleClient(),
             $this->getConfig()->getApiUserPermissionsUrl(),
             $this->getConfig()->getApiUsername(),
-            $this->getConfig()->getApiPassword()
+            $this->getConfig()->getApiPassword(),
         );
     }
 
@@ -88,7 +88,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getGuzzleClient(),
             $this->getConfig()->getApiExchangesUrl(),
             $this->getConfig()->getApiUsername(),
-            $this->getConfig()->getApiPassword()
+            $this->getConfig()->getApiPassword(),
         );
     }
 

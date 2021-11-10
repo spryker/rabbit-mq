@@ -7,9 +7,9 @@
 
 namespace SprykerTest\Zed\Business\Model\Exchange\Filter;
 
+use Codeception\Test\Unit;
 use Generated\Shared\Transfer\RabbitMqExchangeCollectionTransfer;
 use Generated\Shared\Transfer\RabbitMqExchangeTransfer;
-use PHPUnit_Framework_TestCase;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
 
 /**
@@ -24,7 +24,7 @@ use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
  * @group ExchangeFilterByNameTest
  * Add your own group annotations below this line
  */
-class ExchangeFilterByNameTest extends PHPUnit_Framework_TestCase
+class ExchangeFilterByNameTest extends Unit
 {
     /**
      * @return void

@@ -17,7 +17,7 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
      * @param \PhpAmqpLib\Channel\AMQPChannel $channel
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
      *
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function createQueue(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer): array
     {
@@ -31,7 +31,7 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
                 $queueParams['exclusive'],
                 $queueParams['auto_delete'],
                 $queueParams['no_wait'],
-                new AMQPTable($queueParams['arguments'])
+                new AMQPTable($queueParams['arguments']),
             );
 
         return $queueParams;
@@ -53,14 +53,14 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
                 $exchangeParams['type'],
                 $exchangeParams['passive'],
                 $exchangeParams['durable'],
-                $exchangeParams['auto_delete']
+                $exchangeParams['auto_delete'],
             );
     }
 
     /**
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
      *
-     * @return mixed[]
+     * @return array<mixed>
      */
     protected function convertTransferToArray(RabbitMqOptionTransfer $queueOptionTransfer): array
     {

@@ -19,10 +19,12 @@ class Publisher implements PublisherInterface
      * @var string
      */
     protected const DEFAULT_CHANNEL = 'DEFAULT_CHANNEL';
+
     /**
      * @var string
      */
     protected const STORE_NAME_BUFFER_KEY_FORMAT = 'STORE_NAME:%s-%s';
+
     /**
      * @var string
      */
@@ -39,7 +41,7 @@ class Publisher implements PublisherInterface
     protected $config;
 
     /**
-     * @var \PhpAmqpLib\Channel\AMQPChannel[][]
+     * @var array<array<\PhpAmqpLib\Channel\AMQPChannel>>
      */
     protected $channelBuffer = [];
 
@@ -70,7 +72,7 @@ class Publisher implements PublisherInterface
 
     /**
      * @param string $queueName
-     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer[] $queueSendMessageTransfers
+     * @param array<\Generated\Shared\Transfer\QueueSendMessageTransfer> $queueSendMessageTransfers
      *
      * @return void
      */
@@ -88,7 +90,7 @@ class Publisher implements PublisherInterface
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      * @param string $queueName
      *
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function addBatchMessage(QueueSendMessageTransfer $queueSendMessageTransfer, $queueName)
     {
@@ -107,7 +109,7 @@ class Publisher implements PublisherInterface
     /**
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      *
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getChannels(QueueSendMessageTransfer $queueSendMessageTransfer)
     {
@@ -125,7 +127,7 @@ class Publisher implements PublisherInterface
     /**
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      *
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getChannelByStoreName(QueueSendMessageTransfer $queueSendMessageTransfer): array
     {
@@ -145,7 +147,7 @@ class Publisher implements PublisherInterface
     /**
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      *
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getChannelByQueuePoolName(QueueSendMessageTransfer $queueSendMessageTransfer): array
     {
@@ -163,7 +165,7 @@ class Publisher implements PublisherInterface
     }
 
     /**
-     * @return \PhpAmqpLib\Channel\AMQPChannel[]
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getDefaultChannel(): array
     {
@@ -177,7 +179,7 @@ class Publisher implements PublisherInterface
     }
 
     /**
-     * @param \PhpAmqpLib\Channel\AMQPChannel[] $channels
+     * @param array<\PhpAmqpLib\Channel\AMQPChannel> $channels
      *
      * @return void
      */
@@ -192,7 +194,7 @@ class Publisher implements PublisherInterface
      * @param \PhpAmqpLib\Message\AMQPMessage $message
      * @param string $exchangeQueue
      * @param string $routingKey
-     * @param \PhpAmqpLib\Channel\AMQPChannel[] $publishChannels
+     * @param array<\PhpAmqpLib\Channel\AMQPChannel> $publishChannels
      *
      * @return void
      */

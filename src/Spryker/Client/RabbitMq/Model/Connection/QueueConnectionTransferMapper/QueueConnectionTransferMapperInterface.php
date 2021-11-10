@@ -10,14 +10,14 @@ namespace Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper
 interface QueueConnectionTransferMapperInterface
 {
     /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[][]
+     * @return array<array<\Generated\Shared\Transfer\QueueConnectionTransfer>>
      */
     public function mapQueueConnectionTransfersByStoreName(): array;
 
     /**
-     * @param string[][] $queuePools Keys are pool names, values are lists of connection names.
+     * @param array<array<string>> $queuePools Keys are pool names, values are lists of connection names.
      *
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[][]
+     * @return array<array<\Generated\Shared\Transfer\QueueConnectionTransfer>>
      */
     public function mapQueueConnectionTransfersByPoolName(array $queuePools): array;
 }

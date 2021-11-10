@@ -25,7 +25,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             $this->getApiScheme(),
             $this->getApiHost(),
             $this->getApiPort(),
-            urlencode($this->getApiVirtualHost())
+            urlencode($this->getApiVirtualHost()),
         );
     }
 
@@ -41,7 +41,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             $this->getApiScheme(),
             $this->getApiHost(),
             $this->getApiPort(),
-            urlencode($this->getApiVirtualHost())
+            urlencode($this->getApiVirtualHost()),
         );
     }
 
@@ -58,7 +58,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             $this->getApiHost(),
             $this->getApiPort(),
             urlencode($this->getApiVirtualHost()),
-            $this->getApiUsername()
+            $this->getApiUsername(),
         );
     }
 
