@@ -16,6 +16,7 @@
         "spryker/transfer": "^3.25.0"
     },
     "require-dev": {
+        "codeception/stub": "^3.6.1",
         "codeception/module-asserts": "^1.3.0",
         "spryker/code-sniffer": "^0.17.1",
         "spryker/testify": "^3.40.0"
