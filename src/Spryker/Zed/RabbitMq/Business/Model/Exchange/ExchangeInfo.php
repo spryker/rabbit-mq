@@ -13,6 +13,9 @@ use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 
 class ExchangeInfo implements ExchangeInfoInterface
 {
+    /**
+     * @var string
+     */
     public const AMQP_DEFAULT_EXCHANGE_NAME = 'AMQP-default';
 
     /**

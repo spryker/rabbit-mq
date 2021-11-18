@@ -26,10 +26,10 @@ class QueueConnectionTransferFilter implements QueueConnectionTransferFilterInte
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
+     * @param array<\Generated\Shared\Transfer\QueueConnectionTransfer> $queueConnectionTransfers
      * @param string|null $localeCode
      *
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
+     * @return array<\Generated\Shared\Transfer\QueueConnectionTransfer>
      */
     public function filterByLocaleCode(array $queueConnectionTransfers, ?string $localeCode): array
     {
@@ -80,7 +80,7 @@ class QueueConnectionTransferFilter implements QueueConnectionTransferFilterInte
     /**
      * @param string $storeName
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function getLocaleCodesPerStore(string $storeName): array
     {

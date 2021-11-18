@@ -16,7 +16,7 @@ interface QueueEstablishmentHelperInterface
      * @param \PhpAmqpLib\Channel\AMQPChannel $channel
      * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
      *
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function createQueue(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer): array;
 

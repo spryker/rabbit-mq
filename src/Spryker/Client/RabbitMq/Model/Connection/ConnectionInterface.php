@@ -25,7 +25,7 @@ interface ConnectionInterface
     public function getIsDefaultConnection();
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getStoreNames();
 

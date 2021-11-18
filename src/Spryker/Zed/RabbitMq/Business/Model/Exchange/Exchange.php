@@ -48,7 +48,7 @@ class Exchange implements ExchangeInterface
     public function deleteAllExchanges(LoggerInterface $logger)
     {
         $rabbitMyExchangeCollectionTransfer = $this->exchangeFilter->filter(
-            $this->exchangeInfo->getExchanges()
+            $this->exchangeInfo->getExchanges(),
         );
 
         foreach ($rabbitMyExchangeCollectionTransfer->getRabbitMqExchanges() as $rabbitMqExchangeTransfer) {

@@ -17,12 +17,39 @@ use Spryker\Shared\RabbitMq\RabbitMqEnv;
 
 class RabbitMqConfig extends AbstractBundleConfig
 {
+    /**
+     * @var bool
+     */
     protected const AMQP_STREAM_CONNECTION_INSIST = false;
+
+    /**
+     * @var string
+     */
     protected const AMQP_STREAM_CONNECTION_LOGIN_METHOD = 'AMQPLAIN';
+
+    /**
+     * @var int
+     */
     protected const AMQP_STREAM_CONNECTION_CONNECTION_TIMEOUT = 3;
+
+    /**
+     * @var int
+     */
     protected const AMQP_STREAM_CONNECTION_READ_WRITE_TIMEOUT = 130;
+
+    /**
+     * @var bool
+     */
     protected const AMQP_STREAM_CONNECTION_KEEP_ALIVE = false;
+
+    /**
+     * @var int
+     */
     protected const AMQP_STREAM_CONNECTION_HEART_BEAT = 0;
+
+    /**
+     * @var int
+     */
     protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
 
     /**
@@ -33,7 +60,7 @@ class RabbitMqConfig extends AbstractBundleConfig
     /**
      * @api
      *
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
+     * @return array<\Generated\Shared\Transfer\QueueConnectionTransfer>
      */
     public function getQueueConnections(): array
     {
@@ -143,7 +170,7 @@ class RabbitMqConfig extends AbstractBundleConfig
                 $boundQueueName = $defaultBoundQueueNamePrefix === '' ? $queueConfiguration : sprintf('%s.%s', $queueConfiguration, $defaultBoundQueueNamePrefix);
 
                 $this->queueOptionCollection->append(
-                    $this->createExchangeOptionTransfer($queueConfiguration, $boundQueueName, $defaultBoundQueueNamePrefix)
+                    $this->createExchangeOptionTransfer($queueConfiguration, $boundQueueName, $defaultBoundQueueNamePrefix),
                 );
 
                 continue;
@@ -151,7 +178,7 @@ class RabbitMqConfig extends AbstractBundleConfig
 
             foreach ($queueConfiguration as $routingKey => $queueName) {
                 $this->queueOptionCollection->append(
-                    $this->createExchangeOptionTransfer($queueNameKey, $queueName, $routingKey)
+                    $this->createExchangeOptionTransfer($queueNameKey, $queueName, $routingKey),
                 );
             }
         }

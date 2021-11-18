@@ -33,7 +33,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
     protected $queueEstablishmentHelper;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
+     * @var array<\Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface>
      */
     protected $createdConnectionsByConnectionName;
 
@@ -90,7 +90,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
             $this->createAmqpStreamConnection($queueConnectionTransfer),
             $this->queueEstablishmentHelper,
             $queueConnectionTransfer,
-            $this->config
+            $this->config,
         );
     }
 
@@ -119,7 +119,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
             $queueConnectionTransfer->getKeepAlive() ?? $defaultQueueConnectionTransfer->getKeepAlive(),
             $queueConnectionTransfer->getHeartBeat() ?? $defaultQueueConnectionTransfer->getHeartBeat(),
             $queueConnectionTransfer->getChannelRpcTimeout() ?? $defaultQueueConnectionTransfer->getChannelRpcTimeout(),
-            $queueConnectionTransfer->getSslProtocol()
+            $queueConnectionTransfer->getSslProtocol(),
         );
     }
 
@@ -168,9 +168,9 @@ class ConnectionBuilder implements ConnectionBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer[] $queueConnectionTransfers
+     * @param array<\Generated\Shared\Transfer\QueueConnectionTransfer> $queueConnectionTransfers
      *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface[]
+     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface>
      */
     public function createConnectionsByQueueConnectionTransfers(array $queueConnectionTransfers): array
     {

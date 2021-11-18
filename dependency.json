@@ -1,5 +1,14 @@
 {
-  "include": {
-    "spryker/transfer": "Provides transfer objects definition."
-  }
+    "include": {
+        "spryker/transfer": "Provides transfer objects definition."
+    },
+    "include-dev": {
+        "codeception/stub": "Needed until new Testify patch releases",
+        "codeception/module-asserts": "Codeception module containing various assertions."
+    },
+    "exclude-dev": {
+        "spryker/config": "Indirectly required",
+        "spryker/propel": "Indirectly required",
+        "phpstan/phpstan": "Done via composer command."
+    }
 }

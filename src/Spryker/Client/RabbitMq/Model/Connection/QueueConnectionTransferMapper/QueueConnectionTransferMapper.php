@@ -13,6 +13,9 @@ use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInterface
 {
+    /**
+     * @var string
+     */
     protected const CONNECTION_CONFIG_IS_NOT_DEFINED_EXCEPTION_MESSAGE = 'Couldn\'t find configuration "%s" to create connection. Please, check `RabbitMqEnv::RABBITMQ_CONNECTIONS` in `config_*.php` files, or your `stores.php`';
 
     /**
@@ -21,17 +24,17 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
     protected $config;
 
     /**
-     * @var \Generated\Shared\Transfer\QueueConnectionTransfer[]|null
+     * @var array<\Generated\Shared\Transfer\QueueConnectionTransfer>|null
      */
     protected $queueConnectionTransfersByConnectionName;
 
     /**
-     * @var \Generated\Shared\Transfer\QueueConnectionTransfer[][]|null
+     * @var array<array<\Generated\Shared\Transfer\QueueConnectionTransfer>>|null
      */
     protected $queueConnectionTransfersByStoreName;
 
     /**
-     * @var \Generated\Shared\Transfer\QueueConnectionTransfer[][]|null
+     * @var array<array<\Generated\Shared\Transfer\QueueConnectionTransfer>>|null
      */
     protected $queueConnectionTransfersByPoolName;
 
@@ -44,7 +47,7 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
     }
 
     /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[][]
+     * @return array<array<\Generated\Shared\Transfer\QueueConnectionTransfer>>
      */
     public function mapQueueConnectionTransfersByStoreName(): array
     {
@@ -65,7 +68,7 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
     }
 
     /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
+     * @return array<\Generated\Shared\Transfer\QueueConnectionTransfer>
      */
     protected function getQueueConnectionTransfersByConnectionName(): array
     {
@@ -87,9 +90,9 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
     }
 
     /**
-     * @param string[][] $queuePools
+     * @param array<array<string>> $queuePools
      *
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[][]
+     * @return array<array<\Generated\Shared\Transfer\QueueConnectionTransfer>>
      */
     public function mapQueueConnectionTransfersByPoolName(array $queuePools): array
     {
@@ -108,11 +111,11 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
     }
 
     /**
-     * @param string[] $connectionNames
+     * @param array<string> $connectionNames
      *
      * @throws \Spryker\Client\RabbitMq\Model\Exception\ConnectionConfigIsNotDefinedException
      *
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer[]
+     * @return array<\Generated\Shared\Transfer\QueueConnectionTransfer>
      */
     protected function getQueueConnectionTransferByName(array $connectionNames): array
     {
@@ -122,7 +125,7 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
 
             if (!isset($queueConnectionTransfersByConnectionName[$connectionName])) {
                 throw new ConnectionConfigIsNotDefinedException(
-                    sprintf(static::CONNECTION_CONFIG_IS_NOT_DEFINED_EXCEPTION_MESSAGE, $connectionName)
+                    sprintf(static::CONNECTION_CONFIG_IS_NOT_DEFINED_EXCEPTION_MESSAGE, $connectionName),
                 );
             }
 
