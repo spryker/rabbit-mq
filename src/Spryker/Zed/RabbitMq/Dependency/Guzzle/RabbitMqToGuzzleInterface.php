@@ -15,7 +15,7 @@ interface RabbitMqToGuzzleInterface
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function get($uri, array $options);
+    public function get($uri, array $options = []);
 
     /**
      * @param string $uri
