@@ -7,6 +7,13 @@
         "priority": "2"
     },
     {
+        "fileName": "src/Spryker/Client/RabbitMq/Model/Connection/Connection.php",
+        "description": "Getter `Spryker\\Client\\RabbitMq\\Model\\Connection\\Connection::getIsDefaultConnection()` must not return bool.",
+        "rule": "GetterReturnTypeRule",
+        "ruleset": "Spryker",
+        "priority": "1"
+    },
+    {
         "fileName": "src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleInterface.php",
         "description": "Bridges: The bridge interface has incorrect method signature for `get()`. Missed return type. That violates the rule \"All bridge interface methods must have exactly the same or more strict signature as their parent\"",
         "rule": "BridgeMethodsInterfaceRule",
