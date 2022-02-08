@@ -8,14 +8,14 @@
     },
     {
         "fileName": "src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleBridge.php",
-        "description": "Bridges: Type hint should be defined for param `uri` in method `Spryker\\Zed\\RabbitMq\\Dependency\\Guzzle\\RabbitMqToGuzzleBridge::get()`.",
+        "description": "Bridges: Type should be defined for param `uri` in method `Spryker\\Zed\\RabbitMq\\Dependency\\Guzzle\\RabbitMqToGuzzleBridge::get()`.",
         "rule": "BridgeMethodsRule",
         "ruleset": "Spryker",
         "priority": "2"
     },
     {
         "fileName": "src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleBridge.php",
-        "description": "Bridges: Type hint should be defined for param `uri` in method `Spryker\\Zed\\RabbitMq\\Dependency\\Guzzle\\RabbitMqToGuzzleBridge::put()`.",
+        "description": "Bridges: Type should be defined for param `uri` in method `Spryker\\Zed\\RabbitMq\\Dependency\\Guzzle\\RabbitMqToGuzzleBridge::put()`.",
         "rule": "BridgeMethodsRule",
         "ruleset": "Spryker",
         "priority": "2"
