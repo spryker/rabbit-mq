@@ -1,22 +1,36 @@
 [
     {
-        "fileName": "/vendor/spryker/rabbit-mq/src/Spryker/Client/RabbitMq/Dependency/Client/RabbitMqToStoreClientInterface.php",
-        "description": "\n      Bridges: The bridge interface has incorrect method 'getStoreByName' signature. That violates the rule \"All bridge methods must have exactly the same signature as their interface\"\n    ",
+        "fileName": "src/Spryker/Client/RabbitMq/Dependency/Client/RabbitMqToStoreClientInterface.php",
+        "description": "Bridges: The bridge interface has incorrect method signature for `getCurrentStore()`. Missed return type. That violates the rule \"All bridge interface methods must have exactly the same or more strict signature as their parent\"",
+        "rule": "BridgeMethodsInterfaceRule",
+        "ruleset": "Spryker",
+        "priority": "2"
+    },
+    {
+        "fileName": "src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleBridge.php",
+        "description": "Bridges: Type should be defined for param `uri` in method `Spryker\\Zed\\RabbitMq\\Dependency\\Guzzle\\RabbitMqToGuzzleBridge::get()`.",
         "rule": "BridgeMethodsRule",
         "ruleset": "Spryker",
         "priority": "2"
     },
     {
-        "fileName": "/vendor/spryker/rabbit-mq/src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleBridge.php",
-        "description": "\n      Bridges: The bridge has incorrect method 'get' signature. That violates the rule \"All bridge methods must have exactly the same signature as their interface\"\n    ",
+        "fileName": "src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleBridge.php",
+        "description": "Bridges: Type should be defined for param `uri` in method `Spryker\\Zed\\RabbitMq\\Dependency\\Guzzle\\RabbitMqToGuzzleBridge::put()`.",
         "rule": "BridgeMethodsRule",
         "ruleset": "Spryker",
         "priority": "2"
     },
     {
-        "fileName": "/vendor/spryker/rabbit-mq/src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleInterface.php",
-        "description": "\n      Bridges: The bridge interface has incorrect method 'get' signature. That violates the rule \"All bridge methods must have exactly the same signature as their interface\"\n    ",
-        "rule": "BridgeMethodsRule",
+        "fileName": "src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleInterface.php",
+        "description": "Bridges: The bridge interface has incorrect method signature for `get()`. Missed return type. That violates the rule \"All bridge interface methods must have exactly the same or more strict signature as their parent\"",
+        "rule": "BridgeMethodsInterfaceRule",
+        "ruleset": "Spryker",
+        "priority": "2"
+    },
+    {
+        "fileName": "src/Spryker/Zed/RabbitMq/Dependency/Guzzle/RabbitMqToGuzzleInterface.php",
+        "description": "Bridges: The bridge interface has incorrect method signature for `put()`. Missed return type. That violates the rule \"All bridge interface methods must have exactly the same or more strict signature as their parent\"",
+        "rule": "BridgeMethodsInterfaceRule",
         "ruleset": "Spryker",
         "priority": "2"
     }
