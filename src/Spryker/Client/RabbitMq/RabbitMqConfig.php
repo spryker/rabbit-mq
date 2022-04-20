@@ -53,7 +53,7 @@ class RabbitMqConfig extends AbstractBundleConfig
     protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
 
     /**
-     * @var \ArrayObject|null
+     * @var \ArrayObject<int|string, \Generated\Shared\Transfer\RabbitMqOptionTransfer>|null
      */
     protected $queueOptionCollection;
 
@@ -153,7 +153,7 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
-     * @return \ArrayObject
+     * @return \ArrayObject<int|string, \Generated\Shared\Transfer\RabbitMqOptionTransfer>
      */
     protected function getQueueOptions()
     {
