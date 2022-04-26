@@ -47,7 +47,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
 
     /**
      * @param string $queueName
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return array
      */
@@ -58,7 +58,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
 
     /**
      * @param string $queueName
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return bool
      */
@@ -69,7 +69,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
 
     /**
      * @param string $queueName
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return bool
      */
@@ -91,7 +91,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
     /**
      * @param string $queueName
      * @param int $chunkSize
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return array<\Generated\Shared\Transfer\QueueReceiveMessageTransfer>
      */
@@ -102,7 +102,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
 
     /**
      * @param string $queueName
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return \Generated\Shared\Transfer\QueueReceiveMessageTransfer
      */

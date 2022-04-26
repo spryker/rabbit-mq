@@ -34,7 +34,7 @@ class Manager implements ManagerInterface
 
     /**
      * @param string $queueName
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return array
      */
@@ -48,7 +48,7 @@ class Manager implements ManagerInterface
 
     /**
      * @param string $queueName
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return bool
      */
@@ -59,7 +59,7 @@ class Manager implements ManagerInterface
 
     /**
      * @param string $queueName
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return bool
      */

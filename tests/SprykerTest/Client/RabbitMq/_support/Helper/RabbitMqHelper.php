@@ -37,6 +37,7 @@ class RabbitMqHelper extends Module
      * @var string
      */
     protected const QUEUE_POOL_NAME = 'synchronizationPool';
+
     protected const DEFAULT_POOL_CONNECTION_NAME = self::STORE_NAME . '-name';
 
     /**
