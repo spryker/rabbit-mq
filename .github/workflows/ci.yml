@@ -93,10 +93,13 @@ jobs:
                   extensions: mbstring, intl, pdo_mysql
 
             - name: Composer prefer lowest
-              run: composer lowest-setup
+              run: composer update --prefer-lowest --prefer-stable
 
             - name: Run tests
               run: composer test
+
+            - name: Composer lowest
+              run: composer lowest-setup
 
             - name: Validate prefer lowest
               run: vendor/bin/validate-prefer-lowest -m
