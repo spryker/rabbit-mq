@@ -4,7 +4,8 @@
     },
     "include-dev": {
         "codeception/stub": "Needed until new Testify patch releases",
-        "codeception/module-asserts": "Codeception module containing various assertions."
+        "codeception/module-asserts": "Codeception module containing various assertions.",
+        "mikey179/vfsstream": "Need due to compatibility minimal version package with PHP 8."
     },
     "exclude-dev": {
         "spryker/config": "Indirectly required",
