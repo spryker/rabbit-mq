@@ -7,7 +7,6 @@
 
 namespace Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper;
 
-use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Exception\ConnectionConfigIsNotDefinedException;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
 

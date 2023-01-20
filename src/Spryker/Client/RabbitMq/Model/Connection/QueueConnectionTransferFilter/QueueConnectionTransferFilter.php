@@ -84,7 +84,6 @@ class QueueConnectionTransferFilter implements QueueConnectionTransferFilterInte
      */
     protected function getLocaleCodesPerStore(string $storeName): array
     {
-        // @todo get rid of it
         return $this->storeClient->getStoreByName($storeName)->getAvailableLocaleIsoCodes();
     }
 }

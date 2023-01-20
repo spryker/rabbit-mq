@@ -121,6 +121,32 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * Specification:
+     * - Returns default locale code.
+     *
+     * @api
+     *
+     * @return string|null
+     */
+    public function getDefaultLocaleCode(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Specification:
+     * - Returns queue pools.
+     *
+     * @api
+     *
+     * @return string[][]
+     */
+    public function getQueuePools(): array
+    {
+        return [];
+    }
+
+    /**
      * @return array
      */
     protected function getQueueConnectionConfigs(): array
@@ -239,25 +265,5 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->addRoutingKey($routingKey);
 
         return $queueOptionTransfer;
-    }
-
-    /**
-     * @api
-     *
-     * @return string|null
-     */
-    public function getDefaultLocaleCode(): ?string
-    {
-        return null;
-    }
-
-    /**
-     * @api
-     *
-     * @return string[][]
-     */
-    public function getQueuePools(): array
-    {
-        return [];
     }
 }

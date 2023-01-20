@@ -47,7 +47,6 @@ class RabbitMqFactory extends AbstractFactory
             $this->createManager(),
             $this->createPublisher(),
             $this->createConsumer(),
-            $this->getConfig(),
         );
     }
 

@@ -31,26 +31,18 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
     protected $consumer;
 
     /**
-     * @var \Spryker\Client\RabbitMq\RabbitMqConfig
-     */
-    protected $config;
-
-    /**
      * @param \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface $manager
      * @param \Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface $publisher
      * @param \Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface $consumer
-     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
      */
     public function __construct(
         ManagerInterface $manager,
         PublisherInterface $publisher,
         ConsumerInterface $consumer,
-        \Spryker\Client\RabbitMq\RabbitMqConfig $config
     ) {
         $this->manager = $manager;
         $this->publisher = $publisher;
         $this->consumer = $consumer;
-        $this->config = $config;
     }
 
     /**
