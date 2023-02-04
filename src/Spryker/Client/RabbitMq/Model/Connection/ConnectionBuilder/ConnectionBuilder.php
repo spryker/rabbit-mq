@@ -159,7 +159,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      */
     protected function getDefaultLocale(): string
     {
-        if ($this->config->getDefaultLocaleCode()) {
+        if ($this->config->getDefaultLocaleCode() && !$this->storeClient->isDynamicStoreEnabled() === false) {
             return $this->config->getDefaultLocaleCode();
         }
 

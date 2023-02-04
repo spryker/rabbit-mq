@@ -22,4 +22,9 @@ interface RabbitMqToStoreClientInterface
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function getStoreByName(string $name): StoreTransfer;
+
+    /**
+     * @return bool
+     */
+    public function isDynamicStoreEnabled(): bool;
 }

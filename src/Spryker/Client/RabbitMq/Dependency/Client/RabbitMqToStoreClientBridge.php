@@ -43,4 +43,12 @@ class RabbitMqToStoreClientBridge implements RabbitMqToStoreClientInterface
     {
         return $this->storeClient->getStoreByName($name);
     }
+
+    /**
+     * @return bool
+     */
+    public function isDynamicStoreEnabled(): bool
+    {
+        return $this->storeClient->isDynamicStoreEnabled();
+    }
 }
