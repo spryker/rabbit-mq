@@ -173,7 +173,7 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected function getQueuePools(): array
     {
-        if ($this->config->getQueuePools() && $this->storeClient->isDynamicStoreEnabled()) {
+        if ($this->config->getQueuePools() && $this->config->isDynamicStoreEnabled()) {
             return $this->config->getQueuePools();
         }
 

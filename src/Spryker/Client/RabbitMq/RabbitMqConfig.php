@@ -266,4 +266,10 @@ class RabbitMqConfig extends AbstractBundleConfig
 
         return $queueOptionTransfer;
     }
+
+    //temp to unblock Travis
+    public function isDynamicStoreEnabled(): bool
+    {
+        return (bool)getenv('SPRYKER_DYNAMIC_STORE_MODE');
+    }
 }
