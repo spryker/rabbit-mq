@@ -38,7 +38,7 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
     public function __construct(
         ManagerInterface $manager,
         PublisherInterface $publisher,
-        ConsumerInterface $consumer,
+        ConsumerInterface $consumer
     ) {
         $this->manager = $manager;
         $this->publisher = $publisher;
