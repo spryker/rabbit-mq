@@ -8,7 +8,7 @@
 namespace SprykerTest\Client\RabbitMq\Helper;
 
 use Codeception\Module;
-use Codeception\Util\Stub;
+use Codeception\Stub;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\StoreTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;

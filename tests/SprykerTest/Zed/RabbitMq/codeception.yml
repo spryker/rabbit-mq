@@ -13,7 +13,7 @@ coverage:
 suites:
     Business:
         path: Business
-        class_name: RabbitMqBusinessTester
+        actor: RabbitMqBusinessTester
         modules:
             enabled:
                 - \SprykerTest\Shared\Testify\Helper\Environment:
