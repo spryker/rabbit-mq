@@ -139,7 +139,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      *
      * @api
      *
-     * @return string[][]
+     * @return array<string, string>
      */
     public function getQueuePools(): array
     {
@@ -267,7 +267,11 @@ class RabbitMqConfig extends AbstractBundleConfig
         return $queueOptionTransfer;
     }
 
-    //temp to unblock Travis
+    /**
+     * @api
+     *
+     * @return bool
+     */
     public function isDynamicStoreEnabled(): bool
     {
         return (bool)getenv('SPRYKER_DYNAMIC_STORE_MODE');
