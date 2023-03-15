@@ -139,7 +139,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      *
      * @api
      *
-     * @return array<string, string>
+     * @return array<string, array<int, string>>
      */
     public function getQueuePools(): array
     {
