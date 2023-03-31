@@ -159,7 +159,11 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      */
     protected function getDefaultLocale(): string
     {
-        return current($this->storeClient->getCurrentStore()->getAvailableLocaleIsoCodes());
+        if ($this->config->getDefaultLocaleCode() && $this->config->isDynamicStoreEnabled()) {
+            return $this->config->getDefaultLocaleCode();
+        }
+
+        return $this->getAvailableLocaleIsoCode();
     }
 
     /**
@@ -190,5 +194,15 @@ class ConnectionBuilder implements ConnectionBuilderInterface
     protected function getUniqueChannelId(ConnectionInterface $connection): string
     {
         return sprintf('%s-%s', $connection->getVirtualHost(), $connection->getChannel()->getChannelId());
+    }
+
+    /**
+     * @deprecated Will be removed after dynamic multi-store is always enabled.
+     *
+     * @return string
+     */
+    protected function getAvailableLocaleIsoCode(): string
+    {
+        return current($this->storeClient->getCurrentStore()->getAvailableLocaleIsoCodes());
     }
 }

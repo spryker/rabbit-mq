@@ -121,6 +121,32 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * Specification:
+     * - Returns default locale code.
+     *
+     * @api
+     *
+     * @return string|null
+     */
+    public function getDefaultLocaleCode(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Specification:
+     * - Returns queue pools.
+     *
+     * @api
+     *
+     * @return array<string, array<int, string>>
+     */
+    public function getQueuePools(): array
+    {
+        return [];
+    }
+
+    /**
      * @return array
      */
     protected function getQueueConnectionConfigs(): array
@@ -239,5 +265,15 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->addRoutingKey($routingKey);
 
         return $queueOptionTransfer;
+    }
+
+    /**
+     * @api
+     *
+     * @return bool
+     */
+    public function isDynamicStoreEnabled(): bool
+    {
+        return (bool)getenv('SPRYKER_DYNAMIC_STORE_MODE');
     }
 }

@@ -78,7 +78,7 @@ class ConnectionManager implements ConnectionManagerInterface
     public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array
     {
         $queueConnectionTransfersByBoolName = $this->connectionConfigMapper->mapQueueConnectionTransfersByPoolName(
-            $this->storeClient->getCurrentStore()->getQueuePools(),
+            $this->getQueuePools(),
         )[$queuePoolName];
 
         return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByBoolName, $localeCode);
@@ -125,9 +125,13 @@ class ConnectionManager implements ConnectionManagerInterface
     public function getChannelsByStoreName(string $storeName, ?string $localeCode): array
     {
         $queueConnectionTransfersByStoreName = $this->connectionConfigMapper
-            ->mapQueueConnectionTransfersByStoreName()[$storeName];
+            ->mapQueueConnectionTransfersByStoreName();
 
-        return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByStoreName, $localeCode);
+        if (!isset($queueConnectionTransfersByStoreName[$storeName])) {
+            return [];
+        }
+
+        return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByStoreName[$storeName], $localeCode);
     }
 
     /**
@@ -162,5 +166,17 @@ class ConnectionManager implements ConnectionManagerInterface
         return $this->connectionBuilder->createConnectionByQueueConnectionTransfer(
             $this->getDefaultQueueConnectionTransfer(),
         );
+    }
+
+    /**
+     * @return array
+     */
+    protected function getQueuePools(): array
+    {
+        if ($this->config->getQueuePools() && $this->config->isDynamicStoreEnabled()) {
+            return $this->config->getQueuePools();
+        }
+
+        return $this->storeClient->getCurrentStore()->getQueuePools();
     }
 }

@@ -13,14 +13,14 @@
         "spryker/queue": "^1.5.0",
         "spryker/store": "^1.10.0",
         "spryker/symfony": "^3.5.0",
-        "spryker/transfer": "^3.25.0"
+        "spryker/transfer": "^3.33.1"
     },
     "require-dev": {
-        "codeception/module-asserts": "^1.3.0",
-        "codeception/stub": "^3.6.1",
-        "mikey179/vfsstream": "^1.6.7",
+        "codeception/module-asserts": "*",
+        "codeception/stub": "^4.1",
+        "mikey179/vfsstream": "^1.6.11",
         "spryker/code-sniffer": "^0.17.1",
-        "spryker/testify": "^3.40.0"
+        "spryker/testify": "^3.47.0"
     },
     "autoload": {
         "psr-4": {
