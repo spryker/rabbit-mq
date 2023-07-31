@@ -3,7 +3,7 @@
     "type": "library",
     "description": "RabbitMq module",
     "homepage": "https://spryker.com",
-    "license": "MIT",
+    "license": "proprietary",
     "require": {
         "php": ">=8.0",
         "php-amqplib/php-amqplib": "^3.1.0",
