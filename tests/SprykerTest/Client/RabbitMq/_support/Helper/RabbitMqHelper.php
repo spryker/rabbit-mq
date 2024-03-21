@@ -9,6 +9,7 @@ namespace SprykerTest\Client\RabbitMq\Helper;
 
 use Codeception\Module;
 use Codeception\Stub;
+use Codeception\TestInterface;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\StoreTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -20,9 +21,19 @@ use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilter;
 use Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapper;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
+use SprykerTest\Client\Testify\Helper\ClientHelperTrait;
+use SprykerTest\Client\Testify\Helper\ConfigHelperTrait;
+use SprykerTest\Shared\Store\Helper\StoreDataHelper;
+use SprykerTest\Shared\Store\Helper\StoreDataHelperTrait;
+use SprykerTest\Shared\Testify\Helper\LocatorHelperTrait;
 
 class RabbitMqHelper extends Module
 {
+    use ConfigHelperTrait;
+    use LocatorHelperTrait;
+    use ClientHelperTrait;
+    use StoreDataHelperTrait;
+
     /**
      * @var string
      */
@@ -49,6 +60,38 @@ class RabbitMqHelper extends Module
      * @var string
      */
     protected const INCORRECT_LOCALE_CODE = 'INCORRECT_LOCALE_CODE';
+
+    /**
+     * @param \Codeception\TestInterface $test
+     *
+     * @return void
+     */
+    public function _before(TestInterface $test)
+    {
+        parent::_before($test);
+
+        $key = 'DE';
+        if ($this->hasModule('\\' . StoreDataHelper::class) && $this->getStoreDataHelper()->isDynamicStoreEnabled()) {
+            $key = 'EU';
+        }
+        $this->getConfigHelper()->mockConfigMethod(
+            'getQueuePools',
+            [
+                'synchronizationPool' => [sprintf('%s-connection', $key)],
+            ],
+            'RabbitMq',
+            'Client',
+        );
+        $this->getConfigHelper()->mockConfigMethod(
+            'getDefaultLocaleCode',
+            'en_US',
+            'RabbitMq',
+            'Client',
+        );
+
+        $client = $this->getClientHelper()->getClient('RabbitMq');
+        $this->getLocatorHelper()->addToLocatorCache('rabbitMq-client', $client);
+    }
 
     /**
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
