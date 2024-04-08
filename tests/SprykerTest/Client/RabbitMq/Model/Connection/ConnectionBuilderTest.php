@@ -40,7 +40,7 @@ class ConnectionBuilderTest extends Unit
     public function testCreateConnectionByQueueConnectionTransfer(): void
     {
         // Arrange
-        $connectionBuilder =  $this->createConnectionBuilder();
+        $connectionBuilder = $this->createConnectionBuilder();
 
         // Act
         $connectionBuilder->createConnectionByQueueConnectionTransfer(new QueueConnectionTransfer());

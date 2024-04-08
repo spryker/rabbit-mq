@@ -9,7 +9,6 @@ namespace SprykerTest\Client\RabbitMq;
 
 use Codeception\Actor;
 use Codeception\Stub;
-use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
