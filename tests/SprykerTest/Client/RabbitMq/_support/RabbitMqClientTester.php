@@ -50,14 +50,6 @@ class RabbitMqClientTester extends Actor
     }
 
     /**
-     * @return \Generated\Shared\Transfer\QueueConnectionTransfer
-     */
-    public function createQueueConnectionTransfer(): QueueConnectionTransfer
-    {
-        return Stub::makeEmpty(QueueConnectionTransfer::class);
-    }
-
-    /**
      * @return \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
      */
     public function createStoreClient(): RabbitMqToStoreClientInterface
