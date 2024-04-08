@@ -8,10 +8,12 @@
 namespace SprykerTest\Client\RabbitMq\Model\Connection;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\QueueConnectionTransfer;
 use Generated\Shared\Transfer\StoreTransfer;
 use PhpAmqpLib\Exception\AMQPIOException;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilder;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface;
+use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 
 /**
@@ -28,31 +30,6 @@ use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 class ConnectionBuilderTest extends Unit
 {
     /**
-     * @var string
-     */
-    protected const STORE_NAME = 'DE';
-
-    /**
-     * @var string
-     */
-    protected const LOCALE_CODE = 'en_US';
-
-    /**
-     * @var string
-     */
-    protected const QUEUE_POOL_NAME = 'synchronizationPool';
-
-    /**
-     * @var string
-     */
-    protected const INCORRECT_LOCALE_CODE = 'INCORRECT_LOCALE_CODE';
-
-    /**
-     * @var string
-     */
-    protected const INCORRECT_CONNECTION_NAME = 'INCORRECT_CONNECTION_NAME';
-
-    /**
      * @var \SprykerTest\Client\RabbitMq\RabbitMqClientTester
      */
     protected $tester;
@@ -62,17 +39,33 @@ class ConnectionBuilderTest extends Unit
      */
     public function testCreateConnectionByQueueConnectionTransfer(): void
     {
+        // Arrange
+        $connectionBuilder =  $this->createConnectionBuilder();
+
         // Act
-        $this->createConnectionBuilder()->createConnectionByQueueConnectionTransfer($this->tester->createQueueConnectionTransfer());
+        $connectionBuilder->createConnectionByQueueConnectionTransfer(new QueueConnectionTransfer());
+
+        // Assert
+        $this->assertInstanceOf(ConnectionInterface::class, $connectionBuilder);
     }
 
     /**
      * @return void
      */
-    public function testcreateConnectionsByQueueConnectionTransfers(): void
+    public function testCreateConnectionsByQueueConnectionTransfers(): void
     {
+        // Arrange
+        $connectionBuilder = $this->createConnectionBuilder();
+
         // Act
-        $this->createConnectionBuilder()->createConnectionsByQueueConnectionTransfers([$this->tester->createQueueConnectionTransfer()]);
+        $connectionTransfers = $connectionBuilder->createConnectionsByQueueConnectionTransfers([
+            new QueueConnectionTransfer(),
+        ]);
+
+        // Assert
+        $this->assertIsArray($connectionTransfers);
+        $this->assertCount(1, $connectionTransfers);
+        $this->assertInstanceOf(ConnectionInterface::class, $connectionTransfers[0]);
     }
 
     /**
