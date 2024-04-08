@@ -69,7 +69,7 @@ class ConnectionBuilderTest extends Unit
     /**
      * @return void
      */
-    public function testcreateConnectionsByQueueConnectionTransfers(): void
+    public function testCreateConnectionsByQueueConnectionTransfers(): void
     {
         // Act
         $this->createConnectionBuilder()->createConnectionsByQueueConnectionTransfers([$this->tester->createQueueConnectionTransfer()]);
