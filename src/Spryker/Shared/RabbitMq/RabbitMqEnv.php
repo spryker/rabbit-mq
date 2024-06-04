@@ -189,4 +189,14 @@ interface RabbitMqEnv extends QueueConstants
      * @var string
      */
     public const RABBITMQ_ENABLE_RUNTIME_SETTING_UP = 'RABBITMQ:RABBITMQ_ENABLE_RUNTIME_SETTING_UP';
+
+    /**
+     * Specification:
+     * - Use this constant to define the available RabbitMQ heartbeat in seconds.
+     *
+     * @api
+     *
+     * @var string
+     */
+    public const RABBITMQ_HEART_BEAT_SECONDS = 'RABBITMQ:RABBITMQ_HEART_BEAT_SECONDS';
 }
