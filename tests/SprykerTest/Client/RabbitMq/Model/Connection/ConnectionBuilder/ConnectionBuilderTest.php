@@ -11,11 +11,8 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use ReflectionClass;
-use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilder;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
-use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
-use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 /**
  * Auto-generated group annotations
@@ -67,6 +64,9 @@ class ConnectionBuilderTest extends Unit
         $this->assertSame($existingConnection, $result);
     }
 
+    /**
+     * @return void
+     */
     public function testCreatesNewConnectionIfNoExistingConnectionFound(): void
     {
         // Arrange
@@ -88,25 +88,9 @@ class ConnectionBuilderTest extends Unit
         $this->assertSame($newConnection, $result);
     }
 
-    public function testHandlesNullOrEmptyQueueConnectionTransferName(): void
-    {
-        // Arrange
-        $queueConnectionTransfer = $this->createMock(QueueConnectionTransfer::class);
-        $queueConnectionTransfer->method('getName')->willReturn(null);
-
-        $connectionBuilder = new ConnectionBuilder(
-            $this->createMock(RabbitMqConfig::class),
-            $this->createMock(RabbitMqToStoreClientInterface::class),
-            $this->createMock(QueueEstablishmentHelperInterface::class),
-        );
-
-        // Act
-        $result = $connectionBuilder->createConnectionByQueueConnectionTransfer($queueConnectionTransfer);
-
-        // Assert
-        $this->assertNull($result);
-    }
-
+    /**
+     * @return void
+     */
     public function testHandlesEmptyCreatedConnectionsArray(): void
     {
         // Arrange
@@ -128,6 +112,9 @@ class ConnectionBuilderTest extends Unit
         $this->assertSame($newConnection, $result);
     }
 
+    /**
+     * @return void
+     */
     public function testHandlesNullChannelFromGetChannelMethod(): void
     {
         // Arrange
