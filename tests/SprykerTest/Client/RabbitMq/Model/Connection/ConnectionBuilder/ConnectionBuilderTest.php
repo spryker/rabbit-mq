@@ -11,8 +11,11 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\QueueConnectionTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use ReflectionClass;
+use Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilder;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
+use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
+use Spryker\Client\RabbitMq\RabbitMqConfig;
 
 /**
  * Auto-generated group annotations
@@ -62,5 +65,94 @@ class ConnectionBuilderTest extends Unit
 
         // Assert
         $this->assertSame($existingConnection, $result);
+    }
+
+    public function testCreatesNewConnectionIfNoExistingConnectionFound(): void
+    {
+        // Arrange
+        $queueConnectionTransfer = $this->createMock(QueueConnectionTransfer::class);
+        $queueConnectionTransfer->method('getName')->willReturn('new_connection');
+
+        $newConnection = $this->createMock(ConnectionInterface::class);
+
+        $connectionBuilder = $this->getMockBuilder(ConnectionBuilder::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['createConnection'])
+            ->getMock();
+        $connectionBuilder->method('createConnection')->willReturn($newConnection);
+
+        // Act
+        $result = $connectionBuilder->createConnectionByQueueConnectionTransfer($queueConnectionTransfer);
+
+        // Assert
+        $this->assertSame($newConnection, $result);
+    }
+
+    public function testHandlesNullOrEmptyQueueConnectionTransferName(): void
+    {
+        // Arrange
+        $queueConnectionTransfer = $this->createMock(QueueConnectionTransfer::class);
+        $queueConnectionTransfer->method('getName')->willReturn(null);
+
+        $connectionBuilder = new ConnectionBuilder(
+            $this->createMock(RabbitMqConfig::class),
+            $this->createMock(RabbitMqToStoreClientInterface::class),
+            $this->createMock(QueueEstablishmentHelperInterface::class),
+        );
+
+        // Act
+        $result = $connectionBuilder->createConnectionByQueueConnectionTransfer($queueConnectionTransfer);
+
+        // Assert
+        $this->assertNull($result);
+    }
+
+    public function testHandlesEmptyCreatedConnectionsArray(): void
+    {
+        // Arrange
+        $queueConnectionTransfer = $this->createMock(QueueConnectionTransfer::class);
+        $queueConnectionTransfer->method('getName')->willReturn('empty_array_test');
+
+        $newConnection = $this->createMock(ConnectionInterface::class);
+
+        $connectionBuilder = $this->getMockBuilder(ConnectionBuilder::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['createConnection'])
+            ->getMock();
+        $connectionBuilder->method('createConnection')->willReturn($newConnection);
+
+        // Act
+        $result = $connectionBuilder->createConnectionByQueueConnectionTransfer($queueConnectionTransfer);
+
+        // Assert
+        $this->assertSame($newConnection, $result);
+    }
+
+    public function testHandlesNullChannelFromGetChannelMethod(): void
+    {
+        // Arrange
+        $queueConnectionTransfer = $this->createMock(QueueConnectionTransfer::class);
+        $queueConnectionTransfer->method('getName')->willReturn('null_channel_test');
+
+        $existingConnection = $this->createMock(ConnectionInterface::class);
+        $existingConnection->method('getChannel')->willReturn(null);
+
+        $newConnection = $this->createMock(ConnectionInterface::class);
+
+        $connectionBuilder = $this->getMockBuilder(ConnectionBuilder::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['createConnection'])
+            ->getMock();
+        $reflection = new ReflectionClass(ConnectionBuilder::class);
+        $property = $reflection->getProperty('createdConnectionsByConnectionName');
+        $property->setAccessible(true);
+        $property->setValue($connectionBuilder, ['null_channel_test' => $existingConnection]);
+        $connectionBuilder->method('createConnection')->willReturn($newConnection);
+
+        // Act
+        $result = $connectionBuilder->createConnectionByQueueConnectionTransfer($queueConnectionTransfer);
+
+        // Assert
+        $this->assertSame($newConnection, $result);
     }
 }
