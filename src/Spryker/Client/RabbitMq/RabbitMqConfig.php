@@ -278,6 +278,9 @@ class RabbitMqConfig extends AbstractBundleConfig
     }
 
     /**
+     * Specification:
+     * - Returns the heart beat value for the RabbitMQ connection.
+     *
      * @api
      *
      * @return int
