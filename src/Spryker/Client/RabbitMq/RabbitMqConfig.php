@@ -282,7 +282,7 @@ class RabbitMqConfig extends AbstractBundleConfig
      *
      * @return int
      */
-    protected function getHeartBeat(): int
+    public function getHeartBeat(): int
     {
         return (int)$this->get(RabbitMqEnv::RABBITMQ_HEART_BEAT_SECONDS, static::AMQP_STREAM_CONNECTION_HEART_BEAT);
     }

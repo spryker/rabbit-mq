@@ -13,6 +13,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use ReflectionClass;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilder;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
+use SprykerTest\Client\RabbitMq\RabbitMqClientTester;
 
 /**
  * Auto-generated group annotations
@@ -31,7 +32,7 @@ class ConnectionBuilderTest extends Unit
     /**
      * @var \SprykerTest\Client\RabbitMq\RabbitMqClientTester
      */
-    protected $tester;
+    protected RabbitMqClientTester $tester;
 
     /**
      * @return void
