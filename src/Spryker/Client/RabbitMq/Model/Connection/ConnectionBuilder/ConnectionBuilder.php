@@ -69,14 +69,31 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      */
     protected function createOrGetConnection(QueueConnectionTransfer $queueConnectionTransfer): ConnectionInterface
     {
-        if (isset($this->createdConnectionsByConnectionName[$queueConnectionTransfer->getName()])) {
-            return $this->createdConnectionsByConnectionName[$queueConnectionTransfer->getName()];
+        $connection = $this->getWorkingConnection($queueConnectionTransfer);
+        if ($connection !== null) {
+            return $connection;
         }
 
         $connection = $this->createConnection($queueConnectionTransfer);
         $this->createdConnectionsByConnectionName[$queueConnectionTransfer->getName()] = $connection;
 
         return $connection;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface|null
+     */
+    protected function getWorkingConnection(QueueConnectionTransfer $queueConnectionTransfer): ?ConnectionInterface
+    {
+        $connection = $this->createdConnectionsByConnectionName[$queueConnectionTransfer->getName()] ?? null;
+
+        if ($connection !== null && $connection->getChannel() !== null && $connection->getChannel()->is_open()) {
+            return $connection;
+        }
+
+        return null;
     }
 
     /**

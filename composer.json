@@ -11,7 +11,7 @@
         "spryker/kernel": "^3.56.0",
         "spryker/log": "^3.7.0",
         "spryker/queue": "^1.5.0",
-        "spryker/store": "^1.10.0",
+        "spryker/store": "^1.21.0",
         "spryker/symfony": "^3.5.0",
         "spryker/transfer": "^3.33.1"
     },
@@ -20,7 +20,7 @@
         "codeception/stub": "^4.1",
         "mikey179/vfsstream": "^1.6.11",
         "spryker/code-sniffer": "^0.17.1",
-        "spryker/testify": "^3.47.0"
+        "spryker/testify": "^3.49.0"
     },
     "autoload": {
         "psr-4": {
