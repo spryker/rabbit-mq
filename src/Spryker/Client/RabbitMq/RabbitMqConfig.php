@@ -103,7 +103,7 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->setConnectionTimeout(static::AMQP_STREAM_CONNECTION_CONNECTION_TIMEOUT)
             ->setReadWriteTimeout(static::AMQP_STREAM_CONNECTION_READ_WRITE_TIMEOUT)
             ->setKeepAlive(static::AMQP_STREAM_CONNECTION_KEEP_ALIVE)
-            ->setHeartBeat(static::AMQP_STREAM_CONNECTION_HEART_BEAT)
+            ->setHeartBeat($this->getHeartBeat())
             ->setChannelRpcTimeout(static::AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT);
     }
 
@@ -275,5 +275,18 @@ class RabbitMqConfig extends AbstractBundleConfig
     public function isDynamicStoreEnabled(): bool
     {
         return (bool)getenv('SPRYKER_DYNAMIC_STORE_MODE');
+    }
+
+    /**
+     * Specification:
+     * - Returns the heart beat value for the RabbitMQ connection.
+     *
+     * @api
+     *
+     * @return int
+     */
+    public function getHeartBeat(): int
+    {
+        return (int)$this->get(RabbitMqEnv::RABBITMQ_HEART_BEAT_SECONDS, static::AMQP_STREAM_CONNECTION_HEART_BEAT);
     }
 }
