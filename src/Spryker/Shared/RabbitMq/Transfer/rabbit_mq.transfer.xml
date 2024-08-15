@@ -53,6 +53,7 @@
     </transfer>
 
     <transfer name="RabbitMqQueue">
+        <property name="messageCount" type="int" strict="true"/>
         <property name="name" type="string"/>
         <property name="virtualHost" type="string"/>
     </transfer>
@@ -90,6 +91,10 @@
         <property name="requeue" type="bool"/>
         <property name="queueMessage" type="QueueSendMessage"/>
         <property name="queueName" type="string"/>
+    </transfer>
+
+    <transfer name="RabbitMqQueueCollectionTransfer">
+        <property name="queues" type="RabbitMqQueue[]" strict="true"/>
     </transfer>
 
 </transfers>

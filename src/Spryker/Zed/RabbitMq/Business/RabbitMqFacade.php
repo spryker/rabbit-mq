@@ -82,4 +82,12 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
     {
         return $this->getFactory()->createUserPermissionHandler()->setPermissions($logger);
     }
+
+    /**
+    * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
+    */
+    public function getQueues(): RabbitMqQueueCollectionTransfer
+    {
+        return $this->getFactory()->createQueueInfo()->getQueues();
+    }
 }

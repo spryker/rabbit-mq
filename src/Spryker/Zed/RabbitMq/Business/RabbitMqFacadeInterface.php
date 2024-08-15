@@ -71,4 +71,11 @@ interface RabbitMqFacadeInterface
      * @return bool
      */
     public function setUserPermissions(LoggerInterface $logger);
+
+    /**
+     * @api
+     *
+     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
+     */
+    public function getQueues(): RabbitMqQueueCollectionTransfer;
 }
