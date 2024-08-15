@@ -7,8 +7,8 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
-use Psr\Log\LoggerInterface;
 use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
+use Psr\Log\LoggerInterface;
 
 /**
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqBusinessFactory getFactory()
