@@ -58,7 +58,12 @@ class QueueInfo implements QueueInfoInterface
         if ($response->getStatusCode() === 200) {
             $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
-            return $this->addRabbitMqQueues($rabbitMqQueueCollectionTransfer, $decodedResponse);
+            foreach ($decodedResponse as $queueInfo) {
+                $rabbitMqQueueTransfer = (new RabbitMqQueueTransfer())->fromArray($queueInfo, true);
+                $rabbitMqQueueTransfer->setMessageCount($queueInfo['messages']);
+
+                $rabbitMqQueueCollectionTransfer->addRabbitMqQueue($rabbitMqQueueTransfer);
+            }
         }
 
         return $rabbitMqQueueCollectionTransfer;

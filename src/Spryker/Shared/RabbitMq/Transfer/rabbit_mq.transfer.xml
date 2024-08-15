@@ -93,8 +93,4 @@
         <property name="queueName" type="string"/>
     </transfer>
 
-    <transfer name="RabbitMqQueueCollectionTransfer">
-        <property name="queues" type="RabbitMqQueue[]" strict="true"/>
-    </transfer>
-
 </transfers>

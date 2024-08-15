@@ -2,6 +2,7 @@
 
 namespace Spryker\Zed\RabbitMq\Communication\Plugin;
 
+use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Queue\Dependency\Plugin\QueueProviderPluginInterface;
 use Generated\Shared\Transfer\QueueCollectionTransfer;
@@ -11,7 +12,7 @@ use Generated\Shared\Transfer\QueueCollectionTransfer;
  */
 class RabbitMqQueueProviderPlugin extends AbstractPlugin implements QueueProviderPluginInterface
 {
-    public function getQueues(): QueueCollectionTransfer
+    public function getQueues(): RabbitMqQueueCollectionTransfer
     {
         return $this->getFacade()->getQueues();
     }
