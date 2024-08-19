@@ -14,7 +14,7 @@
         "spryker/store": "^1.21.0",
         "spryker/symfony": "^3.5.0",
         "spryker/transfer": "^3.33.1",
-        "spryker/spryker": "*"
+        "spryker/spryker": "dev-master"
     },
     "require-dev": {
         "codeception/module-asserts": "*",
