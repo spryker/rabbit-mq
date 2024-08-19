@@ -88,6 +88,8 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
      *
      * @api
      *
+     * @param array<string> $queueNames
+     *
      * @return bool
      */
     public function areQueuesEmpty($queueNames): bool

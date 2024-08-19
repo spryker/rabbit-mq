@@ -73,7 +73,12 @@ interface RabbitMqFacadeInterface
     public function setUserPermissions(LoggerInterface $logger);
 
     /**
+     * Specification:
+     *  - Checks if any of the applicable queues have messages.
+     *
      * @api
+     *
+     * @param array<string> $queueNames
      *
      * @return bool
      */

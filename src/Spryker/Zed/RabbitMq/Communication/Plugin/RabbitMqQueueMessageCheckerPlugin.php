@@ -20,6 +20,15 @@ use Spryker\Zed\Queue\Dependency\Plugin\QueueMessageCheckerPluginInterface;
  */
 class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueMessageCheckerPluginInterface
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param array<string> $queueNames
+     *
+     * @return bool
+     */
     public function areQueuesEmpty(array $queueNames): bool
     {
         return $this->getFacade()->areQueuesEmpty($queueNames);

@@ -91,6 +91,12 @@ class QueueInfo implements QueueInfoInterface
         return $rabbitMqQueueCollectionTransfer;
     }
 
+    /**
+     * @param string $currentQueueName
+     * @param array<string> $queueNames
+     *
+     * @return bool
+     */
     public function isApplicableQueue(string $currentQueueName, array $queueNames): bool
     {
         return in_array($currentQueueName, $queueNames);
