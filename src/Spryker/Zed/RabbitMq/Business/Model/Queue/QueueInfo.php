@@ -48,13 +48,14 @@ class QueueInfo implements QueueInfoInterface
     }
 
     /**
+     * @param array $queueNames
+     *
      * @return bool
      */
     public function areQueuesEmpty(array $queueNames): bool
     {
         $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
 
-        $rabbitMqQueueCollectionTransfer = new RabbitMqQueueCollectionTransfer();
         if ($response->getStatusCode() === 200) {
             $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
