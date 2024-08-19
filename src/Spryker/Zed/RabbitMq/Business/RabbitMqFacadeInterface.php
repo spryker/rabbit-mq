@@ -76,7 +76,7 @@ interface RabbitMqFacadeInterface
     /**
      * @api
      *
-     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
+     * @return bool
      */
-    public function getQueues(): RabbitMqQueueCollectionTransfer;
+    public function areQueuesEmpty($queueNames): bool;
 }

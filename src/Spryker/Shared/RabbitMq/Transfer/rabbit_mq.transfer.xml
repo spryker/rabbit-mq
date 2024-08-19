@@ -53,7 +53,6 @@
     </transfer>
 
     <transfer name="RabbitMqQueue">
-        <property name="messageCount" type="int" strict="true"/>
         <property name="name" type="string"/>
         <property name="virtualHost" type="string"/>
     </transfer>

@@ -48,6 +48,27 @@ class QueueInfo implements QueueInfoInterface
     }
 
     /**
+     * @return bool
+     */
+    public function areQueuesEmpty(array $queueNames): bool
+    {
+        $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
+
+        $rabbitMqQueueCollectionTransfer = new RabbitMqQueueCollectionTransfer();
+        if ($response->getStatusCode() === 200) {
+            $decodedResponse = json_decode($response->getBody()->getContents(), true);
+
+            foreach ($decodedResponse as $queueInfo) {
+                if ($queueInfo['messages'] > 0 && $this->isApplicableQueue($queueInfo['name'], $queueNames)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
      */
     public function getQueues()
@@ -69,21 +90,8 @@ class QueueInfo implements QueueInfoInterface
         return $rabbitMqQueueCollectionTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer $rabbitMqQueueCollectionTransfer
-     * @param array $response
-     *
-     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
-     */
-    protected function addRabbitMqQueues(RabbitMqQueueCollectionTransfer $rabbitMqQueueCollectionTransfer, array $response)
+    public function isApplicableQueue(string $currentQueueName, array $queueNames): bool
     {
-        foreach ($response as $queueInfo) {
-            $rabbitMqQueueTransfer = new RabbitMqQueueTransfer();
-            $rabbitMqQueueTransfer->setName($queueInfo['name']);
-
-            $rabbitMqQueueCollectionTransfer->addRabbitMqQueue($rabbitMqQueueTransfer);
-        }
-
-        return $rabbitMqQueueCollectionTransfer;
+        return in_array($currentQueueName, $queueNames);
     }
 }

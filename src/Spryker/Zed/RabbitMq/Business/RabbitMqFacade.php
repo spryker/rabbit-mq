@@ -85,14 +85,12 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @api
      *
-     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
+     * @return bool
      */
-    public function getQueues(): RabbitMqQueueCollectionTransfer
+    public function areQueuesEmpty($queueNames): bool
     {
-        return $this->getFactory()->createQueueInfo()->getQueues();
+        return $this->getFactory()->createQueueInfo()->areQueuesEmpty($queueNames);
     }
 }

@@ -9,7 +9,7 @@ namespace Spryker\Zed\RabbitMq\Communication\Plugin;
 
 use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use Spryker\Zed\Queue\Dependency\Plugin\QueueProviderPluginInterface;
+use Spryker\Zed\Queue\Dependency\Plugin\QueueMessageCheckerPluginInterface;
 
 /**
  * {@inheritDoc}
@@ -19,10 +19,10 @@ use Spryker\Zed\Queue\Dependency\Plugin\QueueProviderPluginInterface;
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
  * @method \Spryker\Zed\RabbitMq\RabbitMqConfig getConfig()
  */
-class RabbitMqQueueProviderPlugin extends AbstractPlugin implements QueueProviderPluginInterface
+class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueMessageCheckerPluginInterface
 {
-    public function getQueues(): RabbitMqQueueCollectionTransfer
+    public function areQueuesEmpty(array $queueNames): bool
     {
-        return $this->getFacade()->getQueues();
+        return $this->getFacade()->areQueuesEmpty($queueNames);
     }
 }

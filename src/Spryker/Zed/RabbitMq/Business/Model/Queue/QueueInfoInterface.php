@@ -10,7 +10,12 @@ namespace Spryker\Zed\RabbitMq\Business\Model\Queue;
 interface QueueInfoInterface
 {
     /**
-     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
+     * @return bool
      */
-    public function getQueues();
+    public function areQueuesEmpty(array $queueNames): bool;
+
+    /**
+     * @return bool
+     */
+    public function isApplicableQueue(string $currentQueueName, array $queueNames): bool;
 }
