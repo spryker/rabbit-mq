@@ -7,7 +7,6 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
-use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -85,6 +84,8 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @return bool

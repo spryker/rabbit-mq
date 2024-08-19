@@ -7,7 +7,6 @@
 
 namespace Spryker\Zed\RabbitMq\Communication\Plugin;
 
-use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Queue\Dependency\Plugin\QueueMessageCheckerPluginInterface;
 
