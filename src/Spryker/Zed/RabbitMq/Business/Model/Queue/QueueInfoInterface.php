@@ -17,6 +17,11 @@ interface QueueInfoInterface
     public function areQueuesEmpty(array $queueNames): bool;
 
     /**
+     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
+     */
+    public function getQueues();
+
+    /**
      * @param string $currentQueueName
      * @param array<string> $queueNames
      *
