@@ -80,12 +80,25 @@ class QueueInfo implements QueueInfoInterface
         if ($response->getStatusCode() === 200) {
             $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
-            foreach ($decodedResponse as $queueInfo) {
-                $rabbitMqQueueTransfer = (new RabbitMqQueueTransfer())->fromArray($queueInfo, true);
-                $rabbitMqQueueTransfer->setMessageCount($queueInfo['messages']);
+            return $this->addRabbitMqQueues($rabbitMqQueueCollectionTransfer, $decodedResponse);
+        }
 
-                $rabbitMqQueueCollectionTransfer->addRabbitMqQueue($rabbitMqQueueTransfer);
-            }
+        return $rabbitMqQueueCollectionTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer $rabbitMqQueueCollectionTransfer
+     * @param array $response
+     *
+     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
+     */
+    protected function addRabbitMqQueues(RabbitMqQueueCollectionTransfer $rabbitMqQueueCollectionTransfer, array $response)
+    {
+        foreach ($response as $queueInfo) {
+            $rabbitMqQueueTransfer = new RabbitMqQueueTransfer();
+            $rabbitMqQueueTransfer->setName($queueInfo['name']);
+
+            $rabbitMqQueueCollectionTransfer->addRabbitMqQueue($rabbitMqQueueTransfer);
         }
 
         return $rabbitMqQueueCollectionTransfer;
