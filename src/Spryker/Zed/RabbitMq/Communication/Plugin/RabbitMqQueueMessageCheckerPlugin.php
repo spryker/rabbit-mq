@@ -7,8 +7,9 @@
 
 namespace Spryker\Zed\RabbitMq\Communication\Plugin;
 
+use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use Spryker\Zed\Queue\Dependency\Plugin\QueueMessageCheckerPluginInterface;
+use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMessageCheckerPluginInterface;
 
 /**
  * {@inheritDoc}
@@ -32,5 +33,19 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
     public function areQueuesEmpty(array $queueNames): bool
     {
         return $this->getFacade()->areQueuesEmpty($queueNames);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param string $adapterName
+     *
+     * @return bool
+     */
+    public function isApplicable(string $adapterName): bool
+    {
+        return $adapterName === RabbitMqAdapter::class;
     }
 }
