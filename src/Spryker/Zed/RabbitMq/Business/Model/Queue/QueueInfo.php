@@ -57,12 +57,14 @@ class QueueInfo implements QueueInfoInterface
         $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
 
         if ($response->getStatusCode() === 200) {
-            $decodedResponse = json_decode($response->getBody()->getContents(), true);
+            return true;
+        }
 
-            foreach ($decodedResponse as $queueInfo) {
-                if ($queueInfo['messages'] > 0 && $this->isApplicableQueue($queueInfo['name'], $queueNames)) {
-                    return false;
-                }
+        $decodedResponse = json_decode($response->getBody()->getContents(), true);
+
+        foreach ($decodedResponse as $queueInfo) {
+            if ($queueInfo['messages'] > 0 && $this->isApplicableQueue($queueInfo['name'], $queueNames)) {
+                return false;
             }
         }
 
