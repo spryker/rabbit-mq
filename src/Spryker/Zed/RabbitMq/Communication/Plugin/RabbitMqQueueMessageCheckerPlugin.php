@@ -12,8 +12,6 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMessageCheckerPluginInterface;
 
 /**
- * {@inheritDoc}
- *
  * @api
  *
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
