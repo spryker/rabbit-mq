@@ -14,6 +14,8 @@ use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMessageCheckerPluginInterf
 /**
  * {@inheritDoc}
  *
+ * - Checks if any of the queues provided has messages in it.
+ *
  * @api
  *
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
