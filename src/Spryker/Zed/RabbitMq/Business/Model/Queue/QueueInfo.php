@@ -56,7 +56,7 @@ class QueueInfo implements QueueInfoInterface
     {
         $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
 
-        if ($response->getStatusCode() === 200) {
+        if ($response->getStatusCode() !== 200) {
             return true;
         }
 
