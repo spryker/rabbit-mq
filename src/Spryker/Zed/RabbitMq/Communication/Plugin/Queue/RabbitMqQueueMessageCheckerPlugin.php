@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Spryker\Zed\RabbitMq\Communication\Plugin;
+namespace Spryker\Zed\RabbitMq\Communication\Plugin\Queue;
 
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
@@ -20,7 +20,7 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
     /**
      * {@inheritDoc}
      *
-     * - Checks if any of the queues provided has messages in it.
+     * - Checks if any of the queues provided have messages in them.
      *
      * @api
      *
