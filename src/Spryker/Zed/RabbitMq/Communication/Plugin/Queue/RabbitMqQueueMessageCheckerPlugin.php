@@ -35,7 +35,6 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
 
     /**
      * {@inheritDoc}
-     *
      * - Checks if the current queue adapter is RabbitMq.
      *
      * @api
