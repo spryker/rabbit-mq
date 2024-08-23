@@ -92,7 +92,7 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
      *
      * @return bool
      */
-    public function areQueuesEmpty($queueNames): bool
+    public function areQueuesEmpty(array $queueNames): bool
     {
         return $this->getFactory()->createQueueInfo()->areQueuesEmpty($queueNames);
     }
