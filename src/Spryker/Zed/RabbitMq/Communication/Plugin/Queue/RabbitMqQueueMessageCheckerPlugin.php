@@ -19,7 +19,6 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
 {
     /**
      * {@inheritDoc}
-     *
      * - Checks if any of the queues provided have messages in them.
      *
      * @api
