@@ -60,7 +60,7 @@ class RabbitMqFacadeTest extends Unit
     /**
      * @return void
      */
-    protected function _before()
+    protected function _before(): void
     {
         $this->tester->setDependency(SprykerQueueDependencyProvider::QUEUE_ADAPTERS, function (Container $container) {
             return [
@@ -74,7 +74,7 @@ class RabbitMqFacadeTest extends Unit
     /**
      * @return void
      */
-    public function testAreQueuesEmptyReturnsTrueForEmptyQueues()
+    public function testAreQueuesEmptyReturnsTrueForEmptyQueues(): void
     {
         // Arrange
         $queueClient = $this->tester->getLocator()->queue()->client();
@@ -93,7 +93,7 @@ class RabbitMqFacadeTest extends Unit
     /**
      * @return void
      */
-    public function testAreQueuesEmptyReturnsFalseForNonEmptyQueues()
+    public function testAreQueuesEmptyReturnsFalseForNonEmptyQueues(): void
     {
         // Arrange
         $queueClient = $this->tester->getLocator()->queue()->client();
