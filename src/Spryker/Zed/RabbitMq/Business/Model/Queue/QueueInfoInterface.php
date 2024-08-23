@@ -20,12 +20,4 @@ interface QueueInfoInterface
      * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
      */
     public function getQueues();
-
-    /**
-     * @param string $currentQueueName
-     * @param array<string> $queueNames
-     *
-     * @return bool
-     */
-    public function isApplicableQueue(string $currentQueueName, array $queueNames): bool;
 }

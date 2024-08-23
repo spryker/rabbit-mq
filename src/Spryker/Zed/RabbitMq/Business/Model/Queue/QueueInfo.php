@@ -63,7 +63,7 @@ class QueueInfo implements QueueInfoInterface
         $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
         foreach ($decodedResponse as $queueInfo) {
-            if ($queueInfo['messages'] > 0 && $this->isApplicableQueue($queueInfo['name'], $queueNames)) {
+            if ($queueInfo['messages'] > 0 && in_array($queueInfo['name'], $queueNames)) {
                 return false;
             }
         }
@@ -104,16 +104,5 @@ class QueueInfo implements QueueInfoInterface
         }
 
         return $rabbitMqQueueCollectionTransfer;
-    }
-
-    /**
-     * @param string $currentQueueName
-     * @param array<string> $queueNames
-     *
-     * @return bool
-     */
-    public function isApplicableQueue(string $currentQueueName, array $queueNames): bool
-    {
-        return in_array($currentQueueName, $queueNames);
     }
 }
