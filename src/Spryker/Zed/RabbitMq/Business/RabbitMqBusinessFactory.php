@@ -15,6 +15,7 @@ use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
 use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
+use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface;
 use Spryker\Zed\RabbitMq\RabbitMqDependencyProvider;
 
 /**

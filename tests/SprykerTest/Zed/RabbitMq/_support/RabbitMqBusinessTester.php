@@ -8,6 +8,8 @@
 namespace SprykerTest\Zed\RabbitMq;
 
 use Codeception\Actor;
+use Generated\Shared\Transfer\QueueSendMessageTransfer;
+use Spryker\Zed\Event\Communication\Plugin\Queue\EventQueueMessageProcessorPlugin;
 
 /**
  * Inherited Methods
@@ -29,7 +31,43 @@ class RabbitMqBusinessTester extends Actor
 {
     use _generated\RabbitMqBusinessTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * @var string
+     */
+    protected const STORE_NAME_DE = 'DE';
+
+    /**
+     * @param array<string> $queueNames
+     *
+     * @return array<\Spryker\Zed\Queue\Dependency\Plugin\QueueMessageProcessorPluginInterface>
+     */
+    public function getMessageProcessorPlugins(array $queueNames): array
+    {
+        $plugins = [];
+
+        foreach ($queueNames as $queueName) {
+            $plugins[$queueName] = new EventQueueMessageProcessorPlugin();
+        }
+
+        return $plugins;
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\QueueSendMessageTransfer
+     */
+    public function buildSendMessageTransfer(): QueueSendMessageTransfer
+    {
+        $queueSendTransfer = new QueueSendMessageTransfer();
+        $queueSendTransfer->setBody(json_encode([
+            'write' => [
+                'key' => 'testKey',
+                'value' => 'testValue',
+                'resource' => 'testResource',
+                'params' => [],
+            ],
+        ]));
+        $queueSendTransfer->setStoreName(static::STORE_NAME_DE);
+
+        return $queueSendTransfer;
+    }
 }

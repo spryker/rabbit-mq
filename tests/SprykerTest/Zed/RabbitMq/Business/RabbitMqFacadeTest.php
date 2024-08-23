@@ -8,9 +8,9 @@
 namespace SprykerTest\Zed\RabbitMq\Business;
 
 use Codeception\Test\Unit;
-use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
-use Spryker\Zed\RabbitMq\Business\RabbitMqBusinessFactory;
-use Spryker\Zed\RabbitMq\Business\RabbitMqFacade;
+use Spryker\Client\Kernel\Container;
+use Spryker\Client\Queue\QueueDependencyProvider as SprykerQueueDependencyProvider;
+use Spryker\Zed\Queue\QueueDependencyProvider;
 
 /**
  * Auto-generated group annotations
@@ -26,51 +26,97 @@ use Spryker\Zed\RabbitMq\Business\RabbitMqFacade;
 class RabbitMqFacadeTest extends Unit
 {
     /**
-     * @var \Spryker\Zed\RabbitMq\Business\RabbitMqFacade
+     * @var \SprykerTest\Zed\RabbitMq\RabbitMqBusinessTester
      */
-    protected $rabbitMqFacade;
+    protected $tester;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Zed\RabbitMq\Business\RabbitMqBusinessFactory
+     * @uses \Spryker\Shared\Event\EventConstants::EVENT_QUEUE
+     *
+     * @var string
      */
-    protected $rabbitMqBusinessFactoryMock;
+    protected const EVENT_QUEUE = 'event';
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Zed\RabbitMq\Business\Queue\QueueInfo
+     * @uses \Spryker\Shared\Publisher\PublisherConfig::PUBLISH_QUEUE
+     *
+     * @var string
      */
-    protected $queueInfoMock;
+    protected const PUBLISH_QUEUE = 'publish';
+
+    /**
+     * @var array<string>
+     */
+    protected const QUEUE_NAMES = [
+        self::EVENT_QUEUE,
+        self::PUBLISH_QUEUE,
+    ];
+
+    /**
+     * @var int
+     */
+    protected const MESSAGE_AMOUNT = 1000;
 
     /**
      * @return void
      */
     protected function _before()
     {
-        $this->rabbitMqBusinessFactoryMock = $this->createMock(RabbitMqBusinessFactory::class);
-        $this->queueInfoMock = $this->createMock(QueueInfo::class);
+        $this->tester->setDependency(SprykerQueueDependencyProvider::QUEUE_ADAPTERS, function (Container $container) {
+            return [
+                $container->getLocator()->rabbitMq()->client()->createQueueAdapter(),
+            ];
+        });
 
-        $this->rabbitMqFacade = new RabbitMqFacade();
-        $this->rabbitMqFacade->setFactory($this->rabbitMqBusinessFactoryMock);
+        $this->tester->setDependency(QueueDependencyProvider::QUEUE_MESSAGE_PROCESSOR_PLUGINS, $this->tester->getMessageProcessorPlugins(static::QUEUE_NAMES));
     }
 
     /**
      * @return void
      */
-    public function testAreQueuesEmpty()
+    public function testAreQueuesEmptyReturnsTrueForEmptyQueues()
     {
-        $queueNames = ['queue1', 'queue2'];
-        $expectedResult = true;
+        // Arrange
+        $queueClient = $this->tester->getLocator()->queue()->client();
 
-        $this->rabbitMqBusinessFactoryMock
-            ->method('createQueueInfo')
-            ->willReturn($this->queueInfoMock);
+        // Act
+        foreach (static::QUEUE_NAMES as $queueName) {
+            $queueClient->purgeQueue($queueName);
+        }
 
-        $this->queueInfoMock
-            ->method('areQueuesEmpty')
-            ->with($queueNames)
-            ->willReturn($expectedResult);
+        sleep(7);
 
-        $result = $this->rabbitMqFacade->areQueuesEmpty($queueNames);
+        // Assert
+        $this->assertTrue($this->tester->getLocator()->rabbitMq()->facade()->areQueuesEmpty(static::QUEUE_NAMES));
+    }
 
-        $this->assertEquals($expectedResult, $result);
+    /**
+     * @return void
+     */
+    public function testAreQueuesEmptyReturnsFalseForNonEmptyQueues()
+    {
+        // Arrange
+        $queueClient = $this->tester->getLocator()->queue()->client();
+
+        // Act
+        $messagesToSend = [];
+
+        for ($i = 0; $i < static::MESSAGE_AMOUNT; $i++) {
+            $messagesToSend[] = $this->tester->buildSendMessageTransfer();
+        }
+
+        foreach (static::QUEUE_NAMES as $queueName) {
+            $queueClient->sendMessages($queueName, $messagesToSend);
+        }
+
+        sleep(7);
+
+        // Assert
+        $this->assertFalse($this->tester->getLocator()->rabbitMq()->facade()->areQueuesEmpty(static::QUEUE_NAMES));
+
+        // cleanup
+        foreach (static::QUEUE_NAMES as $queueName) {
+            $queueClient->purgeQueue($queueName);
+        }
     }
 }
