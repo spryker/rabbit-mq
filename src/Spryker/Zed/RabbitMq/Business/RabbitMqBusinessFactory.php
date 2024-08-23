@@ -36,7 +36,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface
      */
-    public function createQueueInfo()
+    public function createQueueInfo(): QueueInfoInterface
     {
         return new QueueInfo(
             $this->getGuzzleClient(),
