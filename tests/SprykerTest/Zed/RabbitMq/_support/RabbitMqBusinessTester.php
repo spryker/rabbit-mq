@@ -57,8 +57,8 @@ class RabbitMqBusinessTester extends Actor
      */
     public function buildSendMessageTransfer(): QueueSendMessageTransfer
     {
-        $queueSendTransfer = new QueueSendMessageTransfer();
-        $queueSendTransfer->setBody(json_encode([
+        $queueSendMessageTransfer = new QueueSendMessageTransfer();
+        $queueSendMessageTransfer->setBody(json_encode([
             'write' => [
                 'key' => 'testKey',
                 'value' => 'testValue',
@@ -66,8 +66,8 @@ class RabbitMqBusinessTester extends Actor
                 'params' => [],
             ],
         ]));
-        $queueSendTransfer->setStoreName(static::STORE_NAME_DE);
+        $queueSendMessageTransfer->setStoreName(static::STORE_NAME_DE);
 
-        return $queueSendTransfer;
+        return $queueSendMessageTransfer;
     }
 }
