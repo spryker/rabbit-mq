@@ -82,5 +82,5 @@ interface RabbitMqFacadeInterface
      *
      * @return bool
      */
-    public function areQueuesEmpty($queueNames): bool;
+    public function areQueuesEmpty(array $queueNames): bool;
 }
