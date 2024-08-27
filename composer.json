@@ -21,7 +21,8 @@
         "codeception/stub": "^4.1",
         "mikey179/vfsstream": "^1.6.11",
         "spryker/code-sniffer": "^0.17.1",
-        "spryker/testify": "^3.49.0"
+        "spryker/event": "*",
+        "spryker/testify": "^3.49.0",
     },
     "autoload": {
         "psr-4": {
