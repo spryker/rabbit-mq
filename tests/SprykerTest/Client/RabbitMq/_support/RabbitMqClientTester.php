@@ -8,6 +8,8 @@
 namespace SprykerTest\Client\RabbitMq;
 
 use Codeception\Actor;
+use Pyz\Client\RabbitMq\RabbitMqClient;
+use Pyz\Client\RabbitMq\RabbitMqClientInterface;
 
 /**
  * Inherited Methods
@@ -29,7 +31,8 @@ class RabbitMqClientTester extends Actor
 {
     use _generated\RabbitMqClientTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    public function createRabbitMqClient(): RabbitMqClientInterface
+    {
+        return new RabbitMqClient();
+    }
 }
