@@ -26,6 +26,8 @@ use Spryker\Client\RabbitMq\Model\Manager\Manager;
 use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
 use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
+use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReader;
+use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 
 /**
@@ -150,5 +152,13 @@ class RabbitMqFactory extends AbstractFactory
     public function createQueueEstablishmentHelper(): QueueEstablishmentHelperInterface
     {
         return new QueueEstablishmentHelper();
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReader
+     */
+    public function createQueueMetricReader(): QueueMetricReaderInterface
+    {
+        return new QueueMetricReader($this->getStaticConnectionManager());
     }
 }

@@ -69,6 +69,11 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      */
     protected function createOrGetConnection(QueueConnectionTransfer $queueConnectionTransfer): ConnectionInterface
     {
+        $connection = $this->createdConnectionsByConnectionName[$queueConnectionTransfer->getName()] ?? null;
+        if ($connection !== null && $connection->getChannel()->is_open() === false) {
+            unset($this->createdConnectionsByConnectionName[$queueConnectionTransfer->getName()]);
+        }
+
         $connection = $this->getWorkingConnection($queueConnectionTransfer);
         if ($connection !== null) {
             return $connection;

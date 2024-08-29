@@ -30,4 +30,22 @@ interface RabbitMqClientInterface
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
     public function getConnection(): ConnectionInterface;
+
+    /**
+     * Specification:
+     * - TODO
+     *
+     * @api
+     *
+     * @param string $queue
+     * @param string|null $storeCode
+     * @param string|null $locale
+     *
+     * @return array<string, int>
+     */
+    public function getQueueMetrics(
+        string $queue,
+        ?string $storeCode = null,
+        ?string $locale = null
+    ): array;
 }

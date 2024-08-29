@@ -38,4 +38,26 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
     {
         return $this->getFactory()->getStaticConnectionManager()->getDefaultConnection();
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param string $queue
+     * @param string|null $storeCode
+     * @param string|null $locale
+     *
+     * @return array<string, int>
+     *@api
+     *
+     */
+    public function getQueueMetrics(
+        string $queue,
+        ?string $storeCode = null,
+        ?string $locale = null
+    ): array
+    {
+        return $this->getFactory()->createQueueMetricReader()->getQueueMetrics($queue, $storeCode, $locale);
+    }
 }
