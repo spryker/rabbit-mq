@@ -8,8 +8,8 @@
 namespace SprykerTest\Client\RabbitMq;
 
 use Codeception\Actor;
-use Pyz\Client\RabbitMq\RabbitMqClient;
-use Pyz\Client\RabbitMq\RabbitMqClientInterface;
+use Spryker\Client\RabbitMq\RabbitMqClient;
+use Spryker\Client\RabbitMq\RabbitMqClientInterface;
 
 /**
  * Inherited Methods

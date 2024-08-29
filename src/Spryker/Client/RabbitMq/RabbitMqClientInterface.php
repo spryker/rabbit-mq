@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\RabbitMq;
 
+use Generated\Shared\Transfer\QueueMetricsTransfer;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 
 interface RabbitMqClientInterface
@@ -47,5 +48,5 @@ interface RabbitMqClientInterface
         string $queue,
         ?string $storeCode = null,
         ?string $locale = null
-    ): array;
+    ): QueueMetricsTransfer;
 }

@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\RabbitMq\Model\Queue;
 
+use Generated\Shared\Transfer\QueueMetricsTransfer;
 use RuntimeException;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 
@@ -34,7 +35,7 @@ class QueueMetricReader implements QueueMetricReaderInterface
      *
      * @return array<string, int>
      */
-    public function getQueueMetrics(string $queue, ?string $storeCode = null, ?string $locale = null): array
+    public function getQueueMetrics(string $queue, ?string $storeCode = null, ?string $locale = null): QueueMetricsTransfer
     {
         $channels = $storeCode ?
             $this->connectionManager->getChannelsByStoreName($storeCode, $locale) :
@@ -47,6 +48,8 @@ class QueueMetricReader implements QueueMetricReaderInterface
 
         [, $messageCount, $consumerCount] = $channel->queue_declare($queue, true);
 
-        return ['messageCount' => $messageCount, 'consumerCount' => $consumerCount];
+        return (new QueueMetricsTransfer())
+            ->setConsumerCount($consumerCount)
+            ->setMessageCount($messageCount);
     }
 }

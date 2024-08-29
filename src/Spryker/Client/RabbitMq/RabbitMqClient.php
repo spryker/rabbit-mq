@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\RabbitMq;
 
+use Generated\Shared\Transfer\QueueMetricsTransfer;
 use Spryker\Client\Kernel\AbstractClient;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 
@@ -56,8 +57,7 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
         string $queue,
         ?string $storeCode = null,
         ?string $locale = null
-    ): array
-    {
+    ): QueueMetricsTransfer {
         return $this->getFactory()->createQueueMetricReader()->getQueueMetrics($queue, $storeCode, $locale);
     }
 }

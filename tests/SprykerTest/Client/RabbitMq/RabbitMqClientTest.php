@@ -62,11 +62,8 @@ class RabbitMqClientTest extends Unit
         $queueMetricsResult = $rabbitMqClient->getQueueMetrics('test_queue', $storeCode);
 
         // Assert
-        $this->assertArrayHasKey('messageCount', $queueMetricsResult);
-        $this->assertArrayHasKey('consumerCount', $queueMetricsResult);
-
-        $this->assertSame($expectedMessageCount, $queueMetricsResult['messageCount']);
-        $this->assertSame($expectedConsumerCount, $queueMetricsResult['consumerCount']);
+        $this->assertSame($expectedMessageCount, $queueMetricsResult->getMessageCount());
+        $this->assertSame($expectedConsumerCount, $queueMetricsResult->getConsumerCount());
     }
 
     protected function getQueueMetricsDataProvider(): array
