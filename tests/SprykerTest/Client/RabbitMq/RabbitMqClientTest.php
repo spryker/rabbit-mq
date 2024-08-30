@@ -6,6 +6,7 @@ use Codeception\Test\Unit;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PHPUnit\Framework\MockObject\MockObject;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\RabbitMqFactory;
 
 class RabbitMqClientTest extends Unit
 {
@@ -29,7 +30,8 @@ class RabbitMqClientTest extends Unit
         $this->tester->mockFactoryMethod('getStaticConnectionManager', $connectionManagerMock);
 
         $rabbitMqClient = $this->tester->createRabbitMqClient();
-        $rabbitMqClient->setFactory($this->tester->getFactory());
+
+        $rabbitMqClient->setFactory($this->getFactory());
 
         // Assert
         $this->expectExceptionMessage('Could not find a connection for DE test_queue');
@@ -56,7 +58,7 @@ class RabbitMqClientTest extends Unit
         $this->tester->mockFactoryMethod('getStaticConnectionManager', $this->getConnectionManagerMock());
 
         $rabbitMqClient = $this->tester->createRabbitMqClient();
-        $rabbitMqClient->setFactory($this->tester->getFactory());
+        $rabbitMqClient->setFactory($this->getFactory());
 
         // Act
         $queueMetricsResult = $rabbitMqClient->getQueueMetrics('test_queue', $storeCode);
@@ -66,6 +68,9 @@ class RabbitMqClientTest extends Unit
         $this->assertSame($expectedConsumerCount, $queueMetricsResult->getConsumerCount());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getQueueMetricsDataProvider(): array
     {
         return [
@@ -82,6 +87,9 @@ class RabbitMqClientTest extends Unit
         ];
     }
 
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface|MockObject
+     */
     public function getConnectionManagerMock(): ConnectionManagerInterface|MockObject
     {
         $connectionManagerMock = $this->getMockBuilder(ConnectionManagerInterface::class)->getMock();
@@ -97,5 +105,20 @@ class RabbitMqClientTest extends Unit
         $connectionManagerMock->method('getDefaultChannel')->willReturn($AMQPChannelMock);
 
         return $connectionManagerMock;
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\RabbitMqFactory
+     */
+    protected function getFactory(): RabbitMqFactory
+    {
+        $rabbitMqFactory = $this->tester->getFactory();
+
+        $rabbitMqFactoryReflection = new \ReflectionClass($rabbitMqFactory);
+        $queueMetricReaderProperty = $rabbitMqFactoryReflection->getProperty('queueMetricReader');
+        $queueMetricReaderProperty->setAccessible(true);
+        $queueMetricReaderProperty->setValue($rabbitMqFactory, null);
+
+        return $rabbitMqFactory;
     }
 }
