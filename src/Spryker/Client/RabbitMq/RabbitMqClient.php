@@ -49,9 +49,7 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
      * @param string|null $storeCode
      * @param string|null $locale
      *
-     * @return array<string, int>
-     *@api
-     *
+     * @return \Generated\Shared\Transfer\QueueMetricsTransfer
      */
     public function getQueueMetrics(
         string $queue,

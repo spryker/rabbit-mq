@@ -42,7 +42,7 @@ interface RabbitMqClientInterface
      * @param string|null $storeCode
      * @param string|null $locale
      *
-     * @return array<string, int>
+     * @return \Generated\Shared\Transfer\QueueMetricsTransfer
      */
     public function getQueueMetrics(
         string $queue,

@@ -18,7 +18,7 @@ interface QueueMetricReaderInterface
      *
      * @throws \RuntimeException
      *
-     * @return array<string, int>
+     * @return \Generated\Shared\Transfer\QueueMetricsTransfer
      */
     public function getQueueMetrics(string $queue, ?string $storeCode = null, ?string $locale = null): QueueMetricsTransfer;
 }
