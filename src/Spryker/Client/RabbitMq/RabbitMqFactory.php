@@ -41,6 +41,11 @@ class RabbitMqFactory extends AbstractFactory
     protected static $connectionManager;
 
     /**
+     * @var \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface
+     */
+    protected static QueueMetricReaderInterface $queueMetricReader;
+
+    /**
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
      */
     public function createQueueAdapter(): AdapterInterface
@@ -155,10 +160,22 @@ class RabbitMqFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReader
+     * @return \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface
      */
     public function createQueueMetricReader(): QueueMetricReaderInterface
     {
         return new QueueMetricReader($this->getStaticConnectionManager());
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface
+     */
+    public function getQueueMetricReader(): QueueMetricReaderInterface
+    {
+        if (static::$queueMetricReader === null) {
+            static::$queueMetricReader = $this->createQueueMetricReader();
+        }
+
+        return static::$queueMetricReader;
     }
 }

@@ -56,6 +56,6 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
         ?string $storeCode = null,
         ?string $locale = null
     ): QueueMetricsTransfer {
-        return $this->getFactory()->createQueueMetricReader()->getQueueMetrics($queue, $storeCode, $locale);
+        return $this->getFactory()->getQueueMetricReader()->getQueueMetrics($queue, $storeCode, $locale);
     }
 }
