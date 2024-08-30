@@ -7,7 +7,8 @@
 
 namespace Spryker\Client\RabbitMq\Model\Queue;
 
-use Generated\Shared\Transfer\QueueMetricsTransfer;
+use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
+use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use RuntimeException;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 
@@ -33,22 +34,25 @@ class QueueMetricReader implements QueueMetricReaderInterface
      *
      * @throws \RuntimeException
      *
-     * @return \Generated\Shared\Transfer\QueueMetricsTransfer
+     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
-    public function getQueueMetrics(string $queue, ?string $storeCode = null, ?string $locale = null): QueueMetricsTransfer
+    public function getQueueMetrics(QueueMetricsRequestTransfer $queueMetricsRequestTransfer): QueueMetricsResponseTransfer
     {
+        $queueMetricsRequestTransfer->requireQueueName();
+
+        $storeCode = $queueMetricsRequestTransfer->getStoreCode();
         $channels = $storeCode ?
-            $this->connectionManager->getChannelsByStoreName($storeCode, $locale) :
+            $this->connectionManager->getChannelsByStoreName($storeCode, $queueMetricsRequestTransfer->getLocaleName()) :
             [$this->connectionManager->getDefaultChannel()];
 
         $channel = reset($channels);
         if (!$channel) {
-            throw new RuntimeException(sprintf('Could not find a connection for %s %s', $storeCode, $queue));
+            throw new RuntimeException(sprintf('Could not find a connection for %s %s', $storeCode, $queueMetricsRequestTransfer->getQueueName()));
         }
 
-        [, $messageCount, $consumerCount] = $channel->queue_declare($queue, true);
+        [, $messageCount, $consumerCount] = $channel->queue_declare($queueMetricsRequestTransfer->getQueueName(), true);
 
-        return (new QueueMetricsTransfer())
+        return (new QueueMetricsResponseTransfer())
             ->setConsumerCount($consumerCount)
             ->setMessageCount($messageCount);
     }

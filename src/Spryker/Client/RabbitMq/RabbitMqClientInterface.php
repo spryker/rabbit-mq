@@ -7,7 +7,8 @@
 
 namespace Spryker\Client\RabbitMq;
 
-use Generated\Shared\Transfer\QueueMetricsTransfer;
+use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
+use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 
 interface RabbitMqClientInterface
@@ -34,7 +35,7 @@ interface RabbitMqClientInterface
 
     /**
      * Specification:
-     * - TODO
+     * - Gets queue metrics for the given queue per store.
      *
      * @api
      *
@@ -42,11 +43,9 @@ interface RabbitMqClientInterface
      * @param string|null $storeCode
      * @param string|null $locale
      *
-     * @return \Generated\Shared\Transfer\QueueMetricsTransfer
+     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
     public function getQueueMetrics(
-        string $queue,
-        ?string $storeCode = null,
-        ?string $locale = null
-    ): QueueMetricsTransfer;
+        QueueMetricsRequestTransfer $queueMetricsRequestTransfer
+    ): QueueMetricsResponseTransfer;
 }

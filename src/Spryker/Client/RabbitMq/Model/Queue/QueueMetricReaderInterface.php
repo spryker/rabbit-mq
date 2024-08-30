@@ -7,7 +7,8 @@
 
 namespace Spryker\Client\RabbitMq\Model\Queue;
 
-use Generated\Shared\Transfer\QueueMetricsTransfer;
+use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
+use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 
 interface QueueMetricReaderInterface
 {
@@ -18,7 +19,7 @@ interface QueueMetricReaderInterface
      *
      * @throws \RuntimeException
      *
-     * @return \Generated\Shared\Transfer\QueueMetricsTransfer
+     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
-    public function getQueueMetrics(string $queue, ?string $storeCode = null, ?string $locale = null): QueueMetricsTransfer;
+    public function getQueueMetrics(QueueMetricsRequestTransfer $queueMetricsRequestTransfer): QueueMetricsResponseTransfer;
 }
