@@ -46,7 +46,7 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
      *
      * @api
      *
-     * @param QueueMetricsRequestTransfer $queueMetricsRequestTransfer
+     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
      *
      * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */

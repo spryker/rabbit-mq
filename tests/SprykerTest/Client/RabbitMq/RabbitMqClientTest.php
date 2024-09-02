@@ -1,13 +1,29 @@
 <?php
 
+/**
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace SprykerTest\Client\RabbitMq;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PHPUnit\Framework\MockObject\MockObject;
+use ReflectionClass;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\RabbitMqFactory;
 
+/**
+ * Auto-generated group annotations
+ *
+ * @group SprykerTest
+ * @group Client
+ * @group RabbitMq
+ * @group RabbitMqClientTest
+ * Add your own group annotations below this line
+ */
 class RabbitMqClientTest extends Unit
 {
     /**
@@ -17,8 +33,6 @@ class RabbitMqClientTest extends Unit
 
     /**
      * @return void
-     *
-     * @throws \Exception
      */
     public function testGetQueueMetricsShouldThrowException(): void
     {
@@ -37,7 +51,11 @@ class RabbitMqClientTest extends Unit
         $this->expectExceptionMessage('Could not find a connection for DE test_queue');
 
         // Act
-        $rabbitMqClient->getQueueMetrics('test_queue', 'DE');
+        $rabbitMqClient->getQueueMetrics(
+            (new QueueMetricsRequestTransfer())
+                ->setQueueName('test_queue')
+                ->setStoreCode('DE'),
+        );
     }
 
     /**
@@ -61,7 +79,9 @@ class RabbitMqClientTest extends Unit
         $rabbitMqClient->setFactory($this->getFactory());
 
         // Act
-        $queueMetricsResult = $rabbitMqClient->getQueueMetrics('test_queue', $storeCode);
+        $queueMetricsResult = $rabbitMqClient->getQueueMetrics((new QueueMetricsRequestTransfer())
+            ->setQueueName('test_queue')
+            ->setStoreCode($storeCode));
 
         // Assert
         $this->assertSame($expectedMessageCount, $queueMetricsResult->getMessageCount());
@@ -88,7 +108,7 @@ class RabbitMqClientTest extends Unit
     }
 
     /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface|MockObject
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     public function getConnectionManagerMock(): ConnectionManagerInterface|MockObject
     {
@@ -114,7 +134,7 @@ class RabbitMqClientTest extends Unit
     {
         $rabbitMqFactory = $this->tester->getFactory();
 
-        $rabbitMqFactoryReflection = new \ReflectionClass($rabbitMqFactory);
+        $rabbitMqFactoryReflection = new ReflectionClass($rabbitMqFactory);
         $queueMetricReaderProperty = $rabbitMqFactoryReflection->getProperty('queueMetricReader');
         $queueMetricReaderProperty->setAccessible(true);
         $queueMetricReaderProperty->setValue($rabbitMqFactory, null);

@@ -31,6 +31,9 @@ class RabbitMqClientTester extends Actor
 {
     use _generated\RabbitMqClientTesterActions;
 
+    /**
+     * @return \Spryker\Client\RabbitMq\RabbitMqClientInterface
+     */
     public function createRabbitMqClient(): RabbitMqClientInterface
     {
         return new RabbitMqClient();

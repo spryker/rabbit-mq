@@ -28,9 +28,7 @@ class QueueMetricReader implements QueueMetricReaderInterface
     }
 
     /**
-     * @param string $queue
-     * @param string|null $storeCode
-     * @param string|null $locale
+     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
      *
      * @throws \RuntimeException
      *

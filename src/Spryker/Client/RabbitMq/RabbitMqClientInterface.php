@@ -39,9 +39,7 @@ interface RabbitMqClientInterface
      *
      * @api
      *
-     * @param string $queue
-     * @param string|null $storeCode
-     * @param string|null $locale
+     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
      *
      * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
