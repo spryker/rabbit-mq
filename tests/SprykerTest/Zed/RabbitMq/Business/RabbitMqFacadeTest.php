@@ -84,8 +84,6 @@ class RabbitMqFacadeTest extends Unit
             $queueClient->purgeQueue($queueName);
         }
 
-        sleep(10);
-
         // Assert
         $this->assertTrue($this->tester->getLocator()->rabbitMq()->facade()->areQueuesEmpty(static::QUEUE_NAMES));
     }
@@ -108,8 +106,6 @@ class RabbitMqFacadeTest extends Unit
         foreach (static::QUEUE_NAMES as $queueName) {
             $queueClient->sendMessages($queueName, $messagesToSend);
         }
-
-        sleep(10);
 
         // Assert
         $this->assertFalse($this->tester->getLocator()->rabbitMq()->facade()->areQueuesEmpty(static::QUEUE_NAMES));
