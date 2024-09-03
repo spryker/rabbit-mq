@@ -21,6 +21,11 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
     /**
      * @var string
      */
+    public const CLIENT_QUEUE = 'CLIENT_QUEUE';
+
+    /**
+     * @var string
+     */
     public const QUEUE_ADAPTER = 'QUEUE_ADAPTER';
 
     /**
@@ -41,6 +46,7 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
     public function provideBusinessLayerDependencies(Container $container)
     {
         $container = $this->addQueueAdapter($container);
+        $container = $this->addQueueClient($container);
         $container = $this->addGuzzleClient($container);
         $container = $this->addConnection($container);
 
@@ -56,6 +62,20 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::QUEUE_ADAPTER, function () use ($container) {
             return $container->getLocator()->rabbitMq()->client()->createQueueAdapter();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addQueueClient(Container $container)
+    {
+        $container->set(static::CLIENT_QUEUE, function () use ($container) {
+            return $container->getLocator()->queue()->client();
         });
 
         return $container;

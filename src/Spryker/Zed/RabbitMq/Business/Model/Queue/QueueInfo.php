@@ -7,8 +7,10 @@
 
 namespace Spryker\Zed\RabbitMq\Business\Model\Queue;
 
+use Generated\Shared\Transfer\RabbitMqConsumerOptionTransfer;
 use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
 use Generated\Shared\Transfer\RabbitMqQueueTransfer;
+use Spryker\Client\Queue\QueueClientInterface;
 use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 
 class QueueInfo implements QueueInfoInterface
@@ -16,7 +18,17 @@ class QueueInfo implements QueueInfoInterface
     /**
      * @var \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface
      */
-    protected $client;
+    protected $guzzleClient;
+
+    /**
+     * @var \Spryker\Client\Queue\QueueClientInterface
+     */
+    protected $queueClient;
+
+    /**
+     * @var \Spryker\Zed\Queue\QueueConfig
+     */
+    protected $queueConfig;
 
     /**
      * @var string
@@ -34,17 +46,24 @@ class QueueInfo implements QueueInfoInterface
     protected $password;
 
     /**
-     * @param \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface $client
+     * @param \Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface $guzzleClient
      * @param string $apiQueuesUrl
      * @param string $username
      * @param string $password
+     * @param \Spryker\Client\Queue\QueueClientInterface $queueClient
      */
-    public function __construct(RabbitMqToGuzzleInterface $client, $apiQueuesUrl, $username, $password)
-    {
-        $this->client = $client;
+    public function __construct(
+        RabbitMqToGuzzleInterface $guzzleClient,
+        $apiQueuesUrl,
+        $username,
+        $password,
+        QueueClientInterface $queueClient
+    ) {
+        $this->guzzleClient = $guzzleClient;
         $this->apiQueuesUrl = $apiQueuesUrl;
         $this->username = $username;
         $this->password = $password;
+        $this->queueClient = $queueClient;
     }
 
     /**
@@ -54,16 +73,15 @@ class QueueInfo implements QueueInfoInterface
      */
     public function areQueuesEmpty(array $queueNames): bool
     {
-        $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
+        $queueOptionTransfer = new RabbitMqConsumerOptionTransfer();
+        $queueOptionTransfer->setRequeueOnReject(true);
 
-        if ($response->getStatusCode() !== 200) {
-            return true;
-        }
+        $options = ['rabbitmq' => $queueOptionTransfer];
 
-        $decodedResponse = json_decode($response->getBody()->getContents(), true);
+        foreach ($queueNames as $queue) {
+            $message = $this->queueClient->receiveMessage($queue, $options);
 
-        foreach ($decodedResponse as $queueInfo) {
-            if ($queueInfo['messages'] > 0 && in_array($queueInfo['name'], $queueNames)) {
+            if ($message->getQueueMessage()) {
                 return false;
             }
         }
@@ -76,7 +94,7 @@ class QueueInfo implements QueueInfoInterface
      */
     public function getQueues()
     {
-        $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
+        $response = $this->guzzleClient->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
 
         $rabbitMqQueueCollectionTransfer = new RabbitMqQueueCollectionTransfer();
         if ($response->getStatusCode() === 200) {
