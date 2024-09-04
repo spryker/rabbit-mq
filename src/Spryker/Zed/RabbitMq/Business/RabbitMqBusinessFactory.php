@@ -44,7 +44,6 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getConfig()->getApiQueuesUrl(),
             $this->getConfig()->getApiUsername(),
             $this->getConfig()->getApiPassword(),
-            $this->getQueueClient(),
         );
     }
 
@@ -58,14 +57,6 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getQueueAdapter(),
             $this->createExchangeFilter(),
         );
-    }
-
-    /**
-     * @return \Spryker\Client\Queue\QueueClientInterface
-     */
-    public function getQueueClient()
-    {
-        return $this->getProvidedDependency(RabbitMqDependencyProvider::CLIENT_QUEUE);
     }
 
     /**
