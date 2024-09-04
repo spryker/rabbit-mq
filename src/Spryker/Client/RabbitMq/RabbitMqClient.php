@@ -40,19 +40,4 @@ class RabbitMqClient extends AbstractClient implements RabbitMqClientInterface
     {
         return $this->getFactory()->getStaticConnectionManager()->getDefaultConnection();
     }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
-     */
-    public function getQueueMetrics(
-        QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-    ): QueueMetricsResponseTransfer {
-        return $this->getFactory()->getQueueMetricReader()->getQueueMetrics($queueMetricsRequestTransfer);
-    }
 }

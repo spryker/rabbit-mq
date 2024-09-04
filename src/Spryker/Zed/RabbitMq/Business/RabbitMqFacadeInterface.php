@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
+use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
+use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -71,4 +73,9 @@ interface RabbitMqFacadeInterface
      * @return bool
      */
     public function setUserPermissions(LoggerInterface $logger);
+
+    public function getQueueMetrics(
+        QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
+        QueueMetricsResponseTransfer $queueMetricsResponseTransfer
+    ): QueueMetricsResponseTransfer;
 }

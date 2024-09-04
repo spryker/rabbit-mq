@@ -7,11 +7,15 @@
 
 namespace Spryker\Client\RabbitMq\Model;
 
+use Generated\Shared\DataBuilder\QueueMetricsResponseBuilder;
+use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
+use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use Generated\Shared\Transfer\QueueReceiveMessageTransfer;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface;
 use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
 use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
+use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface;
 
 class RabbitMqAdapter implements RabbitMqAdapterInterface
 {
@@ -30,6 +34,8 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
      */
     protected $consumer;
 
+    protected $metrixReader;
+
     /**
      * @param \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface $manager
      * @param \Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface $publisher
@@ -38,11 +44,13 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
     public function __construct(
         ManagerInterface $manager,
         PublisherInterface $publisher,
-        ConsumerInterface $consumer
+        ConsumerInterface $consumer,
+        QueueMetricReaderInterface $queueMetricReader
     ) {
         $this->manager = $manager;
         $this->publisher = $publisher;
         $this->consumer = $consumer;
+        $this->queueMetricReader = $queueMetricReader;
     }
 
     /**
@@ -161,5 +169,12 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
     public function sendMessages($queueName, array $queueSendMessageTransfers)
     {
         $this->publisher->sendMessages($queueName, $queueSendMessageTransfers);
+    }
+
+    public function getQueueMetrics(
+        QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
+        QueueMetricsResponseTransfer $queueMetricsResponseTransfer
+    ): QueueMetricsResponseTransfer {
+        return $this->queueMetricReader->getQueueMetrics($queueMetricsRequestTransfer, $queueMetricsResponseTransfer);
     }
 }

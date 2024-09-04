@@ -12,6 +12,8 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Exchange;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfo;
 use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
+use Spryker\Zed\RabbitMq\Business\Model\Metric\QueueMetricReader;
+use Spryker\Zed\RabbitMq\Business\Model\Metric\QueueMetricReaderInterface;
 use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
@@ -68,6 +70,13 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getConfig()->getApiUserPermissionsUrl(),
             $this->getConfig()->getApiUsername(),
             $this->getConfig()->getApiPassword(),
+        );
+    }
+
+    public function createQueueMetricReader(): QueueMetricReaderInterface
+    {
+        return new QueueMetricReader(
+            $this->getQueueAdapter(),
         );
     }
 

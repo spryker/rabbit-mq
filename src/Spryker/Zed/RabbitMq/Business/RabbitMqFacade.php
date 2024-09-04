@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
+use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
+use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -81,5 +83,13 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
     public function setUserPermissions(LoggerInterface $logger)
     {
         return $this->getFactory()->createUserPermissionHandler()->setPermissions($logger);
+    }
+
+    public function getQueueMetrics(
+        QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
+        QueueMetricsResponseTransfer $queueMetricsResponseTransfer
+    ): QueueMetricsResponseTransfer {
+        return $this->getFactory()->createQueueMetricReader()
+            ->getQueueMetrics($queueMetricsRequestTransfer, $queueMetricsResponseTransfer);
     }
 }

@@ -32,18 +32,4 @@ interface RabbitMqClientInterface
      * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
      */
     public function getConnection(): ConnectionInterface;
-
-    /**
-     * Specification:
-     * - Gets queue metrics for the given queue per store.
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
-     */
-    public function getQueueMetrics(
-        QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-    ): QueueMetricsResponseTransfer;
 }
