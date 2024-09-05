@@ -31,43 +31,4 @@ class RabbitMqBusinessTester extends Actor
 {
     use _generated\RabbitMqBusinessTesterActions;
 
-    /**
-     * @var string
-     */
-    protected const STORE_NAME_DE = 'DE';
-
-    /**
-     * @param array<string> $queueNames
-     *
-     * @return array<\Spryker\Zed\Queue\Dependency\Plugin\QueueMessageProcessorPluginInterface>
-     */
-    public function getMessageProcessorPlugins(array $queueNames): array
-    {
-        $plugins = [];
-
-        foreach ($queueNames as $queueName) {
-            $plugins[$queueName] = new EventQueueMessageProcessorPlugin();
-        }
-
-        return $plugins;
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\QueueSendMessageTransfer
-     */
-    public function buildSendMessageTransfer(): QueueSendMessageTransfer
-    {
-        $queueSendMessageTransfer = new QueueSendMessageTransfer();
-        $queueSendMessageTransfer->setBody(json_encode([
-            'write' => [
-                'key' => 'testKey',
-                'value' => 'testValue',
-                'resource' => 'testResource',
-                'params' => [],
-            ],
-        ]));
-        $queueSendMessageTransfer->setStoreName(static::STORE_NAME_DE);
-
-        return $queueSendMessageTransfer;
-    }
 }
