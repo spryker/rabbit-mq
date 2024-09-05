@@ -39,12 +39,13 @@ class QueueInfo implements QueueInfoInterface
      * @param string $username
      * @param string $password
      */
-    public function __construct(RabbitMqToGuzzleInterface $client, $apiQueuesUrl, $username, $password)
+    public function __construct(RabbitMqToGuzzleInterface $client, $apiQueuesUrl, $username, $password, $connection)
     {
         $this->client = $client;
         $this->apiQueuesUrl = $apiQueuesUrl;
         $this->username = $username;
         $this->password = $password;
+        $this->connection = $connection;
     }
 
     /**
@@ -54,16 +55,12 @@ class QueueInfo implements QueueInfoInterface
      */
     public function areQueuesEmpty(array $queueNames): bool
     {
-        $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
+        $channel = $this->connection->getChannel();
 
-        if ($response->getStatusCode() !== 200) {
-            return true;
-        }
+        foreach($queueNames as $queueName) {
+            $queueInfo = $channel->queue_declare($queueName, true);
 
-        $decodedResponse = json_decode($response->getBody()->getContents(), true);
-
-        foreach ($decodedResponse as $queueInfo) {
-            if ($queueInfo['messages'] > 0 && in_array($queueInfo['name'], $queueNames)) {
+            if($queueInfo[1] > 0) {
                 return false;
             }
         }
