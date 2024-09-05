@@ -36,7 +36,7 @@ class RabbitMqFacadeTest extends Unit
     protected $rabbitMqBusinessFactoryMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Zed\RabbitMq\Business\Queue\QueueInfo
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo
      */
     protected $queueInfoMock;
 
