@@ -39,6 +39,7 @@ class RabbitMqFacadeTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Zed\RabbitMq\Business\Queue\QueueInfo
      */
     protected $queueInfoMock;
+
     /**
      * @var array<string>
      */
@@ -61,6 +62,7 @@ class RabbitMqFacadeTest extends Unit
      */
     public function testAreQueuesEmptyReturnsTrueForEmptyQueues(): void
     {
+        // Arrange
         $expectedResult = true;
 
         $this->rabbitMqBusinessFactoryMock
@@ -72,8 +74,10 @@ class RabbitMqFacadeTest extends Unit
             ->with($this->queueNames)
             ->willReturn($expectedResult);
 
+        // Act
         $result = $this->rabbitMqFacade->areQueuesEmpty($this->queueNames);
 
+        // Assert
         $this->assertEquals($expectedResult, $result);
     }
 
@@ -82,6 +86,7 @@ class RabbitMqFacadeTest extends Unit
      */
     public function testAreQueuesEmptyReturnsFalseForNonEmptyQueues(): void
     {
+        // Arrange
         $expectedResult = false;
 
         $this->rabbitMqBusinessFactoryMock
@@ -93,8 +98,10 @@ class RabbitMqFacadeTest extends Unit
             ->with($this->queueNames)
             ->willReturn($expectedResult);
 
+        // Act
         $result = $this->rabbitMqFacade->areQueuesEmpty($this->queueNames);
 
+        // Assert
         $this->assertEquals($expectedResult, $result);
     }
 }
