@@ -44,7 +44,6 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
             $this->getConfig()->getApiQueuesUrl(),
             $this->getConfig()->getApiUsername(),
             $this->getConfig()->getApiPassword(),
-            $this->getConection(),
         );
     }
 
