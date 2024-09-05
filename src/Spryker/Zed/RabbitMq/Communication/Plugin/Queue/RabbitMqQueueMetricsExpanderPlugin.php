@@ -4,6 +4,7 @@ namespace Spryker\Zed\RabbitMq\Communication\Plugin\Queue;
 
 use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
 use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
+use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Queue\Dependency\Plugin\QueueMetricsExpanderPluginInterface;
@@ -19,5 +20,10 @@ class RabbitMqQueueMetricsExpanderPlugin extends AbstractPlugin implements Queue
         QueueMetricsResponseTransfer $queueMetricsResponseTransfer
     ): QueueMetricsResponseTransfer {
         return $this->getFacade()->getQueueMetrics($queueMetricsRequestTransfer, $queueMetricsResponseTransfer);
+    }
+
+    public function isApplicable(string $adapterClassName): bool
+    {
+        return $adapterClassName === RabbitMqAdapter::class;
     }
 }
