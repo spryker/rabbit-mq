@@ -8,6 +8,7 @@
 namespace SprykerTest\Client\RabbitMq;
 
 use Codeception\Actor;
+use Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface;
 use Spryker\Client\RabbitMq\RabbitMqClient;
 use Spryker\Client\RabbitMq\RabbitMqClientInterface;
 
@@ -30,12 +31,4 @@ use Spryker\Client\RabbitMq\RabbitMqClientInterface;
 class RabbitMqClientTester extends Actor
 {
     use _generated\RabbitMqClientTesterActions;
-
-    /**
-     * @return \Spryker\Client\RabbitMq\RabbitMqClientInterface
-     */
-    public function createRabbitMqClient(): RabbitMqClientInterface
-    {
-        return new RabbitMqClient();
-    }
 }

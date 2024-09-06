@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace SprykerTest\Client\RabbitMq;
+namespace SprykerTest\Client\RabbitMq\Model;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
@@ -13,7 +13,13 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
+use Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface;
+use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
+use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
+use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReader;
+use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Client\RabbitMq\RabbitMqFactory;
+use SprykerTest\Client\RabbitMq\RabbitMqClientTester;
 
 /**
  * Auto-generated group annotations
@@ -41,17 +47,18 @@ class RabbitMqClientTest extends Unit
 
         $connectionManagerMock->method('getChannelsByStoreName')->willReturn([]);
 
-        $this->tester->mockFactoryMethod('getStaticConnectionManager', $connectionManagerMock);
-
-        $rabbitMqClient = $this->tester->createRabbitMqClient();
-
-        $rabbitMqClient->setFactory($this->getFactory());
+        $rabbitMqAdapter = new RabbitMqAdapter(
+            $this->getMockBuilder(ManagerInterface::class)->getMock(),
+            $this->getMockBuilder(PublisherInterface::class)->getMock(),
+            $this->getMockBuilder(ConsumerInterface::class)->getMock(),
+            (new QueueMetricReader($connectionManagerMock)),
+        );
 
         // Assert
         $this->expectExceptionMessage('Could not find a connection for DE test_queue');
 
         // Act
-        $rabbitMqClient->getQueueMetrics(
+        $rabbitMqAdapter->getQueueMetrics(
             (new QueueMetricsRequestTransfer())
                 ->setQueueName('test_queue')
                 ->setStoreCode('DE'),
@@ -75,11 +82,15 @@ class RabbitMqClientTest extends Unit
         // Arrange
         $this->tester->mockFactoryMethod('getStaticConnectionManager', $this->getConnectionManagerMock());
 
-        $rabbitMqClient = $this->tester->createRabbitMqClient();
-        $rabbitMqClient->setFactory($this->getFactory());
+        $rabbitMqAdapter = new RabbitMqAdapter(
+            $this->getMockBuilder(ManagerInterface::class)->getMock(),
+            $this->getMockBuilder(PublisherInterface::class)->getMock(),
+            $this->getMockBuilder(ConsumerInterface::class)->getMock(),
+            (new QueueMetricReader($this->getConnectionManagerMock())),
+        );
 
         // Act
-        $queueMetricsResult = $rabbitMqClient->getQueueMetrics((new QueueMetricsRequestTransfer())
+        $queueMetricsResult = $rabbitMqAdapter->getQueueMetrics((new QueueMetricsRequestTransfer())
             ->setQueueName('test_queue')
             ->setStoreCode($storeCode));
 

@@ -29,6 +29,7 @@ use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
 use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReader;
 use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
+use Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface;
 
 /**
  * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
@@ -43,19 +44,23 @@ class RabbitMqFactory extends AbstractFactory
     /**
      * @var \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface
      */
-    protected static QueueMetricReaderInterface|null $queueMetricReader = null;
+    protected static RabbitMqAdapterInterface|null $rabbitMqAdapter = null;
 
     /**
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
      */
     public function createQueueAdapter(): AdapterInterface
     {
-        return new RabbitMqAdapter(
-            $this->createManager(),
-            $this->createPublisher(),
-            $this->createConsumer(),
-            $this->createQueueMetricReader(),
-        );
+        if (static::$rabbitMqAdapter === null) {
+            static::$rabbitMqAdapter = new RabbitMqAdapter(
+                $this->createManager(),
+                $this->createPublisher(),
+                $this->createConsumer(),
+                $this->createQueueMetricReader(),
+            );
+        }
+
+        return static::$rabbitMqAdapter;
     }
 
     /**
@@ -166,17 +171,5 @@ class RabbitMqFactory extends AbstractFactory
     public function createQueueMetricReader(): QueueMetricReaderInterface
     {
         return new QueueMetricReader($this->getStaticConnectionManager());
-    }
-
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface
-     */
-    public function getQueueMetricReader(): QueueMetricReaderInterface
-    {
-        if (static::$queueMetricReader === null) {
-            static::$queueMetricReader = $this->createQueueMetricReader();
-        }
-
-        return static::$queueMetricReader;
     }
 }
