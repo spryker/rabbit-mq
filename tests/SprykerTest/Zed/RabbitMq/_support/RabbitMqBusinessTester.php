@@ -8,8 +8,6 @@
 namespace SprykerTest\Zed\RabbitMq;
 
 use Codeception\Actor;
-use Generated\Shared\Transfer\QueueSendMessageTransfer;
-use Spryker\Zed\Event\Communication\Plugin\Queue\EventQueueMessageProcessorPlugin;
 
 /**
  * Inherited Methods
@@ -31,4 +29,7 @@ class RabbitMqBusinessTester extends Actor
 {
     use _generated\RabbitMqBusinessTesterActions;
 
+    /**
+     * Define custom actions here
+     */
 }
