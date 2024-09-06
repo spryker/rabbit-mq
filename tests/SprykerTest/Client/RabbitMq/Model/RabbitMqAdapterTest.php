@@ -30,7 +30,7 @@ use SprykerTest\Client\RabbitMq\RabbitMqClientTester;
  * @group RabbitMqClientTest
  * Add your own group annotations below this line
  */
-class RabbitMqClientTest extends Unit
+class RabbitMqAdapterTest extends Unit
 {
     /**
      * @var \SprykerTest\Client\RabbitMq\RabbitMqClientTester $tester
