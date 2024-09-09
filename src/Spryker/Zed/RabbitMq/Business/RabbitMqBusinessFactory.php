@@ -73,6 +73,9 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
         );
     }
 
+    /**
+     * @return \Spryker\Zed\RabbitMq\Business\Model\Metric\QueueMetricReaderInterface
+     */
     public function createQueueMetricReader(): QueueMetricReaderInterface
     {
         return new QueueMetricReader(

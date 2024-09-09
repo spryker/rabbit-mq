@@ -74,6 +74,18 @@ interface RabbitMqFacadeInterface
      */
     public function setUserPermissions(LoggerInterface $logger);
 
+    /**
+     * Specification:
+     * - Returns the number of messages in the queue and the number of consumers.
+     * - Fetches the queue metrics from the RabbitMQ for default connection if store code is not provided.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
+     * @param \Generated\Shared\Transfer\QueueMetricsResponseTransfer $queueMetricsResponseTransfer
+     *
+     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
+     */
     public function getQueueMetrics(
         QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
         QueueMetricsResponseTransfer $queueMetricsResponseTransfer

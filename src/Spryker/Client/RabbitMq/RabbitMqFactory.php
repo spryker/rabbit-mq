@@ -42,7 +42,7 @@ class RabbitMqFactory extends AbstractFactory
     protected static $connectionManager;
 
     /**
-     * @var \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface
+     * @var \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface|null
      */
     protected static RabbitMqAdapterInterface|null $rabbitMqAdapter = null;
 

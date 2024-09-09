@@ -27,7 +27,8 @@ use SprykerTest\Client\RabbitMq\RabbitMqClientTester;
  * @group SprykerTest
  * @group Client
  * @group RabbitMq
- * @group RabbitMqClientTest
+ * @group Model
+ * @group RabbitMqAdapterTest
  * Add your own group annotations below this line
  */
 class RabbitMqAdapterTest extends Unit

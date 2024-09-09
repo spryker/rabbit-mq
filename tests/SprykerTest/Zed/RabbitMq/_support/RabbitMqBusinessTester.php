@@ -8,8 +8,6 @@
 namespace SprykerTest\Zed\RabbitMq;
 
 use Codeception\Actor;
-use Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface;
-use SprykerTest\Shared\Testify\Helper\LocatorHelperTrait;
 
 /**
  * Inherited Methods

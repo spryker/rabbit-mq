@@ -7,8 +7,6 @@
 
 namespace Spryker\Client\RabbitMq;
 
-use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
-use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use Spryker\Client\Kernel\AbstractClient;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface;
 

@@ -85,6 +85,16 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
         return $this->getFactory()->createUserPermissionHandler()->setPermissions($logger);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
+     * @param \Generated\Shared\Transfer\QueueMetricsResponseTransfer $queueMetricsResponseTransfer
+     *
+     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
+     */
     public function getQueueMetrics(
         QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
         QueueMetricsResponseTransfer $queueMetricsResponseTransfer
