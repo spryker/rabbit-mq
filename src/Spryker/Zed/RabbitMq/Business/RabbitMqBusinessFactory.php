@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace Spryker\Zed\RabbitMq\Business;
@@ -15,6 +15,7 @@ use Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterByName;
 use Spryker\Zed\RabbitMq\Business\Model\Permission\UserPermissionHandler;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\Queue;
 use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfo;
+use Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface;
 use Spryker\Zed\RabbitMq\RabbitMqDependencyProvider;
 
 /**
@@ -36,7 +37,7 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface
      */
-    protected function createQueueInfo()
+    public function createQueueInfo(): QueueInfoInterface
     {
         return new QueueInfo(
             $this->getGuzzleClient(),
