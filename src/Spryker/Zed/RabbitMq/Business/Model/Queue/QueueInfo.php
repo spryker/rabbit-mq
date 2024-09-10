@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace Spryker\Zed\RabbitMq\Business\Model\Queue;
@@ -45,6 +45,30 @@ class QueueInfo implements QueueInfoInterface
         $this->apiQueuesUrl = $apiQueuesUrl;
         $this->username = $username;
         $this->password = $password;
+    }
+
+    /**
+     * @param array $queueNames
+     *
+     * @return bool
+     */
+    public function areQueuesEmpty(array $queueNames): bool
+    {
+        $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
+
+        if ($response->getStatusCode() !== 200) {
+            return true;
+        }
+
+        $decodedResponse = json_decode($response->getBody()->getContents(), true);
+
+        foreach ($decodedResponse as $queueInfo) {
+            if ($queueInfo['messages'] > 0 && in_array($queueInfo['name'], $queueNames)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
