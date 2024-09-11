@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace Spryker\Client\RabbitMq\Model\Queue;
@@ -38,14 +38,14 @@ class QueueMetricReader implements QueueMetricReaderInterface
     {
         $queueMetricsRequestTransfer->requireQueueName();
 
-        $storeCode = $queueMetricsRequestTransfer->getStoreCode();
-        $channels = $storeCode ?
-            $this->connectionManager->getChannelsByStoreName($storeCode, $queueMetricsRequestTransfer->getLocaleName()) :
+        $storeName = $queueMetricsRequestTransfer->getStoreName();
+        $channels = $storeName ?
+            $this->connectionManager->getChannelsByStoreName($storeName, $queueMetricsRequestTransfer->getLocaleName()) :
             [$this->connectionManager->getDefaultChannel()];
 
         $channel = reset($channels);
         if (!$channel) {
-            throw new RuntimeException(sprintf('Could not find a connection for %s %s', $storeCode, $queueMetricsRequestTransfer->getQueueName()));
+            throw new RuntimeException(sprintf('Could not find a connection for %s %s', $storeName, $queueMetricsRequestTransfer->getQueueName()));
         }
 
         [, $messageCount, $consumerCount] = $channel->queue_declare($queueMetricsRequestTransfer->getQueueName(), true);

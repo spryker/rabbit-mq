@@ -92,15 +92,4 @@
         <property name="queueName" type="string"/>
     </transfer>
 
-    <transfer name="QueueMetricsRequest">
-        <property name="queueName" type="string"/>
-        <property name="storeCode" type="string"/>
-        <property name="localeName" type="string"/>
-    </transfer>
-
-    <transfer name="QueueMetricsResponse">
-        <property name="messageCount" type="int"/>
-        <property name="consumerCount" type="int"/>
-    </transfer>
-
 </transfers>

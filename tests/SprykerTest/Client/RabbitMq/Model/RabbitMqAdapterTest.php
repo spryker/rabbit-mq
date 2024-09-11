@@ -1,8 +1,8 @@
 <?php
 
 /**
- * MIT License
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
 namespace SprykerTest\Client\RabbitMq\Model;
@@ -62,21 +62,21 @@ class RabbitMqAdapterTest extends Unit
         $rabbitMqAdapter->getQueueMetrics(
             (new QueueMetricsRequestTransfer())
                 ->setQueueName('test_queue')
-                ->setStoreCode('DE'),
+                ->setStoreName('DE'),
         );
     }
 
     /**
      * @dataProvider getQueueMetricsDataProvider
      *
-     * @param string|null $storeCode
+     * @param string|null $storeName
      * @param int $expectedMessageCount
      * @param int $expectedConsumerCount
      *
      * @return void
      */
     public function testGetQueueMetricsShouldReturnMetrics(
-        ?string $storeCode,
+        ?string $storeName,
         int $expectedMessageCount,
         int $expectedConsumerCount
     ): void {
@@ -93,7 +93,7 @@ class RabbitMqAdapterTest extends Unit
         // Act
         $queueMetricsResult = $rabbitMqAdapter->getQueueMetrics((new QueueMetricsRequestTransfer())
             ->setQueueName('test_queue')
-            ->setStoreCode($storeCode));
+            ->setStoreName($storeName));
 
         // Assert
         $this->assertSame($expectedMessageCount, $queueMetricsResult->getMessageCount());
@@ -107,12 +107,12 @@ class RabbitMqAdapterTest extends Unit
     {
         return [
             'check with no store set' => [
-                'storeCode' => null,
+                'storeName' => null,
                 'expectedMessageCount' => 1,
                 'expectedConsumerCount' => 3,
             ],
-            'check with store code set' => [
-                'storeCode' => 'DE',
+            'check with store name set' => [
+                'storeName' => 'DE',
                 'expectedMessageCount' => 2,
                 'expectedConsumerCount' => 1,
             ],
