@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
 use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMetricsExpanderPluginInterface;
+use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMetricsReaderPluginInterface;
 
 /**
  * {@inheritDoc}
@@ -21,7 +21,7 @@ use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMetricsExpanderPluginInter
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
  * @method \Spryker\Zed\RabbitMq\RabbitMqConfig getConfig()
  */
-class RabbitMqQueueMetricsExpanderPlugin extends AbstractPlugin implements QueueMetricsExpanderPluginInterface
+class RabbitMqQueueMetricsReaderPlugin extends AbstractPlugin implements QueueMetricsReaderPluginInterface
 {
     /**
      * {@inheritDoc}
@@ -33,7 +33,7 @@ class RabbitMqQueueMetricsExpanderPlugin extends AbstractPlugin implements Queue
      *
      * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
-    public function expand(
+    public function read(
         QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
         QueueMetricsResponseTransfer $queueMetricsResponseTransfer
     ): QueueMetricsResponseTransfer {

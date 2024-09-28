@@ -11,12 +11,13 @@ use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
 use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use Generated\Shared\Transfer\QueueReceiveMessageTransfer;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
+use Spryker\Client\Queue\Model\Internal\MetricsInterface;
 use Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface;
 use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
 use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
 use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface;
 
-class RabbitMqAdapter implements RabbitMqAdapterInterface
+class RabbitMqAdapter implements RabbitMqAdapterInterface, MetricsInterface
 {
     /**
      * @var \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface
