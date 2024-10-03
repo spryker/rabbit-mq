@@ -17,7 +17,7 @@ class QueueMetricReader implements QueueMetricReaderInterface
     /**
      * @var \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
      */
-    private ConnectionManagerInterface $connectionManager;
+    protected ConnectionManagerInterface $connectionManager;
 
     /**
      * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface $connectionManager
