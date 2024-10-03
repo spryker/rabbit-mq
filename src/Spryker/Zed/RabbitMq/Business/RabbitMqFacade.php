@@ -105,15 +105,12 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-     * @param \Generated\Shared\Transfer\QueueMetricsResponseTransfer $queueMetricsResponseTransfer
      *
      * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
     public function getQueueMetrics(
         QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
-        QueueMetricsResponseTransfer $queueMetricsResponseTransfer
     ): QueueMetricsResponseTransfer {
-        return $this->getFactory()->createQueueMetricReader()
-            ->getQueueMetrics($queueMetricsRequestTransfer, $queueMetricsResponseTransfer);
+        return $this->getFactory()->createQueueMetricReader()->getQueueMetrics($queueMetricsRequestTransfer);
     }
 }

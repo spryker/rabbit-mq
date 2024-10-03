@@ -180,9 +180,8 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface, MetricsInterface
      *
      * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
-    public function getQueueMetrics(
-        QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-    ): QueueMetricsResponseTransfer {
+    public function getQueueMetrics(QueueMetricsRequestTransfer $queueMetricsRequestTransfer): QueueMetricsResponseTransfer
+    {
         return $this->queueMetricReader->getQueueMetrics($queueMetricsRequestTransfer);
     }
 }

@@ -25,23 +25,23 @@ class RabbitMqQueueMetricsReaderPlugin extends AbstractPlugin implements QueueMe
 {
     /**
      * {@inheritDoc}
+     * - Reads queue metrics for rabbit-mq.
      *
      * @api
      *
      * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-     * @param \Generated\Shared\Transfer\QueueMetricsResponseTransfer $queueMetricsResponseTransfer
      *
      * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
     public function read(
         QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
-        QueueMetricsResponseTransfer $queueMetricsResponseTransfer
     ): QueueMetricsResponseTransfer {
-        return $this->getFacade()->getQueueMetrics($queueMetricsRequestTransfer, $queueMetricsResponseTransfer);
+        return $this->getFacade()->getQueueMetrics($queueMetricsRequestTransfer);
     }
 
     /**
      * {@inheritDoc}
+     * - Checks if the plugin is applicable for the rabbit-mq adapter.
      *
      * @api
      *

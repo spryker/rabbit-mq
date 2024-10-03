@@ -28,13 +28,11 @@ class QueueMetricReader implements QueueMetricReaderInterface
 
     /**
      * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-     * @param \Generated\Shared\Transfer\QueueMetricsResponseTransfer $queueMetricsResponseTransfer
      *
      * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
      */
     public function getQueueMetrics(
         QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
-        QueueMetricsResponseTransfer $queueMetricsResponseTransfer
     ): QueueMetricsResponseTransfer {
         return $this->queueAdapter->getQueueMetrics($queueMetricsRequestTransfer);
     }

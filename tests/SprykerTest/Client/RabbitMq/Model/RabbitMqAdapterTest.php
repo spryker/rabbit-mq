@@ -78,7 +78,7 @@ class RabbitMqAdapterTest extends Unit
     public function testGetQueueMetricsShouldReturnMetrics(
         ?string $storeName,
         int $expectedMessageCount,
-        int $expectedConsumerCount
+        int $expectedConsumerCount,
     ): void {
         // Arrange
         $this->tester->mockFactoryMethod('getStaticConnectionManager', $this->getConnectionManagerMock());
