@@ -15,7 +15,7 @@ interface ConnectionManagerInterface
      * @param string $queuePoolName
      * @param string|null $localeCode
      *
-     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
+     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
      */
     public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array;
 
@@ -23,7 +23,7 @@ interface ConnectionManagerInterface
      * @param string $storeName
      * @param string|null $localeCode
      *
-     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
+     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
      */
     public function getChannelsByStoreName(string $storeName, ?string $localeCode): array;
 
