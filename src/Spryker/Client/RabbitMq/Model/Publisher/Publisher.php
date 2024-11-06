@@ -211,7 +211,8 @@ class Publisher implements PublisherInterface
     protected function publish(AMQPMessage $message, $exchangeQueue, $routingKey, $publishChannels)
     {
         foreach ($publishChannels as $channel) {
-            if (!$channel->getStores()) {
+            $stores = array_filter($channel->getStores());
+            if (!$stores) {
                 $channel->getChannel()->basic_publish($message, $exchangeQueue, $routingKey);
 
                 continue;
@@ -219,7 +220,7 @@ class Publisher implements PublisherInterface
 
             $messageBody = json_decode($message->getBody(), true);
             if (!isset($messageBody['stores'])) {
-                $messageBody['stores'] = $channel->getStores();
+                $messageBody['stores'] = $stores;
             }
             $message->setBody(json_encode($messageBody));
 
