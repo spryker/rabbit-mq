@@ -66,7 +66,7 @@ class RabbitMqHelper extends Module
      *
      * @return void
      */
-    public function _before(TestInterface $test)
+    public function _before(TestInterface $test): void
     {
         parent::_before($test);
 
@@ -156,7 +156,7 @@ class RabbitMqHelper extends Module
      */
     protected function createConnectionManager(
         QueueConnectionTransfer $connectionTransfer,
-        string $poolConnectionName = self::DEFAULT_POOL_CONNECTION_NAME
+        string $poolConnectionName = self::DEFAULT_POOL_CONNECTION_NAME,
     ): ConnectionManagerInterface {
         $storeClient = $this->getStoreClientMock($poolConnectionName);
         $configMock = $this->getConfigMock([$connectionTransfer]);
