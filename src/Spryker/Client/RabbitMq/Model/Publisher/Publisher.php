@@ -218,6 +218,7 @@ class Publisher implements PublisherInterface
                 continue;
             }
 
+            $initialMessageBody = $message->getBody();
             $messageBody = json_decode($message->getBody(), true);
             if (!isset($messageBody['stores'])) {
                 $messageBody['stores'] = $stores;
@@ -225,6 +226,8 @@ class Publisher implements PublisherInterface
             $message->setBody(json_encode($messageBody));
 
             $channel->getChannel()->basic_publish($message, $exchangeQueue, $routingKey);
+
+            $message->setBody($initialMessageBody);
         }
     }
 
