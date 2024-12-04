@@ -16,11 +16,20 @@ $config[KernelConstants::PROJECT_NAMESPACES] = [
 $config[KernelConstants::CORE_NAMESPACES] = [
     'Spryker',
 ];
-$config[PropelConstants::ZED_DB_ENGINE]
-    = strtolower(getenv('SPRYKER_DB_ENGINE') ?: '') ?: PropelConfig::DB_ENGINE_MYSQL;
-$config[PropelConstants::ZED_DB_HOST] = getenv('SPRYKER_DB_HOST');
-$config[PropelConstants::ZED_DB_PORT] = getenv('SPRYKER_DB_PORT');
-$config[PropelConstants::ZED_DB_USERNAME] = getenv('SPRYKER_DB_USERNAME');
-$config[PropelConstants::ZED_DB_PASSWORD] = getenv('SPRYKER_DB_PASSWORD');
-$config[PropelConstants::ZED_DB_DATABASE] = getenv('SPRYKER_DB_DATABASE');
+//$config[PropelConstants::ZED_DB_ENGINE]
+//    = strtolower(getenv('SPRYKER_DB_ENGINE') ?: '') ?: PropelConfig::DB_ENGINE_MYSQL;
+//$config[PropelConstants::ZED_DB_HOST] = getenv('SPRYKER_DB_HOST');
+//$config[PropelConstants::ZED_DB_PORT] = getenv('SPRYKER_DB_PORT');
+//$config[PropelConstants::ZED_DB_USERNAME] = getenv('SPRYKER_DB_USERNAME');
+//$config[PropelConstants::ZED_DB_PASSWORD] = getenv('SPRYKER_DB_PASSWORD');
+//$config[PropelConstants::ZED_DB_DATABASE] = getenv('SPRYKER_DB_DATABASE');
+//$config[PropelConstants::USE_SUDO_TO_MANAGE_DATABASE] = false;
+
+$config[PropelConstants::ZED_DB_ENGINE] = PropelConfig::DB_ENGINE_MYSQL;
+$config[PropelConstants::ZED_DB_HOST] = '127.0.0.1';
+$config[PropelConstants::ZED_DB_PORT] = '3306';
+$config[PropelConstants::ZED_DB_USERNAME] = 'root'; //getenv('SPRYKER_DB_USERNAME');
+$config[PropelConstants::ZED_DB_PASSWORD] = 'secret'; //getenv('SPRYKER_DB_PASSWORD');
+$config[PropelConstants::ZED_DB_DATABASE] = 'eu-docker';
+$config[PropelConstants::ZED_DB_REPLICAS] = json_decode(getenv('SPRYKER_DB_REPLICAS') ?: '[]', true);
 $config[PropelConstants::USE_SUDO_TO_MANAGE_DATABASE] = false;
