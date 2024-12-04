@@ -17,28 +17,13 @@ $dsn = sprintf(
     $config[PropelConstants::ZED_DB_DATABASE],
 );
 
-$slaves = [];
-foreach ($config[PropelConstants::ZED_DB_REPLICAS] ?? [] as $slaveData) {
-    $slaves[] = [
-        'dsn' => sprintf(
-            $placeholder,
-            $config[PropelConstants::ZED_DB_ENGINE],
-            $slaveData[PropelConstants::ZED_DB_HOST],
-            $slaveData[PropelConstants::ZED_DB_PORT],
-            $config[PropelConstants::ZED_DB_DATABASE],
-        ),
-        'user' => $config[PropelConstants::ZED_DB_USERNAME],
-        'password' => $config[PropelConstants::ZED_DB_PASSWORD],
-    ];
-}
-
 $connections = [
     'pgsql' => [
         'adapter' => PropelConfig::DB_ENGINE_PGSQL,
         'dsn' => $dsn,
         'user' => $config[PropelConstants::ZED_DB_USERNAME],
         'password' => $config[PropelConstants::ZED_DB_PASSWORD],
-        'slaves' => $slaves,
+        'slaves' => [],
         'settings' => [],
     ],
     'mysql' => [
@@ -46,7 +31,7 @@ $connections = [
         'dsn' => $dsn,
         'user' => $config[PropelConstants::ZED_DB_USERNAME],
         'password' => $config[PropelConstants::ZED_DB_PASSWORD],
-        'slaves' => $slaves,
+        'slaves' => [],
         'settings' => [
             'charset' => 'utf8',
             'queries' => [
