@@ -31,24 +31,20 @@ if (!is_dir($configZedTargetDirectory)) {
 }
 
 spl_autoload_register(function ($className) {
-    if (
-        strrpos($className, 'Transfer') === false
-        && strrpos($className, 'Builder') === false
-        && strrpos($className, 'Spy') === false
-    ) {
+    if (strrpos($className, 'Transfer') === false) {
         return false;
     }
 
     $classNameParts = explode('\\', $className);
 
-    $fileName = implode(DIRECTORY_SEPARATOR, $classNameParts) . '.php';
-    $filePath = APPLICATION_ROOT_DIR . 'src' . DIRECTORY_SEPARATOR . $fileName;
+    $transferFileName = implode(DIRECTORY_SEPARATOR, $classNameParts) . '.php';
+    $transferFilePath = APPLICATION_ROOT_DIR . 'src' . DIRECTORY_SEPARATOR . $transferFileName;
 
-    if (!file_exists($filePath)) {
+    if (!file_exists($transferFilePath)) {
         return false;
     }
 
-    require_once $filePath;
+    require_once $transferFilePath;
 
     return true;
 });
@@ -56,7 +52,7 @@ spl_autoload_register(function ($className) {
 $configSourceDirectory = MODULE_ROOT_DIR . 'ci' . DIRECTORY_SEPARATOR;
 copy($configSourceDirectory . 'config_default.php', $configSharedTargetDirectory . 'config_default.php');
 copy($configSourceDirectory . 'default_store.php', $configSharedTargetDirectory . 'default_store.php');
-copy($configSourceDirectory . 'config_propel.php', $configSharedTargetDirectory . 'config_propel.php');
+
 copy($configSourceDirectory . 'stores.php', $configSharedTargetDirectory . 'stores.php');
 
 $config = Config::getInstance();

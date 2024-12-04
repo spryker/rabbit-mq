@@ -243,7 +243,7 @@ class Publisher implements PublisherInterface
 
     /**
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
-     * 
+     *
      * @return string
      */
     protected function getLocale(QueueSendMessageTransfer $queueSendMessageTransfer): string
