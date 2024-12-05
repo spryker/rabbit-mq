@@ -242,14 +242,14 @@ class Publisher implements PublisherInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer|null $queueSendMessageTransfer
      *
      * @return string
      */
-    protected function getLocale(QueueSendMessageTransfer $queueSendMessageTransfer): string
+    protected function getLocale(QueueSendMessageTransfer $queueSendMessageTransfer): ?string
     {
-        if ($queueSendMessageTransfer->getLocale() === null && $this->config->isDynamicStoreEnabled()) {
-            return $this->config->getDefaultLocaleCode();
+        if ($this->config->isDynamicStoreEnabled() === true) {
+            return $queueSendMessageTransfer->getLocale() ?? $this->config->getDefaultLocaleCode();
         }
 
         return $queueSendMessageTransfer->getLocale();
