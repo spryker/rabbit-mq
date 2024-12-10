@@ -159,7 +159,7 @@ class Publisher implements PublisherInterface
      */
     protected function getChannelByQueuePoolName(QueueSendMessageTransfer $queueSendMessageTransfer): array
     {
-        $localeName = $queueSendMessageTransfer->getLocale();
+        $localeName = $this->getLocale($queueSendMessageTransfer);
         $queuePoolName = $queueSendMessageTransfer->getQueuePoolName();
 
         $bufferKey = sprintf(static::QUEUE_POOL_NAME_BUFFER_KEY_FORMAT, $queuePoolName, $localeName);
@@ -239,5 +239,19 @@ class Publisher implements PublisherInterface
     protected function getMessageConfig()
     {
         return [];
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
+     *
+     * @return string|null
+     */
+    protected function getLocale(QueueSendMessageTransfer $queueSendMessageTransfer): ?string
+    {
+        if ($this->config->isDynamicStoreEnabled() === true) {
+            return $queueSendMessageTransfer->getLocale() ?? $this->config->getDefaultLocaleCode();
+        }
+
+        return $queueSendMessageTransfer->getLocale();
     }
 }
