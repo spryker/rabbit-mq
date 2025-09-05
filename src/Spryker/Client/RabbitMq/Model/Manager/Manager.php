@@ -77,4 +77,16 @@ class Manager implements ManagerInterface
     {
         return $this->channel->exchange_delete($exchangeName);
     }
+
+    /**
+     * @param string $queueName
+     *
+     * @return bool
+     */
+    public function isQueueEmpty($queueName): bool
+    {
+        list($queue, $messageCount, $consumerCount) = $this->channel->queue_declare($queueName, true);
+
+        return $messageCount === 0;
+    }
 }

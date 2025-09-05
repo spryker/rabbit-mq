@@ -90,6 +90,16 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
 
     /**
      * @param string $queueName
+     *
+     * @return bool
+     */
+    public function isQueueEmpty($queueName): bool
+    {
+        return $this->manager->deleteExchange($exchangeName);
+    }
+
+    /**
+     * @param string $queueName
      * @param int $chunkSize
      * @param array<string, mixed> $options
      *
