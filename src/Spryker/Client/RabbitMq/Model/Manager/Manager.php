@@ -83,7 +83,7 @@ class Manager implements ManagerInterface
      *
      * @return bool
      */
-    public function isQueueEmpty($queueName): bool
+    public function isQueueEmpty(string $queueName): bool
     {
         list($queue, $messageCount, $consumerCount) = $this->channel->queue_declare($queueName, true);
 
