@@ -199,4 +199,14 @@ interface RabbitMqEnv extends QueueConstants
      * @var string
      */
     public const RABBITMQ_HEART_BEAT_SECONDS = 'RABBITMQ:RABBITMQ_HEART_BEAT_SECONDS';
+
+    /**
+     * Specification:
+     * - Use this constant to define the enablement of RabbitMQ confirmation publishing messages.
+     *
+     * @api
+     *
+     * @var string
+     */
+    public const RABBITMQ_PUBLISH_CONFIRM_ENABLED = 'RABBITMQ:PUBLISH_CONFIRM_ENABLED';
 }
