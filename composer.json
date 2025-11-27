@@ -5,7 +5,7 @@
     "homepage": "https://spryker.com",
     "license": "proprietary",
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "php-amqplib/php-amqplib": "^3.1.0",
         "spryker/guzzle": "^2.1.0",
         "spryker/kernel": "^3.56.0",
