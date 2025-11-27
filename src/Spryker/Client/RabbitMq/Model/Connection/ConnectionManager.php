@@ -73,7 +73,7 @@ class ConnectionManager implements ConnectionManagerInterface
      * @param string $queuePoolName
      * @param string|null $localeCode
      *
-     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     public function getChannelsByQueuePoolName(string $queuePoolName, ?string $localeCode): array
     {
@@ -88,7 +88,7 @@ class ConnectionManager implements ConnectionManagerInterface
      * @param array<\Generated\Shared\Transfer\QueueConnectionTransfer> $queueConnectionTransfers
      * @param string|null $localeCode
      *
-     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getChannelsFilteredByLocaleCode(array $queueConnectionTransfers, ?string $localeCode): array
     {
@@ -107,12 +107,12 @@ class ConnectionManager implements ConnectionManagerInterface
     /**
      * @param array<\Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface> $connections
      *
-     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getChannels(array $connections): array
     {
         return array_map(function (ConnectionInterface $connection) {
-            return (new Channel())->setChannel($connection->getChannel())->setStores($connection->getStoreNames());
+            return $connection->getChannel();
         }, $connections);
     }
 
@@ -120,7 +120,7 @@ class ConnectionManager implements ConnectionManagerInterface
      * @param string $storeName
      * @param string|null $localeCode
      *
-     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     public function getChannelsByStoreName(string $storeName, ?string $localeCode): array
     {

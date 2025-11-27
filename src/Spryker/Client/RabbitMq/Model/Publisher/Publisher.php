@@ -43,7 +43,7 @@ class Publisher implements PublisherInterface
     protected $config;
 
     /**
-     * @var array<array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>>
+     * @var array<array<\PhpAmqpLib\Channel\AMQPChannel>>>
      */
     protected $channelBuffer = [];
 
@@ -101,8 +101,8 @@ class Publisher implements PublisherInterface
         $channels = $this->getChannels($queueSendMessageTransfer);
 
         foreach ($channels as $uniqueChannelId => $channel) {
-            $usedChannels[$uniqueChannelId] = $channel->getChannel();
-            $channel->getChannel()->batch_basic_publish($msg, $queueName, $queueSendMessageTransfer->getRoutingKey());
+            $usedChannels[$uniqueChannelId] = $channel;
+            $channel->batch_basic_publish($msg, $queueName, $queueSendMessageTransfer->getRoutingKey());
         }
 
         return $usedChannels;
@@ -111,7 +111,7 @@ class Publisher implements PublisherInterface
     /**
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      *
-     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getChannels(QueueSendMessageTransfer $queueSendMessageTransfer): array
     {
@@ -131,13 +131,13 @@ class Publisher implements PublisherInterface
             }
         }
 
-        return array_map(fn ($channel) => (new Channel())->setChannel($channel), $this->getDefaultChannel());
+        return $this->getDefaultChannel();
     }
 
     /**
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      *
-     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getChannelByStoreName(QueueSendMessageTransfer $queueSendMessageTransfer): array
     {
@@ -157,7 +157,7 @@ class Publisher implements PublisherInterface
     /**
      * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
      *
-     * @return array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface>
+     * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
     protected function getChannelByQueuePoolName(QueueSendMessageTransfer $queueSendMessageTransfer): array
     {
@@ -204,30 +204,14 @@ class Publisher implements PublisherInterface
      * @param \PhpAmqpLib\Message\AMQPMessage $message
      * @param string $exchangeQueue
      * @param string $routingKey
-     * @param array<\Spryker\Client\RabbitMq\Model\Connection\ChannelInterface> $publishChannels
+     * @param array<\PhpAmqpLib\Channel\AMQPChannel> $publishChannels
      *
      * @return void
      */
     protected function publish(AMQPMessage $message, $exchangeQueue, $routingKey, $publishChannels)
     {
         foreach ($publishChannels as $channel) {
-            $stores = array_filter($channel->getStores());
-            if (!$stores) {
-                $channel->getChannel()->basic_publish($message, $exchangeQueue, $routingKey);
-
-                continue;
-            }
-
-            $initialMessageBody = $message->getBody();
-            $messageBody = json_decode($message->getBody(), true);
-            if (!isset($messageBody['stores'])) {
-                $messageBody['stores'] = $stores;
-            }
-            $message->setBody(json_encode($messageBody));
-
-            $channel->getChannel()->basic_publish($message, $exchangeQueue, $routingKey);
-
-            $message->setBody($initialMessageBody);
+            $channel->basic_publish($message, $exchangeQueue, $routingKey);
         }
     }
 
