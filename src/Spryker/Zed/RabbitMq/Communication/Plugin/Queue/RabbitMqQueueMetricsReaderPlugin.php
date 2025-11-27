@@ -14,10 +14,6 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMetricsReaderPluginInterface;
 
 /**
- * {@inheritDoc}
- *
- * @api
- *
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
  * @method \Spryker\Zed\RabbitMq\RabbitMqConfig getConfig()
  */
