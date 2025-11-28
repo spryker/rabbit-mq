@@ -28,8 +28,4 @@ use Codeception\Actor;
 class RabbitMqBusinessTester extends Actor
 {
     use _generated\RabbitMqBusinessTesterActions;
-
-    /**
-     * Define custom actions here
-     */
 }

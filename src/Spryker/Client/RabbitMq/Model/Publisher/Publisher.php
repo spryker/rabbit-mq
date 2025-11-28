@@ -10,6 +10,8 @@ namespace Spryker\Client\RabbitMq\Model\Publisher;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
+use Spryker\Client\RabbitMq\Model\Connection\Channel;
+use Spryker\Client\RabbitMq\Model\Connection\ChannelInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
 
@@ -41,7 +43,7 @@ class Publisher implements PublisherInterface
     protected $config;
 
     /**
-     * @var array<array<\PhpAmqpLib\Channel\AMQPChannel>>
+     * @var array<array<\PhpAmqpLib\Channel\AMQPChannel>>>
      */
     protected $channelBuffer = [];
 
@@ -111,7 +113,7 @@ class Publisher implements PublisherInterface
      *
      * @return array<\PhpAmqpLib\Channel\AMQPChannel>
      */
-    protected function getChannels(QueueSendMessageTransfer $queueSendMessageTransfer)
+    protected function getChannels(QueueSendMessageTransfer $queueSendMessageTransfer): array
     {
         if ($queueSendMessageTransfer->getStoreName()) {
             $channel = $this->getChannelByStoreName($queueSendMessageTransfer);

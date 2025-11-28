@@ -26,7 +26,10 @@ use Spryker\Client\RabbitMq\Model\Manager\Manager;
 use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
 use Spryker\Client\RabbitMq\Model\Publisher\Publisher;
 use Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface;
+use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReader;
+use Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
+use Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface;
 
 /**
  * @method \Spryker\Client\RabbitMq\RabbitMqConfig getConfig()
@@ -39,15 +42,25 @@ class RabbitMqFactory extends AbstractFactory
     protected static $connectionManager;
 
     /**
+     * @var \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface|null
+     */
+    protected static RabbitMqAdapterInterface|null $rabbitMqAdapter = null;
+
+    /**
      * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
      */
     public function createQueueAdapter(): AdapterInterface
     {
-        return new RabbitMqAdapter(
-            $this->createManager(),
-            $this->createPublisher(),
-            $this->createConsumer(),
-        );
+        if (static::$rabbitMqAdapter === null) {
+            static::$rabbitMqAdapter = new RabbitMqAdapter(
+                $this->createManager(),
+                $this->createPublisher(),
+                $this->createConsumer(),
+                $this->createQueueMetricReader(),
+            );
+        }
+
+        return static::$rabbitMqAdapter;
     }
 
     /**
@@ -150,5 +163,13 @@ class RabbitMqFactory extends AbstractFactory
     public function createQueueEstablishmentHelper(): QueueEstablishmentHelperInterface
     {
         return new QueueEstablishmentHelper();
+    }
+
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface
+     */
+    public function createQueueMetricReader(): QueueMetricReaderInterface
+    {
+        return new QueueMetricReader($this->getStaticConnectionManager());
     }
 }
