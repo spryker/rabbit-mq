@@ -101,6 +101,16 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
 
     /**
      * @param string $queueName
+     *
+     * @return bool
+     */
+    public function isQueueEmpty(string $queueName): bool
+    {
+        return $this->manager->isQueueEmpty($queueName);
+    }
+
+    /**
+     * @param string $queueName
      * @param int $chunkSize
      * @param array<string, mixed> $options
      *
