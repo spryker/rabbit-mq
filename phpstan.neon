@@ -2,12 +2,13 @@ parameters:
     level: 7
     paths:
         - src/
-    checkMissingIterableValueType: false
     ignoreErrors:
         - '#Parameter \#2 \$subject of function preg_match expects string, null given#'
         - '#Call to method store\(\) on an unknown class .+AutoCompletion#'
         - '#Call to method rabbitMq\(\) on an unknown class .+AutoCompletion#'
         - '#While loop condition is always false.#'
         - '#Parameter \#8 \$login_response of class .+AMQPStreamConnection constructor expects null, string\|null given.#'
+        -
+            identifier: missingType.iterableValue
     bootstrapFiles:
         - tests/bootstrap.php
