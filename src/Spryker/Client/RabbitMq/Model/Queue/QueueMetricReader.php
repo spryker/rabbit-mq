@@ -40,7 +40,7 @@ class QueueMetricReader implements QueueMetricReaderInterface
 
         $storeName = $queueMetricsRequestTransfer->getStoreName();
         $channels = $storeName ?
-            $this->connectionManager->getChannelsByStoreName($storeName, $queueMetricsRequestTransfer->getLocaleName()) :
+            array_map(fn ($channel) => $channel->getChannel(), $this->connectionManager->getChannelsByStoreName($storeName, $queueMetricsRequestTransfer->getLocaleName())) :
             [$this->connectionManager->getDefaultChannel()];
 
         $channel = reset($channels);
