@@ -43,7 +43,7 @@ class Publisher implements PublisherInterface
     protected $config;
 
     /**
-     * @var array<array<\PhpAmqpLib\Channel\AMQPChannel>>>
+     * @var array<array<\PhpAmqpLib\Channel\AMQPChannel>>
      */
     protected $channelBuffer = [];
 
@@ -225,7 +225,7 @@ class Publisher implements PublisherInterface
         $message = new AMQPMessage($messageTransfer->getBody(), $this->config->getMessageConfig());
         $headers = $messageTransfer->getHeaders();
 
-        if ($headers !== null) {
+        if ($headers !== null) { // @phpstan-ignore notIdentical.alwaysTrue
             $headersTable = new AMQPTable($headers);
             $message->set('application_headers', $headersTable);
         }

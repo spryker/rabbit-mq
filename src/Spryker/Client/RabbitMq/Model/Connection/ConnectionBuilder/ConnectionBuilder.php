@@ -89,7 +89,7 @@ class ConnectionBuilder implements ConnectionBuilderInterface
     {
         $connection = $this->createdConnectionsByConnectionName[$queueConnectionTransfer->getName()] ?? null;
 
-        if ($connection !== null && $connection->getChannel() !== null && $connection->getChannel()->is_open()) {
+        if ($connection !== null && $connection->getChannel() !== null && $connection->getChannel()->is_open()) { // @phpstan-ignore notIdentical.alwaysTrue
             return $connection;
         }
 
