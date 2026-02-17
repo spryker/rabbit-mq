@@ -20,8 +20,9 @@
         "codeception/module-asserts": "*",
         "codeception/stub": "^4.1",
         "mikey179/vfsstream": "^1.6.11",
+        "spryker/api-platform": "^0.5.0",
         "spryker/code-sniffer": "^0.17.1",
-        "spryker/testify": "3.62.0"
+        "spryker/testify": "^3.49.0"
     },
     "autoload": {
         "psr-4": {
