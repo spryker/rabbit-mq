@@ -47,6 +47,35 @@ jobs:
                   composer --version
                   composer install -o
 
+            - name: Debug transfer generation
+              run: |
+                  echo "=== Checking transfer XML schemas ==="
+                  find src -name "*.transfer.xml" 2>/dev/null || echo "No transfer XMLs in src/"
+                  find tests/app -name "*.transfer.xml" 2>/dev/null || echo "No transfer XMLs in tests/app/"
+                  echo "=== Checking vendor transfer schemas ==="
+                  find vendor/spryker/*/src/*/Shared/*/Transfer -name "*.transfer.xml" 2>/dev/null | head -20 || echo "No vendor transfer XMLs"
+                  echo "=== Running transfer generation manually ==="
+                  php -r "
+                  require 'vendor/autoload.php';
+                  require 'tests/bootstrap.php';
+                  if (!defined('APPLICATION_SOURCE_DIR')) define('APPLICATION_SOURCE_DIR', APPLICATION_ROOT_DIR . 'src/');
+                  if (!defined('MODULE_UNDER_TEST_ROOT_DIR')) define('MODULE_UNDER_TEST_ROOT_DIR', realpath(__DIR__) . '/');
+                  echo 'APPLICATION_ROOT_DIR: ' . APPLICATION_ROOT_DIR . PHP_EOL;
+                  echo 'APPLICATION_SOURCE_DIR: ' . APPLICATION_SOURCE_DIR . PHP_EOL;
+                  echo 'APPLICATION_VENDOR_DIR: ' . APPLICATION_VENDOR_DIR . PHP_EOL;
+                  echo 'MODULE_UNDER_TEST_ROOT_DIR: ' . MODULE_UNDER_TEST_ROOT_DIR . PHP_EOL;
+                  try {
+                      \$facade = new \Spryker\Zed\Transfer\Business\TransferFacade();
+                      \$facade->generateTransferObjects(new \Psr\Log\NullLogger());
+                      echo 'Transfer generation SUCCESS' . PHP_EOL;
+                  } catch (\Throwable \$e) {
+                      echo 'Transfer generation FAILED: ' . \$e->getMessage() . PHP_EOL;
+                      echo \$e->getTraceAsString() . PHP_EOL;
+                  }
+                  "
+                  echo "=== Generated transfer files ==="
+                  find tests/app/src/Generated -name "*.php" 2>/dev/null | head -20 || echo "No generated transfers found"
+
             - name: Run tests
               run: composer test
 
