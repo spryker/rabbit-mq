@@ -10,8 +10,6 @@ namespace Spryker\Client\RabbitMq\Model\Publisher;
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
-use Spryker\Client\RabbitMq\Model\Connection\Channel;
-use Spryker\Client\RabbitMq\Model\Connection\ChannelInterface;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
 
@@ -43,7 +41,7 @@ class Publisher implements PublisherInterface
     protected $config;
 
     /**
-     * @var array<array<\PhpAmqpLib\Channel\AMQPChannel>>>
+     * @var array<array<\PhpAmqpLib\Channel\AMQPChannel>>
      */
     protected $channelBuffer = [];
 
@@ -225,7 +223,7 @@ class Publisher implements PublisherInterface
         $message = new AMQPMessage($messageTransfer->getBody(), $this->config->getMessageConfig());
         $headers = $messageTransfer->getHeaders();
 
-        if ($headers !== null) {
+        if ($headers !== null) { // @phpstan-ignore notIdentical.alwaysTrue
             $headersTable = new AMQPTable($headers);
             $message->set('application_headers', $headersTable);
         }
