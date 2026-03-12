@@ -53,6 +53,11 @@ class RabbitMqConfig extends AbstractBundleConfig
     protected const AMQP_STREAM_CONNECTION_CHANNEL_RPC_TIMEOUT = 0;
 
     /**
+     * @var int
+     */
+    protected const WAIT_FOR_PENDING_ACKS_TIMEOUT_IN_SECONDS = 5;
+
+    /**
      * @var \ArrayObject<int|string, \Generated\Shared\Transfer\RabbitMqOptionTransfer>|null
      */
     protected $queueOptionCollection;
@@ -144,6 +149,56 @@ class RabbitMqConfig extends AbstractBundleConfig
     public function getQueuePools(): array
     {
         return [];
+    }
+
+    /**
+     * @api
+     *
+     * @return bool
+     */
+    public function isDynamicStoreEnabled(): bool
+    {
+        return (bool)getenv('SPRYKER_DYNAMIC_STORE_MODE');
+    }
+
+    /**
+     * Specification:
+     * - Returns the heart beat value for the RabbitMQ connection.
+     *
+     * @api
+     *
+     * @return int
+     */
+    public function getHeartBeat(): int
+    {
+        return (int)$this->get(RabbitMqEnv::RABBITMQ_HEART_BEAT_SECONDS, static::AMQP_STREAM_CONNECTION_HEART_BEAT);
+    }
+
+    /**
+     * Specification:
+     * - Returns if publish confirmation mechanism should be applied during puplishing RabbitMQ messages.
+     * - See documentation https://www.rabbitmq.com/tutorials/tutorial-seven-php#enabling-publisher-confirms-on-a-channel
+     *
+     * @api
+     *
+     * @return bool
+     */
+    public function isPublishConfirmEnabled(): bool
+    {
+        return (bool)$this->get(RabbitMqEnv::RABBITMQ_PUBLISH_CONFIRM_ENABLED, false);
+    }
+
+    /**
+     * Specification:
+     * - Returns timeout in seconds for waiting for pending acks during RabbitMQ puplish confirmation.
+     *
+     * @api
+     *
+     * @return int
+     */
+    public function getWaitForPendingAcksTimeout(): int
+    {
+        return static::WAIT_FOR_PENDING_ACKS_TIMEOUT_IN_SECONDS;
     }
 
     /**
@@ -265,28 +320,5 @@ class RabbitMqConfig extends AbstractBundleConfig
             ->addRoutingKey($routingKey);
 
         return $queueOptionTransfer;
-    }
-
-    /**
-     * @api
-     *
-     * @return bool
-     */
-    public function isDynamicStoreEnabled(): bool
-    {
-        return (bool)getenv('SPRYKER_DYNAMIC_STORE_MODE');
-    }
-
-    /**
-     * Specification:
-     * - Returns the heart beat value for the RabbitMQ connection.
-     *
-     * @api
-     *
-     * @return int
-     */
-    public function getHeartBeat(): int
-    {
-        return (int)$this->get(RabbitMqEnv::RABBITMQ_HEART_BEAT_SECONDS, static::AMQP_STREAM_CONNECTION_HEART_BEAT);
     }
 }

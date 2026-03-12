@@ -8,13 +8,18 @@
 namespace Spryker\Client\RabbitMq\Model\Publisher;
 
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 use Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface;
 use Spryker\Client\RabbitMq\RabbitMqConfig;
+use Spryker\Shared\Log\LoggerTrait;
+use Throwable;
 
 class Publisher implements PublisherInterface
 {
+    use LoggerTrait;
+
     /**
      * @var string
      */
@@ -68,6 +73,10 @@ class Publisher implements PublisherInterface
         $routingKey = $queueSendMessageTransfer->getRoutingKey();
 
         $this->publish($message, $queueName, $routingKey, $publishChannels);
+
+        if ($this->config->isPublishConfirmEnabled()) {
+            $this->confirmPublish($queueName, $publishChannels, 1);
+        }
     }
 
     /**
@@ -84,6 +93,10 @@ class Publisher implements PublisherInterface
         }
 
         $this->publishBatches($usedChannels);
+
+        if ($this->config->isPublishConfirmEnabled()) {
+            $this->confirmPublish($queueName, $usedChannels, count($queueSendMessageTransfers));
+        }
     }
 
     /**
@@ -149,6 +162,12 @@ class Publisher implements PublisherInterface
 
         $this->channelBuffer[$bufferKey] = $this->connectionManager->getChannelsByStoreName($storeName, $localeName);
 
+        if ($this->config->isPublishConfirmEnabled()) {
+            foreach ($this->channelBuffer[$bufferKey] as $channel) {
+                $this->enableChannelPublishConfirm($channel);
+            }
+        }
+
         return $this->channelBuffer[$bufferKey];
     }
 
@@ -181,7 +200,12 @@ class Publisher implements PublisherInterface
             return $this->channelBuffer[static::DEFAULT_CHANNEL];
         }
 
-        $this->channelBuffer[static::DEFAULT_CHANNEL] = [$this->connectionManager->getDefaultChannel()];
+        $defaultChannel = $this->connectionManager->getDefaultChannel();
+        $this->channelBuffer[static::DEFAULT_CHANNEL] = [$defaultChannel];
+
+        if ($this->config->isPublishConfirmEnabled()) {
+            $this->enableChannelPublishConfirm($defaultChannel);
+        }
 
         return $this->channelBuffer[static::DEFAULT_CHANNEL];
     }
@@ -253,5 +277,41 @@ class Publisher implements PublisherInterface
         }
 
         return $queueSendMessageTransfer->getLocale();
+    }
+
+    /**
+     * @param \PhpAmqpLib\Channel\AMQPChannel $channel
+     *
+     * @return void
+     */
+    protected function enableChannelPublishConfirm(AMQPChannel $channel): void
+    {
+        $channel->confirm_select(true);
+    }
+
+    /**
+     * @param string $queueName
+     * @param array<\PhpAmqpLib\Channel\AMQPChannel> $channels
+     * @param int $messagesCount
+     *
+     * @return bool
+     */
+    protected function confirmPublish(string $queueName, array $channels, int $messagesCount): bool
+    {
+        foreach ($channels as $channel) {
+            try {
+                $channel->wait_for_pending_acks($this->config->getWaitForPendingAcksTimeout());
+            } catch (Throwable $e) {
+                $this->getLogger()->error('Error waiting for pending acks: ' . $e->getMessage(), [
+                    'queueName' => $queueName,
+                    'messagesCount' => $messagesCount,
+                    'exception' => $e,
+                ]);
+
+                return false;
+            }
+        }
+
+        return true;
     }
 }
