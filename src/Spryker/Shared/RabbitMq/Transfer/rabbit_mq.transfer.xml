@@ -55,6 +55,7 @@
     <transfer name="RabbitMqQueue">
         <property name="name" type="string"/>
         <property name="virtualHost" type="string"/>
+        <property name="readyCount" type="int"/>
     </transfer>
 
     <transfer name="RabbitMqQueueCollection">

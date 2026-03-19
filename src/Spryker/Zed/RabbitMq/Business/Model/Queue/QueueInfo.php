@@ -99,6 +99,7 @@ class QueueInfo implements QueueInfoInterface
         foreach ($response as $queueInfo) {
             $rabbitMqQueueTransfer = new RabbitMqQueueTransfer();
             $rabbitMqQueueTransfer->setName($queueInfo['name']);
+            $rabbitMqQueueTransfer->setReadyCount($queueInfo['messages_ready']);
 
             $rabbitMqQueueCollectionTransfer->addRabbitMqQueue($rabbitMqQueueTransfer);
         }

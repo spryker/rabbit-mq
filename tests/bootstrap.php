@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use Spryker\Shared\Config\Config;
 
 if (!defined('MODULE_ROOT_DIR')) {

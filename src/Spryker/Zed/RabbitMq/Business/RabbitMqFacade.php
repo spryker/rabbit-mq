@@ -9,6 +9,7 @@ namespace Spryker\Zed\RabbitMq\Business;
 
 use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
 use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
+use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -97,6 +98,11 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
     public function areQueuesEmpty(array $queueNames): bool
     {
         return $this->getFactory()->createQueueInfo()->areQueuesEmpty($queueNames);
+    }
+
+    public function getQueues(): RabbitMqQueueCollectionTransfer
+    {
+        return $this->getFactory()->createQueueInfo()->getQueues();
     }
 
     /**
