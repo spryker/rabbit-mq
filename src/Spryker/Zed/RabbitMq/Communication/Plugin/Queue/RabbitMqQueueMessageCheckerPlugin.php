@@ -7,7 +7,7 @@
 
 namespace Spryker\Zed\RabbitMq\Communication\Plugin\Queue;
 
-use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
+use Generated\Shared\Transfer\QueueInformationCollectionTransfer;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueBulkMessageCheckerPluginInterface;
@@ -49,7 +49,7 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
         return $adapterName === RabbitMqAdapter::class;
     }
 
-    public function getQueues(array $queueNames): RabbitMqQueueCollectionTransfer
+    public function getQueues(array $queueNames): QueueInformationCollectionTransfer
     {
         return $this->getFacade()->getQueues();
     }
