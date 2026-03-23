@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\RabbitMq\Business;
 
+use Generated\Shared\Transfer\QueueInformationCollectionTransfer;
 use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
 use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
@@ -87,7 +88,7 @@ interface RabbitMqFacadeInterface
      */
     public function areQueuesEmpty(array $queueNames): bool;
 
-    public function getQueues(): RabbitMqQueueCollectionTransfer;
+    public function getQueues(): QueueInformationCollectionTransfer;
 
     /**
      * Specification:

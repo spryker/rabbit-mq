@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\RabbitMq\Business\Model\Queue;
 
+use Generated\Shared\Transfer\QueueInformationCollectionTransfer;
+
 interface QueueInfoInterface
 {
     /**
@@ -16,8 +18,5 @@ interface QueueInfoInterface
      */
     public function areQueuesEmpty(array $queueNames): bool;
 
-    /**
-     * @return \Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer
-     */
-    public function getQueues();
+    public function getQueues(): QueueInformationCollectionTransfer;
 }

@@ -55,7 +55,6 @@
     <transfer name="RabbitMqQueue">
         <property name="name" type="string"/>
         <property name="virtualHost" type="string"/>
-        <property name="readyCount" type="int"/>
     </transfer>
 
     <transfer name="RabbitMqQueueCollection">
@@ -102,6 +101,16 @@
     <transfer name="QueueMetricsResponse" strict="true">
         <property name="messageCount" type="int"/>
         <property name="consumerCount" type="int"/>
+    </transfer>
+
+    <transfer name="QueueInformation">
+        <property name="name" type="string"/>
+        <property name="virtualHost" type="string"/>
+        <property name="readyCount" type="int"/>
+    </transfer>
+
+    <transfer name="QueueInformationCollection">
+        <property name="queues" type="QueueInformation[]" singular="queue"/>
     </transfer>
 
 </transfers>
