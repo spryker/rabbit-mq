@@ -52,12 +52,12 @@
         <property name="requeueOnReject" type="bool"/>
     </transfer>
 
-    <transfer name="RabbitMqQueue">
+    <transfer name="RabbitMqQueue" deprecated="Use QueueInformationTransfer instead">
         <property name="name" type="string"/>
         <property name="virtualHost" type="string"/>
     </transfer>
 
-    <transfer name="RabbitMqQueueCollection">
+    <transfer name="RabbitMqQueueCollection" deprecated="Use QueueInformationCollection transfer instead">
         <property name="rabbitMqQueues" type="RabbitMqQueue[]" singular="rabbitMqQueue"/>
     </transfer>
 

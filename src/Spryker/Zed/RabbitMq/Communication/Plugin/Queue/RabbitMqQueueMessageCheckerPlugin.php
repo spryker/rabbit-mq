@@ -49,6 +49,15 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
         return $adapterName === RabbitMqAdapter::class;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param array<string> $queueNames
+     *
+     * @return bool
+     */
     public function getQueues(array $queueNames): QueueInformationCollectionTransfer
     {
         return $this->getFacade()->getQueues();
