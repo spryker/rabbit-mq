@@ -22,10 +22,6 @@ class Manager implements ManagerInterface
      */
     protected $queueEstablishmentHelper;
 
-    /**
-     * @param \PhpAmqpLib\Channel\AMQPChannel $channel
-     * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
-     */
     public function __construct(AMQPChannel $channel, QueueEstablishmentHelperInterface $queueEstablishmentHelper)
     {
         $this->channel = $channel;

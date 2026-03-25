@@ -46,9 +46,6 @@ class RabbitMqFactory extends AbstractFactory
      */
     protected static RabbitMqAdapterInterface|null $rabbitMqAdapter = null;
 
-    /**
-     * @return \Spryker\Client\Queue\Model\Adapter\AdapterInterface
-     */
     public function createQueueAdapter(): AdapterInterface
     {
         if (static::$rabbitMqAdapter === null) {
@@ -63,9 +60,6 @@ class RabbitMqFactory extends AbstractFactory
         return static::$rabbitMqAdapter;
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
-     */
     public function getStaticConnectionManager(): ConnectionManagerInterface
     {
         if (static::$connectionManager === null) {
@@ -75,9 +69,6 @@ class RabbitMqFactory extends AbstractFactory
         return static::$connectionManager;
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface
-     */
     public function createConnectionManager(): ConnectionManagerInterface
     {
         return new ConnectionManager(
@@ -89,33 +80,21 @@ class RabbitMqFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface
-     */
     public function getStoreClient(): RabbitMqToStoreClientInterface
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::CLIENT_STORE);
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface
-     */
     public function createQueueConnectionTransferMapper(): QueueConnectionTransferMapperInterface
     {
         return new QueueConnectionTransferMapper($this->getConfig());
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface
-     */
     public function createQueueConnectionTransferFilter(): QueueConnectionTransferFilterInterface
     {
         return new QueueConnectionTransferFilter($this->getStoreClient());
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface
-     */
     public function createConnectionBuilder(): ConnectionBuilderInterface
     {
         return new ConnectionBuilder(
@@ -125,9 +104,6 @@ class RabbitMqFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface
-     */
     public function createManager(): ManagerInterface
     {
         return new Manager(
@@ -136,9 +112,6 @@ class RabbitMqFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface
-     */
     public function createPublisher(): PublisherInterface
     {
         return new Publisher(
@@ -147,9 +120,6 @@ class RabbitMqFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface
-     */
     public function createConsumer(): ConsumerInterface
     {
         return new Consumer(
@@ -157,17 +127,11 @@ class RabbitMqFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface
-     */
     public function createQueueEstablishmentHelper(): QueueEstablishmentHelperInterface
     {
         return new QueueEstablishmentHelper();
     }
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface
-     */
     public function createQueueMetricReader(): QueueMetricReaderInterface
     {
         return new QueueMetricReader($this->getStaticConnectionManager());

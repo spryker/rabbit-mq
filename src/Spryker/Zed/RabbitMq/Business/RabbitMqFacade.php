@@ -10,7 +10,6 @@ namespace Spryker\Zed\RabbitMq\Business;
 use Generated\Shared\Transfer\QueueInformationCollectionTransfer;
 use Generated\Shared\Transfer\QueueMetricsRequestTransfer;
 use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
-use Generated\Shared\Transfer\RabbitMqQueueCollectionTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -102,13 +101,11 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
     }
 
     /**
-     * Get all queues at once with messages count.
+     * {@inheritDoc}
      *
      * @api
      *
-     * @param array<string> $queueNames
-     *
-     * @return QueueInformationCollectionTransfer
+     * @return \Generated\Shared\Transfer\QueueInformationCollectionTransfer
      */
     public function getQueues(): QueueInformationCollectionTransfer
     {

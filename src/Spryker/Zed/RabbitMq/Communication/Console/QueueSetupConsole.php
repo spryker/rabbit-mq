@@ -26,21 +26,12 @@ class QueueSetupConsole extends Console
      */
     public const DESCRIPTION = 'Set up queues and exchanges';
 
-    /**
-     * @return void
-     */
     protected function configure(): void
     {
         $this->setName(static::COMMAND_NAME);
         $this->setDescription(static::DESCRIPTION);
     }
 
-    /**
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return int
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->getFacade()->setupConnection();

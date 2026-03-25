@@ -22,10 +22,6 @@ class Queue implements QueueInterface
      */
     protected $queueAdapter;
 
-    /**
-     * @param \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface $queueInfo
-     * @param \Spryker\Client\Queue\Model\Adapter\AdapterInterface $queueAdapter
-     */
     public function __construct(QueueInfoInterface $queueInfo, AdapterInterface $queueAdapter)
     {
         $this->queueInfo = $queueInfo;

@@ -16,10 +16,5 @@ interface RabbitMqToStoreClientInterface
      */
     public function getCurrentStore();
 
-    /**
-     * @param string $name
-     *
-     * @return \Generated\Shared\Transfer\StoreTransfer
-     */
     public function getStoreByName(string $name): StoreTransfer;
 }

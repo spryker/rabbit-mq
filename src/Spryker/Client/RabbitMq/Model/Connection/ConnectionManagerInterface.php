@@ -27,13 +27,7 @@ interface ConnectionManagerInterface
      */
     public function getChannelsByStoreName(string $storeName, ?string $localeCode): array;
 
-    /**
-     * @return \PhpAmqpLib\Channel\AMQPChannel
-     */
     public function getDefaultChannel(): AMQPChannel;
 
-    /**
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
-     */
     public function getDefaultConnection(): ConnectionInterface;
 }

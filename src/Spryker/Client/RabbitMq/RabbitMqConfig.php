@@ -146,9 +146,6 @@ class RabbitMqConfig extends AbstractBundleConfig
         return [];
     }
 
-    /**
-     * @return array
-     */
     protected function getQueueConnectionConfigs(): array
     {
         $connections = [];
@@ -212,17 +209,11 @@ class RabbitMqConfig extends AbstractBundleConfig
         return $this->queueOptionCollection;
     }
 
-    /**
-     * @return array
-     */
     protected function getQueueConfiguration(): array
     {
         return [];
     }
 
-    /**
-     * @return string
-     */
     protected function getDefaultBoundQueueNamePrefix(): string
     {
         return '';

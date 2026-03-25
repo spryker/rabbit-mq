@@ -46,11 +46,6 @@ class QueueInfo implements QueueInfoInterface
         $this->password = $password;
     }
 
-    /**
-     * @param array $queueNames
-     *
-     * @return bool
-     */
     public function areQueuesEmpty(array $queueNames): bool
     {
         $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
