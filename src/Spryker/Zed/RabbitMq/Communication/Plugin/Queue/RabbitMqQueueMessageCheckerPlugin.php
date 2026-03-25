@@ -56,7 +56,7 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
      *
      * @param array<string> $queueNames
      *
-     * @return bool
+     * @return QueueInformationCollectionTransfer
      */
     public function getQueues(array $queueNames): QueueInformationCollectionTransfer
     {

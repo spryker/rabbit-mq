@@ -88,6 +88,15 @@ interface RabbitMqFacadeInterface
      */
     public function areQueuesEmpty(array $queueNames): bool;
 
+    /**
+     * Get all queues at once with messages count.
+     *
+     * @api
+     *
+     * @param array<string> $queueNames
+     *
+     * @return QueueInformationCollectionTransfer
+     */
     public function getQueues(): QueueInformationCollectionTransfer;
 
     /**

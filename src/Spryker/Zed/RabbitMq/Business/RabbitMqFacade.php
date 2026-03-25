@@ -101,6 +101,15 @@ class RabbitMqFacade extends AbstractFacade implements RabbitMqFacadeInterface
         return $this->getFactory()->createQueueInfo()->areQueuesEmpty($queueNames);
     }
 
+    /**
+     * Get all queues at once with messages count.
+     *
+     * @api
+     *
+     * @param array<string> $queueNames
+     *
+     * @return QueueInformationCollectionTransfer
+     */
     public function getQueues(): QueueInformationCollectionTransfer
     {
         return $this->getFactory()->createQueueInfo()->getQueues();
