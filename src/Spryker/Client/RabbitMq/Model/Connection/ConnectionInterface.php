@@ -34,8 +34,5 @@ interface ConnectionInterface
      */
     public function getVirtualHost();
 
-    /**
-     * @return void
-     */
     public function setupQueuesAndExchanges(): void;
 }

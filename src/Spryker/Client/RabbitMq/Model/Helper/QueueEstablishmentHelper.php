@@ -37,12 +37,6 @@ class QueueEstablishmentHelper implements QueueEstablishmentHelperInterface
         return $queueParams;
     }
 
-    /**
-     * @param \PhpAmqpLib\Channel\AMQPChannel $channel
-     * @param \Generated\Shared\Transfer\RabbitMqOptionTransfer $queueOptionTransfer
-     *
-     * @return void
-     */
     public function createExchange(AMQPChannel $channel, RabbitMqOptionTransfer $queueOptionTransfer): void
     {
         $exchangeParams = $this->convertTransferToArray($queueOptionTransfer);

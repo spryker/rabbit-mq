@@ -37,9 +37,6 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
      */
     protected $queueConnectionTransfersByPoolName;
 
-    /**
-     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
-     */
     public function __construct(RabbitMqConfig $config)
     {
         $this->config = $config;
@@ -78,9 +75,6 @@ class QueueConnectionTransferMapper implements QueueConnectionTransferMapperInte
         return $this->queueConnectionTransfersByConnectionName;
     }
 
-    /**
-     * @return void
-     */
     protected function addQueueConnectionTransfersByConnectionName(): void
     {
         foreach ($this->config->getQueueConnections() as $queueConnectionTransfer) {

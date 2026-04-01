@@ -22,10 +22,6 @@ class Queue implements QueueInterface
      */
     protected $queueAdapter;
 
-    /**
-     * @param \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface $queueInfo
-     * @param \Spryker\Client\Queue\Model\Adapter\AdapterInterface $queueAdapter
-     */
     public function __construct(QueueInfoInterface $queueInfo, AdapterInterface $queueAdapter)
     {
         $this->queueInfo = $queueInfo;
@@ -39,7 +35,7 @@ class Queue implements QueueInterface
      */
     public function deleteAllQueues(LoggerInterface $logger)
     {
-        foreach ($this->queueInfo->getQueues()->getRabbitMqQueues() as $rabbitMqQueueTransfer) {
+        foreach ($this->queueInfo->getQueues()->getQueues() as $rabbitMqQueueTransfer) {
             $this->queueAdapter->deleteQueue($rabbitMqQueueTransfer->getName());
             $logger->info(sprintf('Delete queue "%s" request send.', $rabbitMqQueueTransfer->getName()));
         }
@@ -54,7 +50,7 @@ class Queue implements QueueInterface
      */
     public function purgeAllQueues(LoggerInterface $logger)
     {
-        foreach ($this->queueInfo->getQueues()->getRabbitMqQueues() as $rabbitMqQueueTransfer) {
+        foreach ($this->queueInfo->getQueues()->getQueues() as $rabbitMqQueueTransfer) {
             $this->queueAdapter->purgeQueue($rabbitMqQueueTransfer->getName());
             $logger->info(sprintf('Purge queue "%s" request send.', $rabbitMqQueueTransfer->getName()));
         }

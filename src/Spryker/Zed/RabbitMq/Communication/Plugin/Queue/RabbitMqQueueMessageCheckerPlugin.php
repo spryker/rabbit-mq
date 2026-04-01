@@ -7,15 +7,18 @@
 
 namespace Spryker\Zed\RabbitMq\Communication\Plugin\Queue;
 
+use Generated\Shared\Transfer\QueueInformationCollectionTransfer;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
+use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueBulkMessageCheckerPluginInterface;
 use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMessageCheckerPluginInterface;
 
 /**
+ * @method \Spryker\Zed\RabbitMq\Business\RabbitMqBusinessFactory getFactory()
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
  * @method \Spryker\Zed\RabbitMq\RabbitMqConfig getConfig()
  */
-class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueMessageCheckerPluginInterface
+class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueMessageCheckerPluginInterface, QueueBulkMessageCheckerPluginInterface
 {
     /**
      * {@inheritDoc}
@@ -45,5 +48,19 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
     public function isApplicable(string $adapterName): bool
     {
         return $adapterName === RabbitMqAdapter::class;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param array<string> $queueNames
+     *
+     * @return \Generated\Shared\Transfer\QueueInformationCollectionTransfer
+     */
+    public function getQueues(array $queueNames): QueueInformationCollectionTransfer
+    {
+        return $this->getFactory()->createQueueInfo()->getQueues();
     }
 }

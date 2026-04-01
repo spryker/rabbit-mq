@@ -46,12 +46,6 @@ class Connection implements ConnectionInterface
      */
     protected $clientConfig;
 
-    /**
-     * @param \PhpAmqpLib\Connection\AMQPStreamConnection $streamConnection
-     * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnection
-     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $clientConfig
-     */
     public function __construct(
         AMQPStreamConnection $streamConnection,
         QueueEstablishmentHelperInterface $queueEstablishmentHelper,
@@ -109,9 +103,6 @@ class Connection implements ConnectionInterface
         return $this->queueConnectionConfig->getVirtualHost();
     }
 
-    /**
-     * @return void
-     */
     public function setupQueuesAndExchanges(): void
     {
         foreach ($this->queueConnectionConfig->getQueueOptionCollection() as $queueOption) {

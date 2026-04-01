@@ -19,9 +19,6 @@ class QueueMetricReader implements QueueMetricReaderInterface
      */
     protected ConnectionManagerInterface $connectionManager;
 
-    /**
-     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface $connectionManager
-     */
     public function __construct(ConnectionManagerInterface $connectionManager)
     {
         $this->connectionManager = $connectionManager;

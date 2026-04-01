@@ -38,12 +38,6 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
      */
     protected QueueMetricReaderInterface|null $queueMetricReader = null;
 
-    /**
-     * @param \Spryker\Client\RabbitMq\Model\Manager\ManagerInterface $manager
-     * @param \Spryker\Client\RabbitMq\Model\Publisher\PublisherInterface $publisher
-     * @param \Spryker\Client\RabbitMq\Model\Consumer\ConsumerInterface $consumer
-     * @param \Spryker\Client\RabbitMq\Model\Queue\QueueMetricReaderInterface $queueMetricReader
-     */
     public function __construct(
         ManagerInterface $manager,
         PublisherInterface $publisher,
@@ -174,11 +168,6 @@ class RabbitMqAdapter implements RabbitMqAdapterInterface
         $this->publisher->sendMessages($queueName, $queueSendMessageTransfers);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
-     */
     public function getQueueMetrics(QueueMetricsRequestTransfer $queueMetricsRequestTransfer): QueueMetricsResponseTransfer
     {
         return $this->queueMetricReader->getQueueMetrics($queueMetricsRequestTransfer);

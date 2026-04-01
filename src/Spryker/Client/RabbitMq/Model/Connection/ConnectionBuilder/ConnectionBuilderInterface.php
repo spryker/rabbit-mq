@@ -19,10 +19,5 @@ interface ConnectionBuilderInterface
      */
     public function createConnectionsByQueueConnectionTransfers(array $queueConnectionTransfers): array;
 
-    /**
-     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
-     *
-     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
-     */
     public function createConnectionByQueueConnectionTransfer(QueueConnectionTransfer $queueConnectionTransfer): ConnectionInterface;
 }

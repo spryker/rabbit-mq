@@ -65,9 +65,6 @@ class Consumer implements ConsumerInterface
      */
     protected $collectedMessages = [];
 
-    /**
-     * @param \PhpAmqpLib\Channel\AMQPChannel $channel
-     */
     public function __construct(AMQPChannel $channel)
     {
         $this->channel = $channel;
@@ -222,11 +219,6 @@ class Consumer implements ConsumerInterface
         return true;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QueueReceiveMessageTransfer $queueReceiveMessageTransfer
-     *
-     * @return void
-     */
     protected function publishOnRoutingKey(QueueReceiveMessageTransfer $queueReceiveMessageTransfer): void
     {
         if ($queueReceiveMessageTransfer->getRoutingKey()) {

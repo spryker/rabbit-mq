@@ -34,11 +34,6 @@ class RabbitMqToStoreClientBridge implements RabbitMqToStoreClientInterface
         return $this->storeClient->getCurrentStore();
     }
 
-    /**
-     * @param string $name
-     *
-     * @return \Generated\Shared\Transfer\StoreTransfer
-     */
     public function getStoreByName(string $name): StoreTransfer
     {
         return $this->storeClient->getStoreByName($name);

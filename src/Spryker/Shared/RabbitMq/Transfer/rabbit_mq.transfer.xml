@@ -52,12 +52,12 @@
         <property name="requeueOnReject" type="bool"/>
     </transfer>
 
-    <transfer name="RabbitMqQueue">
+    <transfer name="RabbitMqQueue" deprecated="Use QueueInformationTransfer instead">
         <property name="name" type="string"/>
         <property name="virtualHost" type="string"/>
     </transfer>
 
-    <transfer name="RabbitMqQueueCollection">
+    <transfer name="RabbitMqQueueCollection" deprecated="Use QueueInformationCollection transfer instead">
         <property name="rabbitMqQueues" type="RabbitMqQueue[]" singular="rabbitMqQueue"/>
     </transfer>
 
@@ -101,6 +101,16 @@
     <transfer name="QueueMetricsResponse" strict="true">
         <property name="messageCount" type="int"/>
         <property name="consumerCount" type="int"/>
+    </transfer>
+
+    <transfer name="QueueInformation">
+        <property name="name" type="string"/>
+        <property name="virtualHost" type="string"/>
+        <property name="readyCount" type="int"/>
+    </transfer>
+
+    <transfer name="QueueInformationCollection">
+        <property name="queues" type="QueueInformation[]" singular="queue"/>
     </transfer>
 
 </transfers>

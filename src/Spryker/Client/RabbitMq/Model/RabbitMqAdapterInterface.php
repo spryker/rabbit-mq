@@ -14,10 +14,5 @@ use Spryker\Client\RabbitMq\Model\Manager\ManagerInterface;
 
 interface RabbitMqAdapterInterface extends AdapterInterface, ManagerInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
-     */
     public function getQueueMetrics(QueueMetricsRequestTransfer $queueMetricsRequestTransfer): QueueMetricsResponseTransfer;
 }
