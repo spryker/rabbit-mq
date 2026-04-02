@@ -8,6 +8,7 @@
 namespace Spryker\Zed\RabbitMq\Business\Model\Queue;
 
 use Generated\Shared\Transfer\QueueInformationCollectionTransfer;
+use Generated\Shared\Transfer\QueueInformationTransfer;
 use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 
 class QueueInfo implements QueueInfoInterface
@@ -69,32 +70,32 @@ class QueueInfo implements QueueInfoInterface
     {
         $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
 
-        $rabbitMqQueueCollectionTransfer = new QueueInformationCollectionTransfer();
+        $queueInformationCollectionTransfer = new QueueInformationCollectionTransfer();
         if ($response->getStatusCode() === 200) {
             $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
-            return $this->addRabbitMqQueues($rabbitMqQueueCollectionTransfer, $decodedResponse);
+            return $this->addRabbitMqQueues($queueInformationCollectionTransfer, $decodedResponse);
         }
 
-        return $rabbitMqQueueCollectionTransfer;
+        return $queueInformationCollectionTransfer;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueInformationCollectionTransfer $rabbitMqQueueCollectionTransfer
+     * @param \Generated\Shared\Transfer\QueueInformationCollectionTransfer $queueInformationCollectionTransfer
      * @param array $response
      *
      * @return \Generated\Shared\Transfer\QueueInformationCollectionTransfer
      */
-    protected function addRabbitMqQueues(QueueInformationCollectionTransfer $rabbitMqQueueCollectionTransfer, array $response)
+    protected function addRabbitMqQueues(QueueInformationCollectionTransfer $queueInformationCollectionTransfer, array $response)
     {
         foreach ($response as $queueInfo) {
-            $rabbitMqQueueTransfer = new QueueInformationTransfer();
-            $rabbitMqQueueTransfer->setName($queueInfo['name']);
-            $rabbitMqQueueTransfer->setReadyCount($queueInfo['messages_ready']);
+            $queueInformationTransfer = new QueueInformationTransfer();
+            $queueInformationTransfer->setName($queueInfo['name']);
+            $queueInformationTransfer->setReadyCount($queueInfo['messages_ready']);
 
-            $rabbitMqQueueCollectionTransfer->addRabbitMqQueue($rabbitMqQueueTransfer);
+            $queueInformationCollectionTransfer->addQueue($queueInformationTransfer);
         }
 
-        return $rabbitMqQueueCollectionTransfer;
+        return $queueInformationCollectionTransfer;
     }
 }
