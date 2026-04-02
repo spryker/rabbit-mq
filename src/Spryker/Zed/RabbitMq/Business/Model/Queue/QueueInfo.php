@@ -8,6 +8,7 @@
 namespace Spryker\Zed\RabbitMq\Business\Model\Queue;
 
 use Generated\Shared\Transfer\QueueInformationCollectionTransfer;
+use Generated\Shared\Transfer\QueueInformationTransfer;
 use Spryker\Zed\RabbitMq\Dependency\Guzzle\RabbitMqToGuzzleInterface;
 
 class QueueInfo implements QueueInfoInterface
@@ -92,7 +93,7 @@ class QueueInfo implements QueueInfoInterface
             $rabbitMqQueueTransfer->setName($queueInfo['name']);
             $rabbitMqQueueTransfer->setReadyCount($queueInfo['messages_ready']);
 
-            $rabbitMqQueueCollectionTransfer->addRabbitMqQueue($rabbitMqQueueTransfer);
+            $rabbitMqQueueCollectionTransfer->addQueue($rabbitMqQueueTransfer);
         }
 
         return $rabbitMqQueueCollectionTransfer;
