@@ -14,7 +14,7 @@ use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueBulkMessageCheckerPluginIn
 use Spryker\Zed\QueueExtension\Dependency\Plugin\QueueMessageCheckerPluginInterface;
 
 /**
- * @method \Spryker\Zed\RabbitMq\Business\RabbitMqBusinessFactory getFactory()
+ * @method \Spryker\Zed\RabbitMq\Business\RabbitMqBusinessFactory getBusinessFactory()
  * @method \Spryker\Zed\RabbitMq\Business\RabbitMqFacadeInterface getFacade()
  * @method \Spryker\Zed\RabbitMq\RabbitMqConfig getConfig()
  */
