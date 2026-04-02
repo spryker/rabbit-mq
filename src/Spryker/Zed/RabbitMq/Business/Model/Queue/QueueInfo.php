@@ -81,21 +81,21 @@ class QueueInfo implements QueueInfoInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QueueInformationCollectionTransfer $rabbitMqQueueCollectionTransfer
+     * @param \Generated\Shared\Transfer\QueueInformationCollectionTransfer $queueInformationCollectionTransfer
      * @param array $response
      *
      * @return \Generated\Shared\Transfer\QueueInformationCollectionTransfer
      */
-    protected function addRabbitMqQueues(QueueInformationCollectionTransfer $rabbitMqQueueCollectionTransfer, array $response)
+    protected function addRabbitMqQueues(QueueInformationCollectionTransfer $queueInformationCollectionTransfer, array $response)
     {
         foreach ($response as $queueInfo) {
             $queueInformationTransfer = new QueueInformationTransfer();
             $queueInformationTransfer->setName($queueInfo['name']);
             $queueInformationTransfer->setReadyCount($queueInfo['messages_ready']);
 
-            $rabbitMqQueueCollectionTransfer->addQueue($queueInformationTransfer);
+            $queueInformationCollectionTransfer->addQueue($queueInformationTransfer);
         }
 
-        return $rabbitMqQueueCollectionTransfer;
+        return $queueInformationCollectionTransfer;
     }
 }
