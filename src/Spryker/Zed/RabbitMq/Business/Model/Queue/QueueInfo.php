@@ -70,14 +70,14 @@ class QueueInfo implements QueueInfoInterface
     {
         $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
 
-        $rabbitMqQueueCollectionTransfer = new QueueInformationCollectionTransfer();
+        $queueInformationCollectionTransfer = new QueueInformationCollectionTransfer();
         if ($response->getStatusCode() === 200) {
             $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
-            return $this->addRabbitMqQueues($rabbitMqQueueCollectionTransfer, $decodedResponse);
+            return $this->addRabbitMqQueues($queueInformationCollectionTransfer, $decodedResponse);
         }
 
-        return $rabbitMqQueueCollectionTransfer;
+        return $queueInformationCollectionTransfer;
     }
 
     /**
@@ -89,11 +89,11 @@ class QueueInfo implements QueueInfoInterface
     protected function addRabbitMqQueues(QueueInformationCollectionTransfer $rabbitMqQueueCollectionTransfer, array $response)
     {
         foreach ($response as $queueInfo) {
-            $rabbitMqQueueTransfer = new QueueInformationTransfer();
-            $rabbitMqQueueTransfer->setName($queueInfo['name']);
-            $rabbitMqQueueTransfer->setReadyCount($queueInfo['messages_ready']);
+            $queueInformationTransfer = new QueueInformationTransfer();
+            $queueInformationTransfer->setName($queueInfo['name']);
+            $queueInformationTransfer->setReadyCount($queueInfo['messages_ready']);
 
-            $rabbitMqQueueCollectionTransfer->addQueue($rabbitMqQueueTransfer);
+            $rabbitMqQueueCollectionTransfer->addQueue($queueInformationTransfer);
         }
 
         return $rabbitMqQueueCollectionTransfer;
