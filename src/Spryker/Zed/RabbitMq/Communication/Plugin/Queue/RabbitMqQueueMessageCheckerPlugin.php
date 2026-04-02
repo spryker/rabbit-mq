@@ -61,6 +61,6 @@ class RabbitMqQueueMessageCheckerPlugin extends AbstractPlugin implements QueueM
      */
     public function getQueues(array $queueNames): QueueInformationCollectionTransfer
     {
-        return $this->getFactory()->createQueueInfo()->getQueues();
+        return $this->getBusinessFactory()->createQueueInfo()->getQueues();
     }
 }
