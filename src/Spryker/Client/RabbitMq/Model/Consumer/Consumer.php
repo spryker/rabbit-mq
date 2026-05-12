@@ -101,10 +101,16 @@ class Consumer implements ConsumerInterface
         try {
             while (count($this->channel->callbacks)) {
                 $this->channel->wait(null, false, static::DEFAULT_CONSUMER_TIMEOUT_SECONDS);
+
+                if (count($this->collectedMessages) >= $chunkSize) {
+                    break;
+                }
             }
         } catch (Throwable $e) {
-            $this->channel->basic_cancel($consumerTag);
+            // Timeout: the queue contains fewer messages than the requested chunk size.
         }
+
+        $this->channel->basic_cancel($consumerTag);
 
         return $this->retrieveCollectedMessages();
     }
