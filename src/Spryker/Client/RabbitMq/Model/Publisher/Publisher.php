@@ -45,6 +45,10 @@ class Publisher implements PublisherInterface
      */
     protected $channelBuffer = [];
 
+    /**
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionManagerInterface $connectionManager
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
+     */
     public function __construct(ConnectionManagerInterface $connectionManager, RabbitMqConfig $config)
     {
         $this->connectionManager = $connectionManager;
@@ -237,6 +241,11 @@ class Publisher implements PublisherInterface
         return [];
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QueueSendMessageTransfer $queueSendMessageTransfer
+     *
+     * @return string|null
+     */
     protected function getLocale(QueueSendMessageTransfer $queueSendMessageTransfer): ?string
     {
         if ($this->config->isDynamicStoreEnabled() === true) {

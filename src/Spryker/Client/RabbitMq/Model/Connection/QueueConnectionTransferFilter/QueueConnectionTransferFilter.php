@@ -17,6 +17,9 @@ class QueueConnectionTransferFilter implements QueueConnectionTransferFilterInte
      */
     protected $storeClient;
 
+    /**
+     * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
+     */
     public function __construct(RabbitMqToStoreClientInterface $storeClient)
     {
         $this->storeClient = $storeClient;
@@ -44,6 +47,12 @@ class QueueConnectionTransferFilter implements QueueConnectionTransferFilterInte
         return $filteredQueueConnectionTransfers;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     * @param string $localeCode
+     *
+     * @return bool
+     */
     protected function isLocaleCodeDefinedInQueueConnectionTransfer(
         QueueConnectionTransfer $queueConnectionTransfer,
         string $localeCode
@@ -57,6 +66,12 @@ class QueueConnectionTransferFilter implements QueueConnectionTransferFilterInte
         return false;
     }
 
+    /**
+     * @param string $storeName
+     * @param string $localeCode
+     *
+     * @return bool
+     */
     protected function isLocaleCodeDefinedForStore(string $storeName, string $localeCode): bool
     {
         return in_array($localeCode, $this->getLocaleCodesPerStore($storeName), true);

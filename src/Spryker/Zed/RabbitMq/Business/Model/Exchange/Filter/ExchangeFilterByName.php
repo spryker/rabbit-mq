@@ -18,6 +18,9 @@ class ExchangeFilterByName implements ExchangeFilterInterface
      */
     protected $exchangeNameBlacklist;
 
+    /**
+     * @param array $exchangeNameBlacklist
+     */
     public function __construct(array $exchangeNameBlacklist)
     {
         $this->exchangeNameBlacklist = $exchangeNameBlacklist;

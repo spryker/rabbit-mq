@@ -36,6 +36,9 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
         );
     }
 
+    /**
+     * @return \Spryker\Zed\RabbitMq\Business\Model\Queue\QueueInfoInterface
+     */
     public function createQueueInfo(): QueueInfoInterface
     {
         return new QueueInfo(
@@ -71,6 +74,9 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
         );
     }
 
+    /**
+     * @return \Spryker\Zed\RabbitMq\Business\Model\Metric\QueueMetricReaderInterface
+     */
     public function createQueueMetricReader(): QueueMetricReaderInterface
     {
         return new QueueMetricReader(
@@ -78,6 +84,9 @@ class RabbitMqBusinessFactory extends AbstractBusinessFactory
         );
     }
 
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
     public function getConection(): ConnectionInterface
     {
         return $this->getProvidedDependency(RabbitMqDependencyProvider::CONNECTION);

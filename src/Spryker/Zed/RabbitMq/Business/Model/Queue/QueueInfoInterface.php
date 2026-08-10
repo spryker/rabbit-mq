@@ -18,5 +18,8 @@ interface QueueInfoInterface
      */
     public function areQueuesEmpty(array $queueNames): bool;
 
+    /**
+     * @return \Generated\Shared\Transfer\QueueInformationCollectionTransfer
+     */
     public function getQueues(): QueueInformationCollectionTransfer;
 }

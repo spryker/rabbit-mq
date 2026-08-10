@@ -48,6 +48,13 @@ class ConnectionManager implements ConnectionManagerInterface
      */
     protected $connectionBuilder;
 
+    /**
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
+     * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
+     * @param \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferMapper\QueueConnectionTransferMapperInterface $connectionConfigMapper
+     * @param \Spryker\Client\RabbitMq\Model\Connection\QueueConnectionTransferFilter\QueueConnectionTransferFilterInterface $connectionConfigFilter
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionBuilder\ConnectionBuilderInterface $connectionBuilder
+     */
     public function __construct(
         RabbitMqConfig $config,
         RabbitMqToStoreClientInterface $storeClient,
@@ -127,6 +134,9 @@ class ConnectionManager implements ConnectionManagerInterface
         return $this->getChannelsFilteredByLocaleCode($queueConnectionTransfersByStoreName[$storeName], $localeCode);
     }
 
+    /**
+     * @return \PhpAmqpLib\Channel\AMQPChannel
+     */
     public function getDefaultChannel(): AMQPChannel
     {
         return $this->getDefaultConnection()->getChannel();
@@ -148,6 +158,9 @@ class ConnectionManager implements ConnectionManagerInterface
         throw new DefaultConnectionNotFoundException(static::EXCEPTION_MESSAGE_DEFAULT_CONNECTION_NOT_FOUND);
     }
 
+    /**
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
     public function getDefaultConnection(): ConnectionInterface
     {
         return $this->connectionBuilder->createConnectionByQueueConnectionTransfer(
@@ -155,6 +168,9 @@ class ConnectionManager implements ConnectionManagerInterface
         );
     }
 
+    /**
+     * @return array
+     */
     protected function getQueuePools(): array
     {
         if ($this->config->getQueuePools() && $this->config->isDynamicStoreEnabled()) {

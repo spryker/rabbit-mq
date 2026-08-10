@@ -37,6 +37,11 @@ class ConnectionBuilder implements ConnectionBuilderInterface
      */
     protected $createdConnectionsByConnectionName;
 
+    /**
+     * @param \Spryker\Client\RabbitMq\RabbitMqConfig $config
+     * @param \Spryker\Client\RabbitMq\Dependency\Client\RabbitMqToStoreClientInterface $storeClient
+     * @param \Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface $queueEstablishmentHelper
+     */
     public function __construct(
         RabbitMqConfig $config,
         RabbitMqToStoreClientInterface $storeClient,
@@ -47,11 +52,21 @@ class ConnectionBuilder implements ConnectionBuilderInterface
         $this->queueEstablishmentHelper = $queueEstablishmentHelper;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
     public function createConnectionByQueueConnectionTransfer(QueueConnectionTransfer $queueConnectionTransfer): ConnectionInterface
     {
         return $this->createOrGetConnection($queueConnectionTransfer);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
     protected function createOrGetConnection(QueueConnectionTransfer $queueConnectionTransfer): ConnectionInterface
     {
         $connection = $this->getWorkingConnection($queueConnectionTransfer);
@@ -65,6 +80,11 @@ class ConnectionBuilder implements ConnectionBuilderInterface
         return $connection;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface|null
+     */
     protected function getWorkingConnection(QueueConnectionTransfer $queueConnectionTransfer): ?ConnectionInterface
     {
         $connection = $this->createdConnectionsByConnectionName[$queueConnectionTransfer->getName()] ?? null;
@@ -76,6 +96,11 @@ class ConnectionBuilder implements ConnectionBuilderInterface
         return null;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface
+     */
     protected function createConnection(QueueConnectionTransfer $queueConnectionTransfer): ConnectionInterface
     {
         return new Connection(
@@ -86,6 +111,11 @@ class ConnectionBuilder implements ConnectionBuilderInterface
         );
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QueueConnectionTransfer $queueConnectionTransfer
+     *
+     * @return \PhpAmqpLib\Connection\AMQPStreamConnection
+     */
     protected function createAmqpStreamConnection(QueueConnectionTransfer $queueConnectionTransfer): AMQPStreamConnection
     {
         $defaultQueueConnectionTransfer = $this->config->getDefaultQueueConnectionConfig();
@@ -141,6 +171,9 @@ class ConnectionBuilder implements ConnectionBuilderInterface
         return $sslContext;
     }
 
+    /**
+     * @return string
+     */
     protected function getDefaultLocale(): string
     {
         if ($this->config->getDefaultLocaleCode() && $this->config->isDynamicStoreEnabled()) {
@@ -170,6 +203,11 @@ class ConnectionBuilder implements ConnectionBuilderInterface
         return $connections;
     }
 
+    /**
+     * @param \Spryker\Client\RabbitMq\Model\Connection\ConnectionInterface $connection
+     *
+     * @return string
+     */
     protected function getUniqueChannelId(ConnectionInterface $connection): string
     {
         return sprintf('%s-%s', $connection->getVirtualHost(), $connection->getChannel()->getChannelId());
