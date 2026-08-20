@@ -150,7 +150,6 @@ class RabbitMqAdapterTest extends Unit
 
         $rabbitMqFactoryReflection = new ReflectionClass($rabbitMqFactory);
         $queueMetricReaderProperty = $rabbitMqFactoryReflection->getProperty('queueMetricReader');
-        $queueMetricReaderProperty->setAccessible(true);
         $queueMetricReaderProperty->setValue($rabbitMqFactory, null);
 
         return $rabbitMqFactory;

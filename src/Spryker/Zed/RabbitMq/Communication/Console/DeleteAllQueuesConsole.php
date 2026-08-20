@@ -26,6 +26,9 @@ class DeleteAllQueuesConsole extends Console
      */
     public const DESCRIPTION = 'This command will delete all queues.';
 
+    /**
+     * @return void
+     */
     protected function configure(): void
     {
         $this->setName(static::COMMAND_NAME);
@@ -34,6 +37,12 @@ class DeleteAllQueuesConsole extends Console
         parent::configure();
     }
 
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->info('Delete all queues');

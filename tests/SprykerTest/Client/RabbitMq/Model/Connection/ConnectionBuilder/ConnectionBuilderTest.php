@@ -57,7 +57,6 @@ class ConnectionBuilderTest extends Unit
             ->getMock();
         $reflection = new ReflectionClass(ConnectionBuilder::class);
         $property = $reflection->getProperty('createdConnectionsByConnectionName');
-        $property->setAccessible(true);
         $property->setValue($connectionBuilder, ['test_connection' => $existingConnection]);
 
         // Act
@@ -135,7 +134,6 @@ class ConnectionBuilderTest extends Unit
             ->getMock();
         $reflection = new ReflectionClass(ConnectionBuilder::class);
         $property = $reflection->getProperty('createdConnectionsByConnectionName');
-        $property->setAccessible(true);
         $property->setValue($connectionBuilder, ['null_channel_test' => $existingConnection]);
         $connectionBuilder->method('createConnection')->willReturn($newConnection);
 

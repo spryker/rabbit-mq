@@ -47,6 +47,11 @@ class QueueInfo implements QueueInfoInterface
         $this->password = $password;
     }
 
+    /**
+     * @param array $queueNames
+     *
+     * @return bool
+     */
     public function areQueuesEmpty(array $queueNames): bool
     {
         $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);
@@ -66,6 +71,9 @@ class QueueInfo implements QueueInfoInterface
         return true;
     }
 
+    /**
+     * @return \Generated\Shared\Transfer\QueueInformationCollectionTransfer
+     */
     public function getQueues(): QueueInformationCollectionTransfer
     {
         $response = $this->client->get($this->apiQueuesUrl, ['auth' => [$this->username, $this->password]]);

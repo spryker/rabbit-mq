@@ -28,6 +28,11 @@ class Exchange implements ExchangeInterface
      */
     protected $exchangeFilter;
 
+    /**
+     * @param \Spryker\Zed\RabbitMq\Business\Model\Exchange\ExchangeInfoInterface $exchangeInfo
+     * @param \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface $queueAdapter
+     * @param \Spryker\Zed\RabbitMq\Business\Model\Exchange\Filter\ExchangeFilterInterface $exchangeFilter
+     */
     public function __construct(ExchangeInfoInterface $exchangeInfo, RabbitMqAdapterInterface $queueAdapter, ExchangeFilterInterface $exchangeFilter)
     {
         $this->exchangeInfo = $exchangeInfo;

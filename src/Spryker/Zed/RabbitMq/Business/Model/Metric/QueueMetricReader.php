@@ -18,11 +18,19 @@ class QueueMetricReader implements QueueMetricReaderInterface
      */
     protected RabbitMqAdapterInterface $queueAdapter;
 
+    /**
+     * @param \Spryker\Client\RabbitMq\Model\RabbitMqAdapterInterface $queueAdapter
+     */
     public function __construct(RabbitMqAdapterInterface $queueAdapter)
     {
         $this->queueAdapter = $queueAdapter;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
+     */
     public function getQueueMetrics(
         QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
     ): QueueMetricsResponseTransfer {

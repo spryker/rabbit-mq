@@ -12,6 +12,11 @@ use Generated\Shared\Transfer\QueueMetricsResponseTransfer;
 
 interface QueueMetricReaderInterface
 {
+    /**
+     * @param \Generated\Shared\Transfer\QueueMetricsRequestTransfer $queueMetricsRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\QueueMetricsResponseTransfer
+     */
     public function getQueueMetrics(
         QueueMetricsRequestTransfer $queueMetricsRequestTransfer,
     ): QueueMetricsResponseTransfer;

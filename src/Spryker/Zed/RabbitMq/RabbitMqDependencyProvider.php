@@ -77,6 +77,11 @@ class RabbitMqDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
     protected function addConnection(Container $container): Container
     {
         $container->set(static::CONNECTION, function (Container $container): ConnectionInterface {
