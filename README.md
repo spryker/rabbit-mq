@@ -12,4 +12,4 @@ composer require spryker/rabbit-mq
 
 ## Documentation
 
-[Spryker Documentation](https://spryker.github.io)
+[Spryker Documentation](https://docs.spryker.com/docs/dg/dev/backend-development/data-manipulation/queue/queue.html)
