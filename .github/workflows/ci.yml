@@ -17,6 +17,22 @@ jobs:
                         '8.3',
                         '8.5'
                 ]
+        services:
+            broker:
+                image: rabbitmq:4.2-management
+                env:
+                    RABBITMQ_DEFAULT_USER: spryker
+                    RABBITMQ_DEFAULT_PASS: secret
+                    RABBITMQ_DEFAULT_VHOST: eu-docker
+                ports:
+                    - 5672:5672
+                options: >-
+                    --health-cmd "rabbitmq-diagnostics -q ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+        env:
+            SPRYKER_BROKER_HOST: 127.0.0.1
 
         steps:
             - uses: actions/checkout@v4
@@ -67,6 +83,22 @@ jobs:
                 php-version: [
                         '8.3'
                 ]
+        services:
+            broker:
+                image: rabbitmq:4.2-management
+                env:
+                    RABBITMQ_DEFAULT_USER: spryker
+                    RABBITMQ_DEFAULT_PASS: secret
+                    RABBITMQ_DEFAULT_VHOST: eu-docker
+                ports:
+                    - 5672:5672
+                options: >-
+                    --health-cmd "rabbitmq-diagnostics -q ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+        env:
+            SPRYKER_BROKER_HOST: 127.0.0.1
 
         steps:
             - uses: actions/checkout@v4

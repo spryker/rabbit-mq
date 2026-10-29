@@ -13,6 +13,11 @@ use Spryker\Client\RabbitMq\Model\Helper\QueueEstablishmentHelperInterface;
 class Manager implements ManagerInterface
 {
     /**
+     * @var string
+     */
+    protected const DEFAULT_EXCHANGE_TYPE = 'direct';
+
+    /**
      * @var \PhpAmqpLib\Channel\AMQPChannel
      */
     protected $channel;
@@ -43,7 +48,16 @@ class Manager implements ManagerInterface
         /** @var \Generated\Shared\Transfer\RabbitMqOptionTransfer $rabbitMqOption */
         $rabbitMqOption = $options['rabbitMqConsumerOption'];
 
-        return $this->queueEstablishmentHelper->createQueue($this->channel, $rabbitMqOption);
+        $queueParams = $this->queueEstablishmentHelper->createQueue($this->channel, $rabbitMqOption);
+
+        if (!$rabbitMqOption->getType()) {
+            $rabbitMqOption->setType(static::DEFAULT_EXCHANGE_TYPE);
+        }
+
+        $this->queueEstablishmentHelper->createExchange($this->channel, $rabbitMqOption);
+        $this->channel->queue_bind($queueName, $queueName);
+
+        return $queueParams;
     }
 
     /**
